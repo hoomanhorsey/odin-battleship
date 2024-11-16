@@ -35,14 +35,42 @@ class Gameboard {
   }
 
   placeShip(x, y, direction, shipType) {
-    this.createShip(shipType);
-    console.log(direction);
+    const ship = this.createShip(shipType);
+
+    // up = +y
+    // down = -y
+    // left = -x
+    // right = +x
+
+    // switch (direction) {
+    //   case "up":
+    //     return ship.length;
+    //   case "down":
+    //     return ship.length;
+    //   case "left":
+    //     return ship.length;
+    //   case "right":
+    //     return ship.length;
+    //   // default:
+    //   //   return error;
+    // }
+
+    // check boundaries
+
+    // check collisions
 
     console.log(this.boardArray[x][y]);
+    console.log(this.boardArray[x][y + 1]);
 
-    if (this.boardArray[x][y] === 0) {
-      this.boardArray[0][0] = "X";
+    // down
+    if (this.boardArray[x][y] === 0 && this.boardArray[x][y + 1] === 0) {
+      this.boardArray[x][y] = shipType;
+      this.boardArray[x][y + 1] = shipType;
     }
+
+    // if (this.boardArray[x][y] === 0) {
+    //   this.boardArray[0][0] = shipType;
+    // }
     console.log(this.boardArray);
   }
 

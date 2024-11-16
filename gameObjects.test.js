@@ -55,9 +55,9 @@ test("Gameboard createShip, creates new Ship carrier and then a ship with carrie
 
 test("Gameboard placeShip, places ship on board. Places ship in array[0][0], position is 'x' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let down = 0;
-  andrewBoard.placeShip(0, 0, down, "carrier");
-  expect(andrewBoard.boardArray[0][0]).toBe("X");
+  let direction = "up";
+  andrewBoard.placeShip(0, 0, direction, "carrier");
+  expect(andrewBoard.boardArray[0][0]).toBe("carrier");
 });
 
 test("Gameboard receiveAttack,", () => {
