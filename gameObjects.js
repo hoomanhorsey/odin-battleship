@@ -64,11 +64,6 @@ class Gameboard {
     // down
     placeShipOnBoard(this.boardArray, column, row, direction, shipType);
 
-    // if (this.boardArray[x][y] === 0 && this.boardArray[x][y + 1] === 0) {
-    //   this.boardArray[x][y] = shipType;
-    //   this.boardArray[x][y + 1] = shipType;
-    // }
-
     console.table(this.boardArray);
   }
 
@@ -136,9 +131,6 @@ function placeShipOnBoard(boardArray, column, row, direction, shipType) {
       }
       break;
     case "right":
-      // boardArray[y][x] = shipType;
-      console.log("ship length" + ship.length);
-
       for (let i = column; i < column + ship.length + 1; i++) {
         boardArray[row][i] = shipType;
       }
