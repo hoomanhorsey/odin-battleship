@@ -37,23 +37,22 @@ class Gameboard {
   placeShip(column, row, direction, shipType) {
     const ship = this.createShip(shipType);
 
-    // up = +y
-    // down = -y
-    // left = -x
-    // right = +x
-
-    // check boundaries
-
-    // check collisions
-
-    // create array of proposed position
+    // create array of proposed position for testing
     const proposedPosition = createProposedPositionArray(
       this.boardArray,
       column,
       row,
       direction
     );
-    // check if position is clear
+
+    // check boundaries
+    if (checkMoveLegal(row, column, direction, ship.length)) {
+      console.log("position is legal");
+    } else {
+      console.log("position is not legall");
+    }
+
+    // check collisions with other ships
     if (checkClear(proposedPosition)) {
       console.log("positin is clear");
     } else {
@@ -61,7 +60,6 @@ class Gameboard {
     }
 
     // place ship
-    // down
     placeShipOnBoard(this.boardArray, column, row, direction, shipType);
 
     console.table(this.boardArray);
@@ -108,8 +106,41 @@ function createProposedPositionArray(boardArray, column, row, direction) {
       return error;
   }
 }
+
+///!doesn't currently test if starting position is illegal
+function checkMoveLegal(row, column, direction, shipLength) {
+  console.log(row, column);
+  switch (direction) {
+    case "up":
+      if (row - shipLength < 0) {
+        return false;
+      } else {
+        return true;
+      }
+    case "down":
+      if (row + shipLength > 9) {
+        return false;
+      } else {
+        return true;
+      }
+    case "left":
+      if (column - shipLength < 0) {
+        return false;
+      } else {
+        return true;
+      }
+    case "right":
+      if (column + shipLength > 9) {
+        return false;
+      } else {
+        return true;
+      }
+    default:
+      return "error";
+  }
+}
+
 function checkClear(array) {
-  console.log(array);
   return array.every((value) => value === 0);
 }
 
