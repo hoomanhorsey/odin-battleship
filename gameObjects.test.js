@@ -72,12 +72,12 @@ test("Gameboard placeShip, places ship on board. Places ship in array[0][1], pos
   expect(andrewBoard.boardArray[1][2]).toBe("carrier");
 });
 
-// test("Gameboard placeShip, places ship on board. Places ship in array[5][5], position is [5][5] is 'carrier' ", () => {
-//   const andrewBoard = new Gameboard("andrew");
-//   let direction = "right";
-//   andrewBoard.placeShip(5, 5, direction, "carrier");
-//   expect(andrewBoard.boardArray[5][5]).toBe("carrier");
-// });
+test("Gameboard placeShip, places ship on board. Places ship in array[5][5], position is [5][5] is 'carrier' ", () => {
+  const andrewBoard = new Gameboard("andrew");
+  let direction = "left";
+  andrewBoard.placeShip(5, 5, direction, "carrier");
+  expect(andrewBoard.boardArray[5][5]).toBe("carrier");
+});
 
 test("Gameboard receiveAttack,", () => {
   const andrewBoard = new Gameboard("andrew");

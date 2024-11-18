@@ -34,7 +34,7 @@ class Gameboard {
     this.player = player;
   }
 
-  placeShip(x, y, direction, shipType) {
+  placeShip(column, row, direction, shipType) {
     const ship = this.createShip(shipType);
 
     // up = +y
@@ -46,20 +46,11 @@ class Gameboard {
 
     // check collisions
 
-    // console.log(this.boardArray[x][y]);
-    // console.log(this.boardArray[x][y + 1]);
-
-    // if (checkClear(y, this.boardArray)) {
-    //   console.log("position occupied");
-    // } else {
-    //   console.log("position occupied");
-    // }
-
     // create array of proposed position
     const proposedPosition = createProposedPositionArray(
       this.boardArray,
-      x,
-      y,
+      column,
+      row,
       direction
     );
     // check if position is clear
@@ -71,7 +62,7 @@ class Gameboard {
 
     // place ship
     // down
-    placeShipOnBoard(this.boardArray, x, y, direction, shipType);
+    placeShipOnBoard(this.boardArray, column, row, direction, shipType);
 
     // if (this.boardArray[x][y] === 0 && this.boardArray[x][y + 1] === 0) {
     //   this.boardArray[x][y] = shipType;
@@ -98,22 +89,26 @@ class Gameboard {
     }
   }
 
-  receiveAttack(x, y) {
+  receiveAttack(column, row) {
     // determines whether co-ords hit an ship
   }
 }
 
 //!!!!!!!TODOcheck ship lenghts here, may be cutting it short by 1
-function createProposedPositionArray(boardArray, x, y, direction) {
+function createProposedPositionArray(boardArray, column, row, direction) {
   switch (direction) {
     case "up":
-      return boardArray.slice(y - ship.length - 1, y).map((row) => row[y]);
+      return boardArray
+        .slice(row - ship.length - 1, row)
+        .map((row) => row[row]);
     case "down":
-      return boardArray.slice(y, y + ship.length + 1).map((row) => row[y]);
+      return boardArray
+        .slice(row, row + ship.length + 1)
+        .map((row) => row[row]);
     case "left":
-      return boardArray[y].slice(x - ship.length + 1, x);
+      return boardArray[row].slice(column - ship.length + 1, column);
     case "right":
-      return boardArray[y].slice(x, x + ship.length + 1);
+      return boardArray[row].slice(column, column + ship.length + 1);
     default:
       return error;
   }
@@ -144,17 +139,10 @@ function placeShipOnBoard(boardArray, column, row, direction, shipType) {
       // boardArray[y][x] = shipType;
       console.log("ship length" + ship.length);
 
-      for (let i = column; i < ship.length + 1; i++) {
+      for (let i = column; i < column + ship.length + 1; i++) {
         boardArray[row][i] = shipType;
       }
       break;
-
-    // boardArray[y][x] = shipType;
-
-    // for (let i = x; x < ship.length + 1; i++) {
-    //   boardArray[y][i] = shipType;
-    // }
-
     default:
       return "error";
   }
@@ -162,10 +150,10 @@ function placeShipOnBoard(boardArray, column, row, direction, shipType) {
 
 function makeGrid() {
   const tempArray = [];
-  for (let y = 0; y < 10; y++) {
-    tempArray[y] = [];
-    for (let x = 0; x < 10; x++) {
-      tempArray[y].push(0);
+  for (let row = 0; row < 10; row++) {
+    tempArray[row] = [];
+    for (let column = 0; column < 10; column++) {
+      tempArray[row].push(0);
     }
   }
   return tempArray;
