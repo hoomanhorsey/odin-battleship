@@ -32,15 +32,6 @@ test("Ship instance, destroyer.hit() x 4, return value 'Already sunk'", () => {
   expect(destroyer.hit()).toBe("Already sunk");
 });
 
-// test("lkj", () => {
-//   expect(new Ship("destroyer", 3)).toEqual({
-//     name: "destroyer",
-//     length: 3,
-//     hits: 0,
-//     sunk: false,
-//   });
-// });
-
 test("Gameboard called, creates 2D array/grid of 10 x 10 ", () => {
   const andrewBoard = new Gameboard("andrew");
   expect(andrewBoard.boardArray[0].length).toBe(10);
@@ -53,12 +44,33 @@ test("Gameboard createShip, creates new Ship carrier and then a ship with carrie
   expect(carrier.type).toBe("carrier");
 });
 
-test("Gameboard placeShip, places ship on board. Places ship in array[0][0], position is 'x' ", () => {
+// test("Gameboard placeShip, places ship on board. Places ship in array[5][5], position is 'carrier' ", () => {
+//   const andrewBoard = new Gameboard("andrew");
+//   let direction = "up";
+//   andrewBoard.placeShip(5, 5, direction, "carrier");
+//   expect(andrewBoard.boardArray[5][5]).toBe("carrier");
+// });
+
+test("Gameboard placeShip, places ship on board. Places ship in array[0][0], position is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "up";
+  let direction = "down";
   andrewBoard.placeShip(0, 0, direction, "carrier");
   expect(andrewBoard.boardArray[0][0]).toBe("carrier");
 });
+
+// test("Gameboard placeShip, places ship on board. Places ship in array[5][5], position is [5][1] is 'carrier' ", () => {
+//   const andrewBoard = new Gameboard("andrew");
+//   let direction = "up";
+//   andrewBoard.placeShip(5, 5, direction, "carrier");
+//   expect(andrewBoard.boardArray[5][5]).toBe("carrier");
+// });
+
+// test("Gameboard placeShip, places ship on board. Places ship in array[5][5], position is [5][5] is 'carrier' ", () => {
+//   const andrewBoard = new Gameboard("andrew");
+//   let direction = "right";
+//   andrewBoard.placeShip(5, 5, direction, "carrier");
+//   expect(andrewBoard.boardArray[5][5]).toBe("carrier");
+// });
 
 test("Gameboard receiveAttack,", () => {
   const andrewBoard = new Gameboard("andrew");

@@ -42,19 +42,6 @@ class Gameboard {
     // left = -x
     // right = +x
 
-    // switch (direction) {
-    //   case "up":
-    //     return ship.length;
-    //   case "down":
-    //     return ship.length;
-    //   case "left":
-    //     return ship.length;
-    //   case "right":
-    //     return ship.length;
-    //   // default:
-    //   //   return error;
-    // }
-
     // check boundaries
 
     // check collisions
@@ -62,16 +49,36 @@ class Gameboard {
     console.log(this.boardArray[x][y]);
     console.log(this.boardArray[x][y + 1]);
 
-    // down
-    if (this.boardArray[x][y] === 0 && this.boardArray[x][y + 1] === 0) {
-      this.boardArray[x][y] = shipType;
-      this.boardArray[x][y + 1] = shipType;
+    // if (checkClear(y, this.boardArray)) {
+    //   console.log("position occupied");
+    // } else {
+    //   console.log("position occupied");
+    // }
+
+    // create array of proposed position
+    const proposedPosition = createProposedPositionArray(
+      this.boardArray,
+      x,
+      y,
+      direction
+    );
+    // check if position is clear
+    if (checkClear(proposedPosition)) {
+      console.log("positin is clear");
+    } else {
+      console.log("position is not clear");
     }
 
-    // if (this.boardArray[x][y] === 0) {
-    //   this.boardArray[0][0] = shipType;
+    // place ship
+    // down
+    placeShipOnBoard(this.boardArray, x, y, direction, shipType);
+
+    // if (this.boardArray[x][y] === 0 && this.boardArray[x][y + 1] === 0) {
+    //   this.boardArray[x][y] = shipType;
+    //   this.boardArray[x][y + 1] = shipType;
     // }
-    console.log(this.boardArray);
+
+    console.table(this.boardArray);
   }
 
   createShip(shipType) {
@@ -93,6 +100,61 @@ class Gameboard {
 
   receiveAttack(x, y) {
     // determines whether co-ords hit an ship
+  }
+}
+
+//!!!!!!!TODOcheck ship lenghts here, may be cutting it short by 1
+function createProposedPositionArray(boardArray, x, y, direction) {
+  switch (direction) {
+    case "up":
+      return boardArray.slice(y - ship.length + 1, y).map((row) => row[x]);
+    case "down":
+      return boardArray.slice(y, y + ship.length + 1).map((row) => row[x]);
+    case "left":
+      return boardArray[y].slice(x - ship.length + 1, x);
+    case "right":
+      return boardArray[y].slice(x, x + ship.length + 1);
+    // default:
+    //   return error;
+  }
+}
+function checkClear(array) {
+  console.log(array);
+
+  return array.every((value) => value === 0);
+}
+
+function placeShipOnBoard(boardArray, x, y, direction, shipType) {
+  switch (direction) {
+    case "up":
+      for (let i = y; i > 0; i--) {
+        boardArray[i][x] = shipType;
+      }
+
+    case "down":
+      for (let i = y; i < ship.length + 1; i++) {
+        boardArray[i][x] = shipType;
+      }
+
+    case "left":
+      for (let i = x; x > 0; i--) {
+        boardArray[y][i] = shipType;
+      }
+    case "right":
+      for (let i = x; x < ship.length + 1; i++) {
+        console.log(boardArray[y]);
+
+        boardArray[y][i] = shipType;
+      }
+
+    // boardArray[y][x] = shipType;
+
+    // for (let i = x; x < ship.length + 1; i++) {
+    //   boardArray[y][i] = shipType;
+    // }
+
+    // default:
+    //   return error;
   }
 }
 
