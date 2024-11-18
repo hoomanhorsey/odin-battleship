@@ -46,8 +46,8 @@ class Gameboard {
 
     // check collisions
 
-    console.log(this.boardArray[x][y]);
-    console.log(this.boardArray[x][y + 1]);
+    // console.log(this.boardArray[x][y]);
+    // console.log(this.boardArray[x][y + 1]);
 
     // if (checkClear(y, this.boardArray)) {
     //   console.log("position occupied");
@@ -107,45 +107,47 @@ class Gameboard {
 function createProposedPositionArray(boardArray, x, y, direction) {
   switch (direction) {
     case "up":
-      return boardArray.slice(y - ship.length + 1, y).map((row) => row[x]);
+      return boardArray.slice(y - ship.length - 1, y).map((row) => row[y]);
     case "down":
-      return boardArray.slice(y, y + ship.length + 1).map((row) => row[x]);
+      return boardArray.slice(y, y + ship.length + 1).map((row) => row[y]);
     case "left":
       return boardArray[y].slice(x - ship.length + 1, x);
     case "right":
       return boardArray[y].slice(x, x + ship.length + 1);
-    // default:
-    //   return error;
+    default:
+      return error;
   }
 }
 function checkClear(array) {
   console.log(array);
-
   return array.every((value) => value === 0);
 }
 
-function placeShipOnBoard(boardArray, x, y, direction, shipType) {
+function placeShipOnBoard(boardArray, column, row, direction, shipType) {
   switch (direction) {
     case "up":
-      for (let i = y; i > 0; i--) {
-        boardArray[i][x] = shipType;
+      for (let i = row; i > 0; i--) {
+        boardArray[i][column] = shipType;
       }
-
+      break;
     case "down":
-      for (let i = y; i < ship.length + 1; i++) {
-        boardArray[i][x] = shipType;
+      for (let i = row; i < ship.length + 1; i++) {
+        boardArray[i][column] = shipType;
       }
-
+      break;
     case "left":
-      for (let i = x; x > 0; i--) {
-        boardArray[y][i] = shipType;
+      for (let i = column; i > 0; i--) {
+        boardArray[row][i] = shipType;
       }
+      break;
     case "right":
-      for (let i = x; x < ship.length + 1; i++) {
-        console.log(boardArray[y]);
+      // boardArray[y][x] = shipType;
+      console.log("ship length" + ship.length);
 
-        boardArray[y][i] = shipType;
+      for (let i = column; i < ship.length + 1; i++) {
+        boardArray[row][i] = shipType;
       }
+      break;
 
     // boardArray[y][x] = shipType;
 
@@ -153,22 +155,20 @@ function placeShipOnBoard(boardArray, x, y, direction, shipType) {
     //   boardArray[y][i] = shipType;
     // }
 
-    // default:
-    //   return error;
+    default:
+      return "error";
   }
 }
 
 function makeGrid() {
   const tempArray = [];
-  for (let i = 0; i < 10; i++) {
-    tempArray[i] = [];
-    for (let j = 0; j < 10; j++) {
-      tempArray[i].push(0);
+  for (let y = 0; y < 10; y++) {
+    tempArray[y] = [];
+    for (let x = 0; x < 10; x++) {
+      tempArray[y].push(0);
     }
   }
   return tempArray;
 }
-
-const board = new Gameboard("andrew");
 
 export { Ship, Gameboard };
