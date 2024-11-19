@@ -97,7 +97,7 @@ test("Gameboard placeShip, places ship on board. Places ship in array[5][5], pos
   const andrewBoard = new Gameboard("andrew");
   let direction = "left";
   andrewBoard.placeShip(5, 5, direction, "carrier");
-  expect(andrewBoard.boardArray[5][5]).toBe("carrier");
+  expect(andrewBoard.boardArray[5][5].ship).toBe("carrier");
 });
 
 test("Gameboard placeShip, places ships on board. Places ship in array[5][5], position is [5][5] is 'carrier' ", () => {
@@ -106,7 +106,7 @@ test("Gameboard placeShip, places ships on board. Places ship in array[5][5], po
   let directionB = "down";
   andrewBoard.placeShip(5, 5, directionA, "carrier");
   andrewBoard.placeShip(3, 3, directionB, "destroyer");
-  expect(andrewBoard.boardArray[5][5]).toBe("carrier");
+  expect(andrewBoard.boardArray[5][5].ship).toBe("carrier");
 });
 
 // test("#89 Gameboard placeShip, places ship on board. Places ship in array[9][9], position is [9][9] is '0' as move is not legal ", () => {

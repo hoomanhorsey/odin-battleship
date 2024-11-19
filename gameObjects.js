@@ -24,7 +24,6 @@ class Ship {
 
 class Gameboard {
   boardArray = makeGrid();
-  missedAttacks = [];
 
   constructor(player) {
     this.player = player;
@@ -41,10 +40,6 @@ class Gameboard {
       direction,
       ship
     );
-
-    console.log("proposed");
-
-    console.log(proposedPosition);
 
     if (checkMoveLegal(row, column, direction, ship)) {
       console.log("move legal");
@@ -154,29 +149,29 @@ function checkMoveLegal(row, column, direction, ship) {
 }
 
 function checkClear(array) {
-  return array.every((value) => value === 0);
+  return array.every((value) => value.ship === null);
 }
 
 function placeShipOnBoard(boardArray, column, row, direction, ship) {
   switch (direction) {
     case "up":
       for (let i = row; i > 0; i--) {
-        boardArray[i][column] = ship.type;
+        boardArray[i][column].ship = ship.type;
       }
       break;
     case "down":
       for (let i = row; i < row + ship.length; i++) {
-        boardArray[i][column] = ship.type;
+        boardArray[i][column].ship = ship.type;
       }
       break;
     case "left":
       for (let i = column; i > column - ship.length; i--) {
-        boardArray[row][i] = ship.type;
+        boardArray[row][i].ship = ship.type;
       }
       break;
     case "right":
       for (let i = column; i < column + ship.length + 1; i++) {
-        boardArray[row][i] = ship.type;
+        boardArray[row][i].ship = ship.type;
       }
       break;
     default:
@@ -189,7 +184,7 @@ function makeGrid() {
   for (let row = 0; row < 10; row++) {
     tempArray[row] = [];
     for (let column = 0; column < 10; column++) {
-      tempArray[row].push(0);
+      tempArray[row].push({ ship: null, hit: false, missed: false });
     }
   }
   return tempArray;
