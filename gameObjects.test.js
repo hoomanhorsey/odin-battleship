@@ -1,13 +1,13 @@
 import { Ship, Gameboard } from "./gameObjects.js";
 
-test("Ship class constructor, 'destroyer, 3 becomes object 'name': destroyer, 'length': 3, 'hits': 0, 'sunk': false", () => {
-  expect(new Ship("destroyer", 3)).toEqual({
-    type: "destroyer",
-    length: 3,
-    hits: 0,
-    sunk: false,
-  });
-});
+// test("Ship class constructor, 'destroyer, 3 becomes object 'name': destroyer, 'length': 3, 'hits': 0, 'sunk': false", () => {
+//   expect(new Ship("destroyer", 3)).toEqual({
+//     type: "destroyer",
+//     length: 3,
+//     hits: 0,
+//     sunk: false,
+//   });
+// });
 
 test("Ship instance, destroyer.hit() once to make hits = 1", () => {
   const destroyer = new Ship("destroyer", 3);
@@ -38,11 +38,11 @@ test("Gameboard called, creates 2D array/grid of 10 x 10 ", () => {
   expect(andrewBoard.boardArray.length).toBe(10);
 });
 
-test("Gameboard createShip, creates new Ship carrier and then a ship with carrier type is created,", () => {
-  const andrewBoard = new Gameboard("andrew");
-  const carrier = andrewBoard.createShip("carrier");
-  expect(carrier.type).toBe("carrier");
-});
+// test("Gameboard createShip, creates new Ship carrier and then a ship with carrier type is created,", () => {
+//   const andrewBoard = new Gameboard("andrew");
+//   const carrier = andrewBoard.createShip("carrier");
+//   expect(carrier.type).toBe("carrier");
+// });
 
 // test("#47 Gameboard placeShip, Top Left, places ship on board. Places ship in array[1][1] up, position in [1][1]is '0' as move not legal ", () => {
 //   const andrewBoard = new Gameboard("andrew");
@@ -125,5 +125,31 @@ test("Gameboard placeShip, places ships on board. Places ship in array[5][5], po
 
 test("Gameboard receiveAttack,", () => {
   const andrewBoard = new Gameboard("andrew");
-  expect(andrewBoard.receiveAttack(0, 0)).toBe();
+  let direction = "right";
+  andrewBoard.placeShip(1, 1, direction, "carrier");
+  andrewBoard.receiveAttack(0, 0);
+  andrewBoard.receiveAttack(1, 1);
+  andrewBoard.receiveAttack(1, 2);
+  andrewBoard.receiveAttack(1, 3);
+
+  expect(andrewBoard.boardArray[0][0].ship).toBe(null);
+  expect(andrewBoard.boardArray[1][1].ship).toBe("carrier");
+  expect(andrewBoard.boardArray[1][1].hit).toBe(true);
+  expect(andrewBoard.ships["carrier"].hits).toBe(3);
+});
+
+test("test checkSunk", () => {
+  const andrewBoard = new Gameboard("andrew");
+  let direction = "right";
+  andrewBoard.placeShip(1, 1, direction, "patrolBoat");
+  andrewBoard.receiveAttack(1, 1);
+  andrewBoard.receiveAttack(1, 2);
+
+  andrewBoard.checkSunk();
+
+  expect(andrewBoard.boardArray[0][0].ship).toBe(null);
+  expect(andrewBoard.boardArray[1][1].ship).toBe("patrolBoat");
+  expect(andrewBoard.ships["patrolBoat"].hits).toBe(2);
+
+  expect(andrewBoard.ships["patrolBoat"].isSunk()).toBe(true);
 });

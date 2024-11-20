@@ -18,6 +18,8 @@ class Ship {
     if (this.hits === this.length) {
       this.sunk = true;
       return this.sunk;
+    } else {
+      return false;
     }
   }
 }
@@ -25,12 +27,29 @@ class Ship {
 class Gameboard {
   boardArray = makeGrid();
 
+  ships = {
+    carrier: new Ship("carrier", 5),
+    battleship: new Ship("battleship", 4),
+    destroyer: new Ship("destroyer", 3),
+    submarine: new Ship("submarine", 3),
+    patrolBoat: new Ship("patrolBoat", 2),
+  };
   constructor(player) {
     this.player = player;
   }
 
+  shipSunkStatus = [
+    { carrier: false },
+    { battleship: false },
+    { destroyer: false },
+    { submarine: false },
+    { patrolBoat: false },
+  ];
+
   placeShip(column, row, direction, shipType) {
-    const ship = this.createShip(shipType);
+    // const ship = this.createShip(shipType);
+
+    let ship = this.ships[shipType];
 
     // create array of proposed position for testing
     const proposedPosition = createProposedPositionArray(
@@ -77,25 +96,72 @@ class Gameboard {
     console.table(this.boardArray);
   }
 
-  createShip(shipType) {
-    switch (shipType) {
-      case "carrier":
-        return new Ship("carrier", 5);
-      case "battleship":
-        return new Ship("battleship", 4);
-      case "destroyer":
-        return new Ship("destroyer", 3);
-      case "submarmine":
-        return new Ship("submarine", 3);
-      case "patrolboat":
-        return new Ship("patrolboat", 2);
-      default:
-        return error;
-    }
-  }
+  // createShip(shipType) {
+  //   switch (shipType) {
+  //     case "carrier":
+  //       return new Ship("carrier", 5);
+  //     case "battleship":
+  //       return new Ship("battleship", 4);
+  //     case "destroyer":
+  //       return new Ship("destroyer", 3);
+  //     case "submarmine":
+  //       return new Ship("submarine", 3);
+  //     case "patrolboat":
+  //       return new Ship("patrolboat", 2);
+  //     default:
+  //       return error;
+  //   }
+  // }
 
   receiveAttack(column, row) {
-    // determines whether co-ords hit an ship
+    // determines whether co-ords hit a ship
+
+    //checks if co-ord hits
+
+    if (this.boardArray[column][row].ship === null) {
+      this.boardArray[column][row].missed = true;
+    } else if (this.boardArray[column][row].hit === true) {
+      console.log("already been hit, not a legal move");
+      return;
+    } else {
+      this.boardArray[column][row].hit = true;
+      let shipType = this.boardArray[column][row].ship;
+      console.log("shipType", shipType);
+
+      this.ships[shipType].hit();
+    }
+    // --if hit, updates gameboard with hit
+    //        -- updates ship that is hit
+    // if misses, updates gameboard with miss.
+  }
+
+  checkSunk() {
+    // name the ship that is sunk
+    // tally the number of ships sunk
+    // advise if all ships are sunk
+    let sunkCounter = 0;
+    for (const ship in this.ships) {
+      if (this.ships[ship].isSunk()) {
+        sunkCounter++;
+      }
+      console.log(this.ships[ship].isSunk());
+      /// include 1 for testing, TODO should be 5
+      if (sunkCounter === 5) {
+        console.log("all ships sunk");
+      } else {
+        console.log(sunkCounter + " of 5 ships sunk");
+      }
+    }
+
+    // const ships = Object.entries(this.ships);
+    // let sunkShipsCounter = 0;
+    // ships.forEach((ship) => tallySunk(sunkShipsCounter, ship));
+  }
+}
+
+function tallySunk(sunkShipsCounter, ship) {
+  if (ship.isSunk()) {
+    sunkShipsCounter += 1;
   }
 }
 
