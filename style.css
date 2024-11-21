@@ -1,0 +1,39 @@
+* {
+  font-size: large;
+}
+.gameBoard {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.gameBoardPlayerOne {
+  display: grid;
+  margin: 20px;
+}
+.gameBoardPlayerTwo {
+  display: grid;
+  margin: 20px;
+}
+
+.gridDiv,
+.gridDivOne,
+.gridDivTwo {
+  display: grid;
+  width: 100%;
+}
+
+.gridRow {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(10, 1fr);
+}
+
+.gridSquare {
+  border-width: 1px;
+  border-style: solid;
+  border-color: black;
+
+  height: 60px;
+  width: 60px;
+}
