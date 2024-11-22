@@ -8,19 +8,19 @@ document.addEventListener("DOMContentLoaded", () => {
     playerTwo: new Player("playerTwo"),
   };
   //   const playerOne = new Player("playerOne");
-  players["playerOne"].gameBoard.placeShip(0, 0, "down", "carrier");
-  players["playerOne"].gameBoard.placeShip(5, 5, "up", "destroyer");
-  players["playerOne"].gameBoard.placeShip(9, 9, "left", "battleship");
-  players["playerOne"].gameBoard.placeShip(4, 7, "right", "patrolBoat");
-  players["playerOne"].gameBoard.placeShip(0, 6, "right", "submarine");
+  players["playerOne"].gameBoard.placeShip(0, 0, "down", "C");
+  players["playerOne"].gameBoard.placeShip(5, 2, "right", "D");
+  players["playerOne"].gameBoard.placeShip(9, 7, "left", "B");
+  players["playerOne"].gameBoard.placeShip(4, 7, "down", "P");
+  players["playerOne"].gameBoard.placeShip(9, 9, "up", "S");
 
   //   const playerTwo = new Player("playerTwo");
 
-  players["playerTwo"].gameBoard.placeShip(0, 0, "down", "carrier");
-  players["playerTwo"].gameBoard.placeShip(5, 5, "up", "destroyer");
-  players["playerTwo"].gameBoard.placeShip(9, 9, "left", "battleship");
-  players["playerTwo"].gameBoard.placeShip(4, 7, "right", "patrolBoat");
-  players["playerTwo"].gameBoard.placeShip(0, 6, "right", "submarine");
+  players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C");
+  players["playerTwo"].gameBoard.placeShip(5, 3, "up", "D");
+  players["playerTwo"].gameBoard.placeShip(9, 9, "left", "B");
+  players["playerTwo"].gameBoard.placeShip(4, 7, "left", "P");
+  players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S");
 
   const gridDivOne = document.createElement("div");
   const gridDivTwo = document.createElement("div");
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         gridSquare.dataset.playerName = player.name;
         gridSquare.dataset.row = row;
-        gridSquare.dataset.col = column;
+        gridSquare.dataset.column = column;
 
         gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
 
@@ -69,10 +69,10 @@ document.addEventListener("DOMContentLoaded", () => {
     e.addEventListener("click", (event) => {
       console.log(event.target);
 
-      let playerName = event.target.dataset.playerName;
+      // let playerName = event.target.dataset.playerName;
       let row = parseInt(event.target.dataset.row);
-      let column = parseInt(event.target.dataset.col);
-
+      let column = parseInt(event.target.dataset.column);
+      console.log(event.target.dataset.row + event.target.dataset.column);
       console.log(players["playerOne"].gameBoard.boardArray[row][column]);
     });
   });

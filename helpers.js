@@ -9,7 +9,7 @@ function makeGrid() {
   return tempArray;
 }
 
-function positionCheckArray(boardArray, column, row, direction, ship) {
+function positionCheckArray(boardArray, row, column, direction, ship) {
   switch (direction) {
     case "up":
       return boardArray
@@ -61,11 +61,12 @@ function checkClear(array) {
   return array.every((value) => value.ship === null);
 }
 
-function placeShipOnBoard(boardArray, column, row, direction, ship) {
+function placeShipOnBoard(boardArray, row, column, direction, ship) {
   switch (direction) {
     case "up":
-      for (let i = row; i > 0; i--) {
+      for (let i = row; i > row - ship.length; i--) {
         boardArray[i][column].ship = ship.type;
+        // console.log("successful write" + " " + ship.type + row + column);
       }
       break;
     case "down":
@@ -76,15 +77,16 @@ function placeShipOnBoard(boardArray, column, row, direction, ship) {
     case "left":
       for (let i = column; i > column - ship.length; i--) {
         boardArray[row][i].ship = ship.type;
+        console.log("successful write" + " " + ship.type + row + column);
       }
       break;
     case "right":
-      for (let i = column; i < column + ship.length + 1; i++) {
+      for (let i = column; i < column + ship.length; i++) {
         boardArray[row][i].ship = ship.type;
       }
       break;
     default:
-      return "error";
+      return "Invalid diirection provided";
   }
 }
 export {

@@ -39,29 +39,29 @@ class Gameboard {
   //   this.player = player;
   // }
   ships = {
-    carrier: new Ship("carrier", 5),
-    battleship: new Ship("battleship", 4),
-    destroyer: new Ship("destroyer", 3),
-    submarine: new Ship("submarine", 3),
-    patrolBoat: new Ship("patrolBoat", 2),
+    C: new Ship("C", 5),
+    B: new Ship("B", 4),
+    D: new Ship("D", 3),
+    S: new Ship("S", 3),
+    P: new Ship("P", 2),
   };
 
   shipSunkStatus = [
-    { carrier: false },
-    { battleship: false },
-    { destroyer: false },
-    { submarine: false },
-    { patrolBoat: false },
+    { C: false },
+    { B: false },
+    { D: false },
+    { S: false },
+    { P: false },
   ];
 
-  placeShip(column, row, direction, shipType) {
+  placeShip(row, column, direction, shipType) {
     let ship = this.ships[shipType];
 
     // create array of proposed position for testing
     const proposedPosition = positionCheckArray(
       this.boardArray,
-      column,
       row,
+      column,
       direction,
       ship
     );
@@ -71,27 +71,27 @@ class Gameboard {
       checkClear(proposedPosition)
     ) {
       // place ship
-      placeShipOnBoard(this.boardArray, column, row, direction, ship);
+      placeShipOnBoard(this.boardArray, row, column, direction, ship);
     } else {
       console.log("position is not legal or collisions");
       return;
     }
   }
 
-  receiveAttack(column, row) {
+  receiveAttack(row, column) {
     // updates gameBoard with a miss
-    if (this.boardArray[column][row].ship === null) {
-      this.boardArray[column][row].missed = true;
+    if (this.boardArray[row][column].ship === null) {
+      this.boardArray[row][column].missed = true;
     }
     // duplicate hit
-    else if (this.boardArray[column][row].hit === true) {
+    else if (this.boardArray[row][column].hit === true) {
       console.log("already been hit, not a legal move");
       return;
     }
     // updates gameBoard with hit as well as ship
     else {
-      this.boardArray[column][row].hit = true;
-      this.ships[this.boardArray[column][row].ship].hit();
+      this.boardArray[row][column].hit = true;
+      this.ships[this.boardArray[row][column].ship].hit();
     }
   }
 

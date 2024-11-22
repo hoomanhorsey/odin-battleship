@@ -152,3 +152,38 @@ test("playerConstruction", () => {
   const playerOne = new Player("playerOne");
   expect(playerOne.gameBoard.ships["carrier"].hits).toBe(0);
 });
+
+test("Objects in DOM validation", () => {
+  const playerOne = new Player("playerOne");
+  const playerTwo = new Player("playerTwo");
+
+  const players = {
+    playerOne: new Player("playerOne"),
+    playerTwo: new Player("playerTwo"),
+  };
+
+  players["playerOne"].gameBoard.placeShip(0, 0, "down", "carrier");
+  players["playerOne"].gameBoard.placeShip(5, 5, "up", "destroyer");
+  players["playerOne"].gameBoard.placeShip(9, 9, "up", "battleship");
+  players["playerOne"].gameBoard.placeShip(4, 7, "down", "patrolBoat");
+  players["playerOne"].gameBoard.placeShip(0, 6, "right", "submarine");
+
+  players["playerTwo"].gameBoard.placeShip(5, 5, "left", "destroyer");
+  players["playerTwo"].gameBoard.placeShip(9, 9, "left", "battleship");
+  players["playerTwo"].gameBoard.placeShip(4, 7, "left", "patrolBoat");
+  players["playerTwo"].gameBoard.placeShip(0, 6, "right", "submarine");
+  players["playerTwo"].gameBoard.placeShip(0, 0, "down", "carrier");
+
+  expect(players["playerTwo"].gameBoard.boardArray[7][4]).toEqual({
+    hit: false,
+    missed: false,
+    ship: "patrolBoat",
+  });
+  expect(players["playerTwo"].gameBoard.boardArray[7][3]).toEqual({
+    hit: false,
+    missed: false,
+    ship: "patrolBat",
+  });
+
+  // expect(players["playerTwo"].gameBoard.boardArray[7][3]).toBe("bah");
+});
