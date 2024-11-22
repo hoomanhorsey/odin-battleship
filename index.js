@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         gridSquare.classList.add(
           "gridSquare",
-          player.name,
+          "gridSquare_" + player.name,
           "r" + row + "c" + column
         );
         // // gridSquare.setAttribute("id", "r" + row + "c" + column);
@@ -64,8 +64,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const gridSquares = document.querySelectorAll("gridSquare");
-  gridSquares.forEach((e) => {
+  const gridSquaresPlayerOne = document.querySelectorAll(
+    ".gridSquare_playerOne"
+  );
+  gridSquaresPlayerOne.forEach((e) => {
     e.addEventListener("click", (event) => {
       console.log(event.target);
 
@@ -74,6 +76,21 @@ document.addEventListener("DOMContentLoaded", () => {
       let column = parseInt(event.target.dataset.column);
       console.log(event.target.dataset.row + event.target.dataset.column);
       console.log(players["playerOne"].gameBoard.boardArray[row][column]);
+    });
+  });
+
+  const gridSquaresPlayerTwo = document.querySelectorAll(
+    ".gridSquare_playerTwo"
+  );
+  gridSquaresPlayerTwo.forEach((e) => {
+    e.addEventListener("click", (event) => {
+      console.log(event.target);
+
+      // let playerName = event.target.dataset.playerName;
+      let row = parseInt(event.target.dataset.row);
+      let column = parseInt(event.target.dataset.column);
+      console.log(event.target.dataset.row + event.target.dataset.column);
+      console.log(players["playerTwo"].gameBoard.boardArray[row][column]);
     });
   });
 });
