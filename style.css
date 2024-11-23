@@ -30,10 +30,15 @@
 }
 
 .gridSquare {
-  border-width: 1px;
+  border-width: 3px;
   border-style: solid;
   border-color: black;
 
   height: 60px;
   width: 60px;
+}
+
+.activeGridSquare {
+  border-color: red;
+  border-width: 3px;
 }

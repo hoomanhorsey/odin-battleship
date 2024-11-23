@@ -1,10 +1,7 @@
 // import { Gameboard, Player, Ship } from "./gameObjects.js";
 import { createPlayers, gameSetUp_positionPreFill } from "./gameSetup.js";
 import { drawGrid } from "./display.js";
-import {
-  playerOwnGridListener,
-  playerOwnGridListenerAndRemove,
-} from "./listeners.js";
+import { playerOwnGridListenerAndRemove } from "./listeners.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initial Game Setup, including position prefill for testing
