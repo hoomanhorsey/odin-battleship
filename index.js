@@ -1,96 +1,95 @@
-import { Gameboard, Player, Ship } from "./gameObjects.js";
+// import { Gameboard, Player, Ship } from "./gameObjects.js";
+import { createPlayers, gameSetUp_positionPreFill } from "./gameSetup.js";
+import { drawGrid } from "./display.js";
+import {
+  playerOwnGridListener,
+  playerOwnGridListenerAndRemove,
+} from "./listeners.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  const gameBoardDiv = document.querySelector(".gameBoard");
+  // Initial Game Setup, including position prefill for testing
+  const players = createPlayers();
+  gameSetUp_positionPreFill(players);
 
-  const players = {
-    playerOne: new Player("playerOne"),
-    playerTwo: new Player("playerTwo"),
-  };
-  //   const playerOne = new Player("playerOne");
-  players["playerOne"].gameBoard.placeShip(0, 0, "down", "C");
-  players["playerOne"].gameBoard.placeShip(5, 2, "right", "D");
-  players["playerOne"].gameBoard.placeShip(9, 7, "left", "B");
-  players["playerOne"].gameBoard.placeShip(4, 7, "down", "P");
-  players["playerOne"].gameBoard.placeShip(9, 9, "up", "S");
+  // draw gameBoard grid
+  drawGrid(players["playerOne"]);
+  drawGrid(players["playerTwo"]);
 
-  //   const playerTwo = new Player("playerTwo");
+  // Event listener for listening to clicks on grid square
+  // Listeners required
 
-  players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C");
-  players["playerTwo"].gameBoard.placeShip(5, 3, "up", "D");
-  players["playerTwo"].gameBoard.placeShip(9, 9, "left", "B");
-  players["playerTwo"].gameBoard.placeShip(4, 7, "left", "P");
-  players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S");
+  // Created grid listener, where player listens to own grid only.
 
-  const gridDivOne = document.createElement("div");
-  const gridDivTwo = document.createElement("div");
+  // Player One - listening to own grid to place ships. DONE
+  //            - listening to Player Two grid to place attack
+  // Player Two - listening to own grid to place showCompletionScript
+  //           -- listeing to Player One Grid to place attack
 
-  gridDivOne.classList.add("gridDiv", "gridDivOne");
-  gridDivTwo.classList.add("gridDiv", "gridDivTwo");
+  // console.log(players);
 
-  const gameBoardPlayerOne = document.querySelector(".gameBoardPlayerOne");
-  gameBoardPlayerOne.append(gridDivOne);
-  const gameBoardPlayerTwo = document.querySelector(".gameBoardPlayerTwo");
-  gameBoardPlayerTwo.append(gridDivTwo);
+  // Initial event listener call
 
-  drawGrid(gridDivOne, players["playerOne"]);
-  drawGrid(gridDivTwo, players["playerTwo"]);
+  // let removePlayerOneGridClickHandlerListener = null;
+  let removePlayerTwoGridClickHandlerListener = null;
 
-  function drawGrid(gridDiv, player) {
-    for (let row = 0; row < 10; row++) {
-      let gridRow = document.createElement("div");
-      gridRow.classList.add("gridRow");
+  const removePlayerOneGridClickHandlerListener =
+    playerOwnGridListenerAndRemove(players["playerOne"], players);
 
-      gridDiv.append(gridRow);
-      for (let column = 0; column < 10; column++) {
-        let gridSquare = document.createElement("gridSquare");
-
-        gridSquare.classList.add(
-          "gridSquare",
-          "gridSquare_" + player.name,
-          "r" + row + "c" + column
-        );
-        // // gridSquare.setAttribute("id", "r" + row + "c" + column);
-        // gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
-
-        gridSquare.dataset.playerName = player.name;
-        gridSquare.dataset.row = row;
-        gridSquare.dataset.column = column;
-
-        gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
-
-        gridRow.append(gridSquare);
-      }
+  // Change player turn
+  const takeTurn = document.querySelector(".changeTurn");
+  const playerTurn = document.querySelector(".playerTurn");
+  takeTurn.addEventListener("click", () => {
+    if (playerTurn.textContent === "Player One's Turn") {
+      playerTurn.textContent = "Player Two's Turn";
+      removePlayerOneGridClickHandlerListener();
+      removePlayerTwoGridClickHandlerListener = playerOwnGridListenerAndRemove(
+        players["playerTwo"],
+        players
+      );
+    } else {
+      playerTurn.textContent = "Player One's Turn";
+      removePlayerTwoGridClickHandlerListener();
+      playerOwnGridListenerAndRemove(players["playerOne"], players);
     }
-  }
-
-  const gridSquaresPlayerOne = document.querySelectorAll(
-    ".gridSquare_playerOne"
-  );
-  gridSquaresPlayerOne.forEach((e) => {
-    e.addEventListener("click", (event) => {
-      console.log(event.target);
-
-      // let playerName = event.target.dataset.playerName;
-      let row = parseInt(event.target.dataset.row);
-      let column = parseInt(event.target.dataset.column);
-      console.log(event.target.dataset.row + event.target.dataset.column);
-      console.log(players["playerOne"].gameBoard.boardArray[row][column]);
-    });
   });
 
-  const gridSquaresPlayerTwo = document.querySelectorAll(
-    ".gridSquare_playerTwo"
-  );
-  gridSquaresPlayerTwo.forEach((e) => {
-    e.addEventListener("click", (event) => {
-      console.log(event.target);
+  // playerOwnGridListener(players["playerOne"], players);
+  // playerOwnGridListener(players["playerTwo"], players);
 
-      // let playerName = event.target.dataset.playerName;
-      let row = parseInt(event.target.dataset.row);
-      let column = parseInt(event.target.dataset.column);
-      console.log(event.target.dataset.row + event.target.dataset.column);
-      console.log(players["playerTwo"].gameBoard.boardArray[row][column]);
-    });
-  });
+  // playerOneOwnGridListener(players);
+
+  // playerOneGridListener(players);
+  // playerTwoGridListener();
+
+  // const gridSquaresPlayerOne = document.querySelectorAll(
+  //   ".gridSquare_playerOne"
+  // );
+  // gridSquaresPlayerOne.forEach((e) => {
+  //   e.addEventListener("click", (event) => {
+  //     console.log(event.target);
+  //     let row = parseInt(event.target.dataset.row);
+  //     let column = parseInt(event.target.dataset.column);
+  //     console.log(
+  //       event.target.dataset.row +
+  //         event.target.dataset.column +
+  //         players["playerOne"].gameBoard.boardArray[row][column].ship
+  //     );
+  //     console.log(players["playerOne"].gameBoard.boardArray[row][column]);
+  //   });
+  // });
+
+  //   const gridSquaresPlayerTwo = document.querySelectorAll(
+  //     ".gridSquare_playerTwo"
+  //   );
+  //   gridSquaresPlayerTwo.forEach((e) => {
+  //     e.addEventListener("click", (event) => {
+  //       console.log(event.target);
+
+  //       // let playerName = event.target.dataset.playerName;
+  //       let row = parseInt(event.target.dataset.row);
+  //       let column = parseInt(event.target.dataset.column);
+  //       console.log(event.target.dataset.row + event.target.dataset.column);
+  //       console.log(players["playerTwo"].gameBoard.boardArray[row][column]);
+  //     });
+  //   });
 });

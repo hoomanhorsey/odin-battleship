@@ -66,7 +66,6 @@ function placeShipOnBoard(boardArray, row, column, direction, ship) {
     case "up":
       for (let i = row; i > row - ship.length; i--) {
         boardArray[i][column].ship = ship.type;
-        // console.log("successful write" + " " + ship.type + row + column);
       }
       break;
     case "down":
@@ -77,7 +76,6 @@ function placeShipOnBoard(boardArray, row, column, direction, ship) {
     case "left":
       for (let i = column; i > column - ship.length; i--) {
         boardArray[row][i].ship = ship.type;
-        console.log("successful write" + " " + ship.type + row + column);
       }
       break;
     case "right":
