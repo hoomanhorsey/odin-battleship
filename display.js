@@ -18,7 +18,9 @@ function drawGrid(player) {
       gridSquare.dataset.row = row;
       gridSquare.dataset.column = column;
 
-      gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
+      if (player.name === "playerOne") {
+        gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
+      }
 
       gridRow.append(gridSquare);
     }

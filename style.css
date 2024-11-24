@@ -42,3 +42,9 @@
   border-color: red;
   border-width: 3px;
 }
+
+.actionBtn {
+  border-width: 2px;
+  border-color: black;
+  border-style: line;
+}
