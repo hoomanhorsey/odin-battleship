@@ -80,18 +80,26 @@ class Gameboard {
 
   receiveAttack(row, column) {
     // updates gameBoard with a miss
+
+    console.log("receiveAttack called");
+
     if (this.boardArray[row][column].ship === null) {
       this.boardArray[row][column].missed = true;
+
+      console.log("missed - call display-miss()");
+      return "miss";
     }
-    // duplicate hit
+    // duplicate hit//TODO, need to also include if it's been missed
     else if (this.boardArray[row][column].hit === true) {
       console.log("already been hit, not a legal move");
-      return;
+      return "illegalMove";
     }
     // updates gameBoard with hit as well as ship
     else {
       this.boardArray[row][column].hit = true;
       this.ships[this.boardArray[row][column].ship].hit();
+      console.log("hitS! -call display-hit()");
+      return this.boardArray[row][column].ship;
     }
   }
 

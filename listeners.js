@@ -52,27 +52,44 @@ function attackListener(
     // removeActiveGridSquareHighlight();
     // event.target.classList.add("activeGridSquare");
     console.log(event.target);
-    console.log("ATTACK ATTACK!");
-
-    console.log("you actually want to call receive Attack at this point.");
-    console.log("then you want to call the removeAttack Listener");
+    console.log(
+      "ATTACK ATTACK!- -you actually want to call receive Attack at this point."
+    );
     removeTargetListener();
     removeAttackListener();
+    console.log(defendingPlayer);
+
+    console.log(defendingPlayer.gameBoard);
+
+    console.log(event.target.dataset.row, event.target.dataset.column);
+
+    let result = defendingPlayer.gameBoard.receiveAttack(
+      event.target.dataset.row,
+      event.target.dataset.column
+    );
+    alert(result);
+
+    updateGridSquare(result, event.target);
   };
+
+  function updateGridSquare(result, eventTarget) {
+    alert(eventTarget);
+    eventTarget.textContent = result;
+  }
 
   gridSquares.forEach((e) => {
     e.addEventListener("click", gridAttackHandler);
   });
 
-  // function to remove listeners
+  // function to remove attack listener
   function removeAttackListener() {
     console.log("remove attack listener called");
-
     gridSquares.forEach((e) => {
       e.removeEventListener("click", gridAttackHandler);
     });
   }
 }
+
 /////////////////////////////////
 ////ABANDON HOPE ALL WHO PAST BEYOND HERE
 //////////////////////////////////
