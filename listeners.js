@@ -159,6 +159,7 @@ export {
   targetListener,
   attackListener,
   removeActiveGridSquareHighlight,
+  updateGridSquare,
 };
 // function playerOwnGridListener(player, players) {
 //   const gridSquares = document.querySelectorAll(`.gridSquare_${player.name}`);

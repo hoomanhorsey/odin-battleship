@@ -9,6 +9,7 @@ import {
   targetListener,
   attackListener,
   removeActiveGridSquareHighlight,
+  updateGridSquare,
 } from "./listeners.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -102,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     console.log(attackResult);
-
+    updateGridSquare(attackResult, gridSquareActive);
     // console.log(gridSquareActive.dataset.row);
   }
   //
