@@ -24,13 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
   drawGrid(players["playerOne"]);
   drawGrid(players["playerTwo"]);
 
-  // TODO possible while loop to keep game going. Need to do computer move first.
-  // while (
-  //   !players["playerOne"].gameBoard.checkSunk() &&
-  //   !players["playerTwo"].gameBoard.checkSunk()
-  // ) {
-  // console.log(players["playerOne"].gameBoard.checkSunk());
-  // console.log(players["playerTwo"]);
+  playTurn();
+  if (!checkSunk()) {
+    console.log(checkSunk());
+  }
+
+  function playTurn() {
+    console.log("playturn function");
+  }
 
   // player status
   let attackingPlayer = players["playerOne"];
@@ -104,7 +105,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log(attackResult);
     updateGridSquare(attackResult, gridSquareActive);
-    // console.log(gridSquareActive.dataset.row);
+  }
+
+  function checkSunk() {
+    if (players["playerOne"].gameBoard.checkSunk()) {
+      return players["playerOne"];
+    } else if (players["playerTwo"].gameBoard.checkSunk()) {
+      return players["playerTwo"];
+    } else {
+      return false;
+    }
   }
   //
   //
