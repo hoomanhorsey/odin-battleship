@@ -1,21 +1,3 @@
-// function playerOwnGridListener(player, players) {
-//   const gridSquares = document.querySelectorAll(`.gridSquare_${player.name}`);
-//   gridSquares.forEach((e) => {
-//     e.addEventListener("click", (event) => {
-//       console.log(event.target);
-//       let row = parseInt(event.target.dataset.row);
-//       let column = parseInt(event.target.dataset.column);
-//       console.log(
-//         event.target.dataset.row +
-//           event.target.dataset.column +
-//           players[player.name].name +
-//           players[player.name].gameBoard.boardArray[row][column].ship
-//       );
-//       console.log(players[player.name].gameBoard.boardArray[row][column]);
-//     });
-//   });
-// }
-
 function targetListener(attackingPlayer, defendingPlayer) {
   const gridSquares = document.querySelectorAll(
     `.gridSquare_${defendingPlayer.name}`
@@ -23,7 +5,7 @@ function targetListener(attackingPlayer, defendingPlayer) {
 
   const gridTargetHandler = (event) => {
     removeActiveGridSquareHighlight();
-    event.target.classList.add("activeGridSquare");
+    event.target.classList.add("gridSquareActive");
   };
 
   gridSquares.forEach((e) => {
@@ -42,40 +24,24 @@ function targetListener(attackingPlayer, defendingPlayer) {
 function attackListener(
   attackingPlayer,
   defendingPlayer,
-  removeTargetListener
+  removeTargetListener,
+  nextMove
 ) {
   const gridSquares = document.querySelectorAll(
     `.gridSquare_${defendingPlayer.name}`
   );
 
   const gridAttackHandler = (event) => {
-    // removeActiveGridSquareHighlight();
-    // event.target.classList.add("activeGridSquare");
-    console.log(event.target);
-    console.log(
-      "ATTACK ATTACK!- -you actually want to call receive Attack at this point."
-    );
     removeTargetListener();
     removeAttackListener();
-    console.log(defendingPlayer);
 
-    console.log(defendingPlayer.gameBoard);
-
-    console.log(event.target.dataset.row, event.target.dataset.column);
-
-    let result = defendingPlayer.gameBoard.receiveAttack(
+    let attackResult = defendingPlayer.gameBoard.receiveAttack(
       event.target.dataset.row,
       event.target.dataset.column
     );
-    alert(result);
-
-    updateGridSquare(result, event.target);
+    updateGridSquare(attackResult, event.target);
+    nextMove();
   };
-
-  function updateGridSquare(result, eventTarget) {
-    alert(eventTarget);
-    eventTarget.textContent = result;
-  }
 
   gridSquares.forEach((e) => {
     e.addEventListener("click", gridAttackHandler);
@@ -90,16 +56,47 @@ function attackListener(
   }
 }
 
-/////////////////////////////////
+function updateGridSquare(result, eventTarget) {
+  if (result === "miss") {
+    eventTarget.textContent = result;
+
+    eventTarget.classList.add("gridSquareMiss");
+    removeActiveGridSquareHighlight();
+  } else if (result.ship !== null) {
+    eventTarget.textContent = result.ship;
+
+    removeActiveGridSquareHighlight();
+    console.log(result.ship);
+    eventTarget.classList.add("gridSquareHit");
+  }
+}
+
+function removeActiveGridSquareHighlight() {
+  if (document.querySelector(".gridSquareActive")) {
+    console.log(document.querySelector(".gridSquareActive"));
+    const gridSquareActive = document.querySelector(".gridSquareActive");
+    gridSquareActive.classList.remove("gridSquareActive");
+  } else {
+    return;
+  }
+}
+
+//////////////////////////////////
 ////ABANDON HOPE ALL WHO PAST BEYOND HERE
 //////////////////////////////////
-
+////////////////////////////////////
+/////////
+/////////
+/////////
+/////////
+/////////
+/////////
 function playerOtherGridListenerAndRemove(player, players) {
   const gridSquares = document.querySelectorAll(`.gridSquare_${player.name}`);
 
   const gridClickHandler = (event) => {
     removeActiveGridSquareHighlight();
-    event.target.classList.add("activeGridSquare");
+    event.target.classList.add("gridSquareActive");
 
     console.log(event.target);
     let row = parseInt(event.target.dataset.row);
@@ -130,7 +127,7 @@ function playerOwnGridListenerAndRemove(player, players) {
 
   const gridClickHandler = (event) => {
     removeActiveGridSquareHighlight();
-    event.target.classList.add("activeGridSquare");
+    event.target.classList.add("gridSquareActive");
 
     console.log(event.target);
     let row = parseInt(event.target.dataset.row);
@@ -156,18 +153,27 @@ function playerOwnGridListenerAndRemove(player, players) {
   };
 }
 
-function removeActiveGridSquareHighlight() {
-  if (document.querySelector(".activeGridSquare")) {
-    console.log(document.querySelector(".activeGridSquare"));
-    const activeGridSquare = document.querySelector(".activeGridSquare");
-    activeGridSquare.classList.remove("activeGridSquare");
-  } else {
-    return;
-  }
-}
 export {
   playerOwnGridListenerAndRemove,
   playerOtherGridListenerAndRemove,
   targetListener,
   attackListener,
+  removeActiveGridSquareHighlight,
 };
+// function playerOwnGridListener(player, players) {
+//   const gridSquares = document.querySelectorAll(`.gridSquare_${player.name}`);
+//   gridSquares.forEach((e) => {
+//     e.addEventListener("click", (event) => {
+//       console.log(event.target);
+//       let row = parseInt(event.target.dataset.row);
+//       let column = parseInt(event.target.dataset.column);
+//       console.log(
+//         event.target.dataset.row +
+//           event.target.dataset.column +
+//           players[player.name].name +
+//           players[player.name].gameBoard.boardArray[row][column].ship
+//       );
+//       console.log(players[player.name].gameBoard.boardArray[row][column]);
+//     });
+//   });
+// }

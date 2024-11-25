@@ -30,7 +30,7 @@
 }
 
 .gridSquare {
-  border-width: 3px;
+  border-width: 5px;
   border-style: solid;
   border-color: black;
 
@@ -38,8 +38,17 @@
   width: 60px;
 }
 
-.activeGridSquare {
+.gridSquareActive {
   border-color: red;
+  border-width: 5px;
+}
+
+.gridSquareMiss {
+  border-color: blue;
+  border-width: 5px;
+}
+.gridSquareHit {
+  border-color: orange;
   border-width: 3px;
 }
 

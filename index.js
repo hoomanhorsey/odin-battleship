@@ -8,10 +8,13 @@ import {
   playerOtherGridListenerAndRemove,
   targetListener,
   attackListener,
+  removeActiveGridSquareHighlight,
 } from "./listeners.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initial Game Setup, including position prefill for testing
+  // Initialize Game (including position prefill for testing)
+  // TODO possibly move to it's own module
+
   const players = createPlayers();
   // position prefill for testing
   gameSetUp_positionPreFill(players);
@@ -20,21 +23,91 @@ document.addEventListener("DOMContentLoaded", () => {
   drawGrid(players["playerOne"]);
   drawGrid(players["playerTwo"]);
 
+  // TODO possible while loop to keep game going. Need to do computer move first.
+  // while (
+  //   !players["playerOne"].gameBoard.checkSunk() &&
+  //   !players["playerTwo"].gameBoard.checkSunk()
+  // ) {
+  // console.log(players["playerOne"].gameBoard.checkSunk());
+  // console.log(players["playerTwo"]);
+
+  // player status
   let attackingPlayer = players["playerOne"];
   let defendingPlayer = players["playerTwo"];
 
-  // Event listener for listening to clicks on grid square
-  // Player One - listening to own grid to place ships. DONE
-  //            - listening to Player Two grid to place attack
-  // Player Two - listening to own grid to place showCompletionScript
-  //           -- listeing to Player One Grid to place attack
-
-  // PlayerOne place attack
-  // playerOne - listener for targeting gridSquare
+  // calling Listeners
+  // playerOne - listener - targeting
   const removeTargetListener = targetListener(attackingPlayer, defendingPlayer);
-  // playerOne - listener for attacking gridSquare
-  attackListener(attackingPlayer, defendingPlayer, removeTargetListener);
+  // playerOne - listener - attacking
+  let attackResult = attackListener(
+    attackingPlayer,
+    defendingPlayer,
+    removeTargetListener,
+    nextMove
+  );
 
+  function nextMove() {
+    const nextMoveDiv = document.querySelector(".nextMoveDiv");
+    nextMoveDiv.textContent = "Click for next Move";
+    nextMoveDiv.addEventListener("click", triggerNextMove);
+    function triggerNextMove() {
+      // insert logic to swap players
+      console.log("next move triggered. Now call computer move");
+      nextMoveDiv.textContent = "";
+      nextMoveDiv.removeEventListener("click", triggerNextMove);
+      console.log("trigger next move removed");
+
+      let target = 0;
+      target = computerTarget(computerChooseTarget, 5, 150);
+    }
+  }
+
+  function computerTarget(computerChooseTarget, times, delay) {
+    let count = 0;
+    const interval = setInterval(() => {
+      computerChooseTarget();
+      count++;
+
+      if (count >= times) {
+        clearInterval(interval);
+        computerAttack();
+      }
+    }, delay);
+  }
+
+  function computerChooseTarget() {
+    removeActiveGridSquareHighlight();
+    //     let previousActiveGridSquare = document.querySelector(".gridSquareActive");
+    // previousActiveGridSquare
+
+    const [row, column] = genRandomPosition();
+
+    console.log(row, column);
+
+    const gridSquareActive = document.querySelector(".r" + row + "c" + column);
+    console.log(gridSquareActive);
+    gridSquareActive.classList.add("gridSquareActive");
+
+    function genRandomPosition() {
+      return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
+    }
+  }
+
+  function computerAttack() {
+    const gridSquareActive = document.querySelector(".gridSquareActive");
+    console.log(gridSquareActive);
+    const attackResult = players["playerOne"].gameBoard.receiveAttack(
+      gridSquareActive.dataset.row,
+      gridSquareActive.dataset.column
+    );
+
+    console.log(attackResult);
+
+    // console.log(gridSquareActive.dataset.row);
+  }
+  //
+  //
+  //
   ///////////////THE FOLLOWING MAY NOT BE NECESSARY.
   ///AS I WONT INCLUDE A CHANGE TURN FUNCTION
   // Rather moves will change once a player presses hit, '

@@ -85,8 +85,6 @@ class Gameboard {
 
     if (this.boardArray[row][column].ship === null) {
       this.boardArray[row][column].missed = true;
-
-      console.log("missed - call display-miss()");
       return "miss";
     }
     // duplicate hit//TODO, need to also include if it's been missed
@@ -98,8 +96,8 @@ class Gameboard {
     else {
       this.boardArray[row][column].hit = true;
       this.ships[this.boardArray[row][column].ship].hit();
-      console.log("hitS! -call display-hit()");
-      return this.boardArray[row][column].ship;
+
+      return this.boardArray[row][column];
     }
   }
 
@@ -117,10 +115,12 @@ class Gameboard {
     // tally the number of ships sunk
     if (sunkCounter === 5) {
       console.log("all ships sunk");
+      return true;
     }
     // advise if all ships are sunk
     else {
       console.log(sunkCounter + " of 5 ships sunk");
+      return false;
     }
     console.log(sunkShips);
   }
