@@ -4,8 +4,6 @@
 import { createPlayers, gameSetUp_positionPreFill } from "./gameSetup.js";
 import { drawGrid } from "./display.js";
 import {
-  playerOwnGridListenerAndRemove,
-  playerOtherGridListenerAndRemove,
   targetListener,
   attackListener,
   removeActiveGridSquareHighlight,
@@ -123,69 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ///AS I WONT INCLUDE A CHANGE TURN FUNCTION
   // Rather moves will change once a player presses hit, '
   // But I may need to salvage some of the code to switch players
-
-  const takeTurn = document.querySelector(".changeTurn");
-  const playerTurn = document.querySelector(".playerTurn");
-  playerTurn.textContent = players["playerOne"].name + "'s turn";
-
-  let sunkShips = 0;
-
-  takeTurn.addEventListener("click", () => {
-    console.log("attacking player" + attackingPlayer.name);
-    if (attackingPlayer.name === "playerOne") {
-      playerTurn.textContent = players["playerTwo"].name + "'s turn";
-      attackingPlayer = players["playerTwo"];
-      defendingPlayer = players["playerOne"];
-
-      // removeTargetListener();
-      // targetListener(attackingPlayer, defendingPlayer);
-
-      // removeAttackListener();
-      // attackListener(attackingPlayer, defendingPlayer);
-
-      console.log("attacking player is now " + attackingPlayer.name);
-    } else if (attackingPlayer.name === "playerTwo") {
-      playerTurn.textContent = players["playerOne"].name + "'s turn";
-      attackingPlayer = players["playerOne"];
-      defendingPlayer = players["playerTwo"];
-
-      // removeTargetListener();
-      // targetListener(attackingPlayer, defendingPlayer);
-
-      // removeAttackListener();
-      // attackListener(attackingPlayer, defendingPlayer);
-      console.log("attacking player is now " + attackingPlayer.name);
-    }
-  });
-
-  // let removePlayerTwoGridClickHandlerListener = null;
-  // const removePlayerOneGridClickHandlerListener =
-  //   playerOtherGridListenerAndRemove(players["playerOne"], players);
-
-  // playerOtherGridListenerAndRemove(players["playerOne"], players);
-
-  // Initial event listener call
-  // let removePlayerTwoGridClickHandlerListener = null;
-  // const removePlayerOneGridClickHandlerListener =
-  //   playerOwnGridListenerAndRemove(players["playerOne"], players);
-
-  // Change player turn
-  // const takeTurn = document.querySelector(".changeTurn");
-  // const playerTurn = document.querySelector(".playerTurn");
-  // takeTurn.addEventListener("click", () => {
-  //   if (playerTurn.textContent === "Player One's Turn") {
-  //     playerTurn.textContent = "Player Two's Turn";
-  //     removePlayerOneGridClickHandlerListener();
-  //     removePlayerTwoGridClickHandlerListener = playerOwnGridListenerAndRemove(
-  //       players["playerTwo"],
-  //       players
-  //     );
-  //   } else {
-  //     playerTurn.textContent = "Player One's Turn";
-  //     removePlayerTwoGridClickHandlerListener();
-  //     playerOwnGridListenerAndRemove(players["playerOne"], players);
-  //   }
-  // });
 
   function changeAttackingPlayer() {
     console.log(isEqual(attackingPlayer, players["playerOne"])); // true
