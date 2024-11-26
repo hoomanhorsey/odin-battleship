@@ -32,18 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let attackingPlayer = players["playerOne"];
   let defendingPlayer = players["playerTwo"];
 
-  // playTurn();
-  // if (!checkSunk()) {
-  //   console.log(checkSunk());
-  // }
-
-  // function playTurn() {
-  //   console.log("playturn function");
-
   playerMove();
-
   // call playerOne listeners
-  // targeting
 
   function playerMove() {
     const removeTargetListener = targetListener(
@@ -62,41 +52,28 @@ document.addEventListener("DOMContentLoaded", () => {
   function computerMove() {
     const moveStatus = document.querySelector(".moveStatus");
     // TODO, maybe add an animation to this so it appears more gradually.
-
     // creating button
     moveStatus.textContent =
       "Computer's move. Click here for to launch computer attack";
-    moveStatus.addEventListener("click", triggerNextMove);
+    moveStatus.addEventListener("click", triggerComputertMove);
 
     // callback function for listener
-    function triggerNextMove() {
+    function triggerComputertMove() {
       // insert logic to swap players
       console.log("next move triggered. Now call computer move");
       moveStatus.textContent = "";
-      moveStatus.removeEventListener("click", triggerNextMove);
+      moveStatus.removeEventListener("click", triggerComputertMove);
       console.log("trigger next move removed");
 
-      // This is the async function that waits for the computer target and attack
-      async function getComputerTarget() {
-        // Call computerTarget and wait for its completion before calling computerAttack
-        await computerTarget(computerChooseTarget, 30, 50, players);
-        // computerAttack(players); // Proceed with computerAttack after computerTarget completes
-      }
-
-      // Execute the async function that handles the computer move
-      getComputerTarget()
-        .then(() => {
-          if (
-            !attackingPlayer.gameBoard.checkSunk() &&
-            !defendingPlayer.gameBoard.checkSunk()
-          ) {
-            console.log("ships afloat");
-            playerMove();
-          }
-        })
-        .catch((error) => {
-          console.log("Error during computer move:", error);
-        });
+      computerTarget(computerChooseTarget, 30, 50, players, () => {
+        if (
+          !attackingPlayer.gameBoard.checkSunk() &&
+          !defendingPlayer.gameBoard.checkSunk()
+        ) {
+          console.log("ships afloat");
+          playerMove();
+        }
+      });
     }
   }
 

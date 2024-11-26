@@ -3,7 +3,13 @@ import {
   updateGridSquare,
 } from "./listeners.js";
 
-function computerTarget(computerChooseTarget, times, delay, players) {
+function computerTarget(
+  computerChooseTarget,
+  times,
+  delay,
+  players,
+  onComplete
+) {
   const moveStatus = document.querySelector(".moveStatus");
 
   moveStatus.textContent = "Computer's targeting....";
@@ -15,6 +21,7 @@ function computerTarget(computerChooseTarget, times, delay, players) {
     if (count >= times) {
       clearInterval(interval);
       computerAttack(players);
+      if (onComplete) onComplete();
     }
   }, delay);
 }
