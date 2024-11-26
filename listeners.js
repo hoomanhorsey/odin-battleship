@@ -1,4 +1,9 @@
 function targetListener(attackingPlayer, defendingPlayer) {
+  // [TODO - attacking player possibly redundant]
+
+  const moveStatus = document.querySelector(".moveStatus");
+  moveStatus.textContent = "Your move. Move cursor to target, click to attack!";
+
   const gridSquares = document.querySelectorAll(
     `.gridSquare_${defendingPlayer.name}`
   );
@@ -9,28 +14,32 @@ function targetListener(attackingPlayer, defendingPlayer) {
   };
 
   gridSquares.forEach((e) => {
+    console.log("target listener called");
+
     e.addEventListener("mouseover", gridTargetHandler);
   });
 
   // return function to remove listeners
-  return function removeTargetListener() {
+  const removeTargetListener = () => {
     console.log("remove  target listener called");
     gridSquares.forEach((e) => {
       e.removeEventListener("mouseover", gridTargetHandler);
     });
   };
+  return removeTargetListener;
 }
 
 function attackListener(
-  attackingPlayer,
+  attackingPlayer, // [TODO - possibly redundant]
   defendingPlayer,
   removeTargetListener,
-  nextMove
+  computerMove
 ) {
   const gridSquares = document.querySelectorAll(
     `.gridSquare_${defendingPlayer.name}`
   );
 
+  // callback function for listener
   const gridAttackHandler = (event) => {
     removeTargetListener();
     removeAttackListener();
@@ -40,20 +49,29 @@ function attackListener(
       event.target.dataset.column
     );
     updateGridSquare(attackResult, event.target);
-    nextMove();
+    // nextMove();
+
+    if (
+      !attackingPlayer.gameBoard.checkSunk() &&
+      !defendingPlayer.gameBoard.checkSunk()
+    ) {
+      console.log("ships afloat");
+      computerMove();
+    }
   };
 
+  // assign listener
   gridSquares.forEach((e) => {
     e.addEventListener("click", gridAttackHandler);
   });
 
   // function to remove attack listener
-  function removeAttackListener() {
+  const removeAttackListener = () => {
     console.log("remove attack listener called");
     gridSquares.forEach((e) => {
       e.removeEventListener("click", gridAttackHandler);
     });
-  }
+  };
 }
 
 function updateGridSquare(result, eventTarget) {
@@ -73,7 +91,7 @@ function updateGridSquare(result, eventTarget) {
 
 function removeActiveGridSquareHighlight() {
   if (document.querySelector(".gridSquareActive")) {
-    console.log(document.querySelector(".gridSquareActive"));
+    // console.log(document.querySelector(".gridSquareActive"));
     const gridSquareActive = document.querySelector(".gridSquareActive");
     gridSquareActive.classList.remove("gridSquareActive");
   } else {
@@ -81,17 +99,16 @@ function removeActiveGridSquareHighlight() {
   }
 }
 
-//////////////////////////////////
-////ABANDON HOPE ALL WHO PAST BEYOND HERE
-//////////////////////////////////
-////////////////////////////////////
-/////////
-/////////
-/////////
-/////////
-/////////
-/////////
-
+// function checkSunk(playerOne, playerTwo) {
+//   console.log(playerOne);
+//   if (playerOne.gameBoard.checkSunk()) {
+//     return playerOne;
+//   } else if (playerTwo.gameBoard.checkSunk()) {
+//     return playerTwo;
+//   } else {
+//     return false;
+//   }
+// }
 export {
   targetListener,
   attackListener,
