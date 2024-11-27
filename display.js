@@ -13,6 +13,7 @@ function drawGrid(player) {
         "gridSquare_" + player.name,
         "r" + row + "c" + column
       );
+      gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
 
       gridSquare.dataset.playerName = player.name;
       gridSquare.dataset.row = row;
