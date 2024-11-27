@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let attackResult = attackListener(
       attackingPlayer, // [TODO - possibly redundant]
       defendingPlayer,
+      players,
       removeTargetListener,
       computerMove
     );

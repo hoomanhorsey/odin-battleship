@@ -32,6 +32,7 @@ function targetListener(attackingPlayer, defendingPlayer) {
 function attackListener(
   attackingPlayer, // [TODO - possibly redundant]
   defendingPlayer,
+  players,
   removeTargetListener,
   computerMove
 ) {
@@ -41,6 +42,34 @@ function attackListener(
 
   // callback function for listener
   const gridAttackHandler = (event) => {
+    console.log(event.target.id);
+
+    let shipObject =
+      players["playerTwo"].gameBoard.boardArray[event.target.id[10]][
+        event.target.id[12]
+      ];
+
+    console.log(
+      players["playerTwo"].gameBoard.boardArray[event.target.id[10]][
+        event.target.id[12]
+      ]
+    );
+
+    console.log(shipObject.missed);
+
+    if (shipObject.hit === true || shipObject.missed === true) {
+      console.log("already hit, dont count this one");
+      return false;
+    }
+
+    console.log(players["playerOne"].gameBoard.boardArray);
+
+    // let shipObject =
+    //   players["playerOne"].gameBoard.boardArray[gridSquareActive.id[10]][
+    //     gridSquareActive.id[12]
+    //   ];
+
+    alert("put in check here, line 44 ");
     removeTargetListener();
     removeAttackListener();
 

@@ -67,7 +67,7 @@ function computerChooseTarget(players) {
       gridSquareActive.id[12]
     ];
 
-  if (shipObject.hit === true || shipObject.miss === true) {
+  if (shipObject.hit === true || shipObject.missed === true) {
     console.log("already hit, dont count this one");
     return false;
   }
