@@ -65,73 +65,23 @@ document.addEventListener("DOMContentLoaded", () => {
       moveStatus.removeEventListener("click", triggerComputertMove);
       console.log("trigger next move removed");
 
-      computerTarget(computerChooseTarget, 30, 50, players, () => {
-        if (
-          !attackingPlayer.gameBoard.checkSunk() &&
-          !defendingPlayer.gameBoard.checkSunk()
-        ) {
-          console.log("ships afloat");
-          playerMove();
-        }
-      });
+      computerTarget(
+        computerChooseTarget,
+        30,
+        50,
+        players,
+        playMoveAfterCheckSunk
+      );
     }
   }
 
-  // function computerTarget(computerChooseTarget, times, delay) {
-  //   let count = 0;
-  //   const interval = setInterval(() => {
-  //     computerChooseTarget();
-  //     count++;
-
-  //     if (count >= times) {
-  //       clearInterval(interval);
-  //       computerAttack();
-  //     }
-  //   }, delay);
-  // }
-
-  // function computerChooseTarget() {
-  //   // remove previous gridSquare highlight
-  //   removeActiveGridSquareHighlight();
-
-  //   const [row, column] = genRandomPosition();
-  //   const gridSquareActive = document.querySelector(".r" + row + "c" + column);
-  //   gridSquareActive.classList.add("gridSquareActive");
-
-  //   function genRandomPosition() {
-  //     return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-  //   }
-  // }
-
-  // function computerAttack() {
-  //   const gridSquareActive = document.querySelector(".gridSquareActive");
-  //   console.log(gridSquareActive);
-  //   const attackResult = players["playerOne"].gameBoard.receiveAttack(
-  //     gridSquareActive.dataset.row,
-  //     gridSquareActive.dataset.column
-  //   );
-
-  //   console.log(attackResult);
-  //   updateGridSquare(attackResult, gridSquareActive);
-  // }
-
-  //
-  //
-  //
-  ///////////////THE FOLLOWING MAY NOT BE NECESSARY.
-  ///AS I WONT INCLUDE A CHANGE TURN FUNCTION
-  // Rather moves will change once a player presses hit, '
-  // But I may need to salvage some of the code to switch players
-
-  //   function changeAttackingPlayer() {
-  //     console.log(isEqual(attackingPlayer, players["playerOne"])); // true
-
-  //     if (attackingPlayer === players["playerOne"]) {
-  //       attackingPlayer = players["playerTwo"];
-  //       defendingPlayer = players["playerOne"];
-  //     } else {
-  //       attackingPlayer = players["playerOne"];
-  //       defendingPlayer = players["playerTwo"];
-  //     }
-  //   }
+  function playMoveAfterCheckSunk() {
+    if (
+      !attackingPlayer.gameBoard.checkSunk() &&
+      !defendingPlayer.gameBoard.checkSunk()
+    ) {
+      console.log("ships afloat");
+      playerMove();
+    }
+  }
 });

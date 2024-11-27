@@ -99,16 +99,6 @@ function removeActiveGridSquareHighlight() {
   }
 }
 
-// function checkSunk(playerOne, playerTwo) {
-//   console.log(playerOne);
-//   if (playerOne.gameBoard.checkSunk()) {
-//     return playerOne;
-//   } else if (playerTwo.gameBoard.checkSunk()) {
-//     return playerTwo;
-//   } else {
-//     return false;
-//   }
-// }
 export {
   targetListener,
   attackListener,
