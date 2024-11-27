@@ -42,50 +42,34 @@ function attackListener(
 
   // callback function for listener
   const gridAttackHandler = (event) => {
-    console.log(event.target.id);
-
-    let shipObject =
-      players["playerTwo"].gameBoard.boardArray[event.target.id[10]][
-        event.target.id[12]
-      ];
-
-    console.log(
-      players["playerTwo"].gameBoard.boardArray[event.target.id[10]][
-        event.target.id[12]
-      ]
-    );
-
-    console.log(shipObject.missed);
-
-    if (shipObject.hit === true || shipObject.missed === true) {
-      console.log("already hit, dont count this one");
-      return false;
-    }
-
-    console.log(players["playerOne"].gameBoard.boardArray);
-
-    // let shipObject =
-    //   players["playerOne"].gameBoard.boardArray[gridSquareActive.id[10]][
-    //     gridSquareActive.id[12]
-    //   ];
-
-    alert("put in check here, line 44 ");
-    removeTargetListener();
-    removeAttackListener();
-
-    let attackResult = defendingPlayer.gameBoard.receiveAttack(
-      event.target.dataset.row,
-      event.target.dataset.column
-    );
-    updateGridSquare(attackResult, event.target);
-    // nextMove();
-
+    // dupeGridSquareCheck
     if (
-      !attackingPlayer.gameBoard.checkSunk() &&
-      !defendingPlayer.gameBoard.checkSunk()
+      dupeGridSquareCheck(
+        players,
+        players["playerTwo"],
+        event.target.id[10],
+        event.target.id[12]
+      ) === false
     ) {
-      console.log("ships afloat");
-      computerMove();
+      alert("already been clicked");
+      return;
+    } else {
+      removeTargetListener();
+      removeAttackListener();
+
+      let attackResult = defendingPlayer.gameBoard.receiveAttack(
+        event.target.dataset.row,
+        event.target.dataset.column
+      );
+      updateGridSquare(attackResult, event.target);
+
+      if (
+        !attackingPlayer.gameBoard.checkSunk() &&
+        !defendingPlayer.gameBoard.checkSunk()
+      ) {
+        console.log("ships afloat");
+        computerMove();
+      }
     }
   };
 
@@ -128,9 +112,21 @@ function removeActiveGridSquareHighlight() {
   }
 }
 
+function dupeGridSquareCheck(players, player, row, column) {
+  let shipObject = player.gameBoard.boardArray[row][column];
+  // console.log(players["playerTwo"].gameBoard.boardArray[row][column]);
+  // console.log(shipObject.missed);
+  if (shipObject.hit === true || shipObject.missed === true) {
+    console.log("already hit, dont count this one");
+    return false;
+  }
+  // console.log(players["playerOne"].gameBoard.boardArray);
+}
+
 export {
   targetListener,
   attackListener,
   removeActiveGridSquareHighlight,
   updateGridSquare,
+  dupeGridSquareCheck,
 };

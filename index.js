@@ -68,8 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
       computerTarget(
         computerChooseTarget,
-        30,
-        5,
+        25,
+        50,
         players,
         playMoveAfterCheckSunk
       );

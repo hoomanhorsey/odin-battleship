@@ -1,6 +1,7 @@
 import {
   removeActiveGridSquareHighlight,
   updateGridSquare,
+  dupeGridSquareCheck,
 } from "./listeners.js";
 
 // TODO maybe - Could potentially change this to an async function for more modern implemenation
@@ -23,6 +24,8 @@ function computerTarget(
     }
 
     if (count >= times) {
+      console.log("COUNT COUNT " + count);
+
       clearInterval(interval);
       computerAttack(players);
       if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
@@ -61,19 +64,31 @@ function computerChooseTarget(players) {
   const gridSquareActive = document.querySelector(".r" + row + "c" + column);
   gridSquareActive.classList.add("gridSquareActive");
 
-  // could turn this into a function, argument required is gridSquareActive, which then gives us the ID
-  let shipObject =
-    players["playerOne"].gameBoard.boardArray[gridSquareActive.id[10]][
+  if (
+    dupeGridSquareCheck(
+      players,
+      players["playerOne"],
+      gridSquareActive.id[10],
       gridSquareActive.id[12]
-    ];
-
-  if (shipObject.hit === true || shipObject.missed === true) {
-    console.log("already hit, dont count this one");
+    ) === false
+  ) {
     return false;
+  } else {
+    return gridSquareActive.id;
   }
-  // console.log(shipObject.ship);
+  // could turn this into a function, argument required is gridSquareActive, which then gives us the ID
+  // let shipObject =
+  //   players["playerOne"].gameBoard.boardArray[gridSquareActive.id[10]][
+  //     gridSquareActive.id[12]
+  //   ];
 
-  return gridSquareActive.id;
+  // if (shipObject.hit === true || shipObject.missed === true) {
+  //   console.log("already hit, dont count this one");
+  //   return false;
+  // }
+  // // console.log(shipObject.ship);
+
+  // return gridSquareActive.id;
 
   function genRandomPosition() {
     return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
