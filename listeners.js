@@ -1,4 +1,4 @@
-function targetListener(attackingPlayer, defendingPlayer) {
+function targetListener(defendingPlayer) {
   // [TODO - attacking player possibly redundant]
 
   const moveStatus = document.querySelector(".moveStatus");
@@ -15,7 +15,6 @@ function targetListener(attackingPlayer, defendingPlayer) {
 
   gridSquares.forEach((e) => {
     console.log("target listener called");
-
     e.addEventListener("mouseover", gridTargetHandler);
   });
 
@@ -30,26 +29,25 @@ function targetListener(attackingPlayer, defendingPlayer) {
 }
 
 function attackListener(
-  attackingPlayer, // [TODO - possibly redundant]
-  defendingPlayer,
+  defendingPlayer, // TODO, might be redundant
   players,
   removeTargetListener,
   computerMove
 ) {
   const gridSquares = document.querySelectorAll(
-    `.gridSquare_${defendingPlayer.name}`
+    // TOTRY - TRY WITHOUT DEFENDING PLAYER VARIABLE
+    // `.gridSquare_${defendingPlayer.name}`
+    `.gridSquare_${players["playerTwo"].name}`
   );
 
   // callback function for listener
   const gridAttackHandler = (event) => {
-    // dupeGridSquareCheck
     if (
       dupeGridSquareCheck(
-        players,
         players["playerTwo"],
         event.target.id[10],
         event.target.id[12]
-      ) === false
+      )
     ) {
       alert("already been clicked");
       return;
@@ -57,19 +55,14 @@ function attackListener(
       removeTargetListener();
       removeAttackListener();
 
-      let attackResult = defendingPlayer.gameBoard.receiveAttack(
+      // TOTRY - TRY WITHOUT DEFENDING PLAYER VARIABLE
+      // let attackResult = defendingPlayer.gameBoard.receiveAttack(
+      let attackResult = players["playerTwo"].gameBoard.receiveAttack(
         event.target.dataset.row,
         event.target.dataset.column
       );
       updateGridSquare(attackResult, event.target);
-
-      if (
-        !attackingPlayer.gameBoard.checkSunk() &&
-        !defendingPlayer.gameBoard.checkSunk()
-      ) {
-        console.log("ships afloat");
-        computerMove();
-      }
+      checkAllSunk(players, computerMove);
     }
   };
 
@@ -85,6 +78,22 @@ function attackListener(
       e.removeEventListener("click", gridAttackHandler);
     });
   };
+}
+
+function checkAllSunk(players, nextMoveCallback) {
+  if (
+    !players["playerOne"].gameBoard.checkSunk() &&
+    !players["playerTwo"].gameBoard.checkSunk()
+  ) {
+    console.log("ships afloat");
+    nextMoveCallback();
+  } else {
+    if (players["playerOne"].gameBoard.checkSunk()) {
+      console.log(players["playerTwo"].name + "is the winner");
+    } else {
+      console.log(players["playerOne"].name + "is the winner");
+    }
+  }
 }
 
 function updateGridSquare(result, eventTarget) {
@@ -104,7 +113,6 @@ function updateGridSquare(result, eventTarget) {
 
 function removeActiveGridSquareHighlight() {
   if (document.querySelector(".gridSquareActive")) {
-    // console.log(document.querySelector(".gridSquareActive"));
     const gridSquareActive = document.querySelector(".gridSquareActive");
     gridSquareActive.classList.remove("gridSquareActive");
   } else {
@@ -112,12 +120,12 @@ function removeActiveGridSquareHighlight() {
   }
 }
 
-function dupeGridSquareCheck(players, player, row, column) {
+function dupeGridSquareCheck(player, row, column) {
   let shipObject = player.gameBoard.boardArray[row][column];
-  // console.log(players["playerTwo"].gameBoard.boardArray[row][column]);
-  // console.log(shipObject.missed);
   if (shipObject.hit === true || shipObject.missed === true) {
     console.log("already hit, dont count this one");
+    return true;
+  } else {
     return false;
   }
   // console.log(players["playerOne"].gameBoard.boardArray);
@@ -129,4 +137,5 @@ export {
   removeActiveGridSquareHighlight,
   updateGridSquare,
   dupeGridSquareCheck,
+  checkAllSunk,
 };

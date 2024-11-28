@@ -1,48 +1,26 @@
 // import isEqual from "lodash/isEqual";
 
 // import { Gameboard, Player, Ship } from "./gameObjects.js";
-import { createPlayers, gameSetUp_positionPreFill } from "./gameSetup.js";
-import { drawGrid } from "./display.js";
-import {
-  targetListener,
-  attackListener,
-  removeActiveGridSquareHighlight,
-  updateGridSquare,
-} from "./listeners.js";
+import { gameInit } from "./gameSetup.js";
 
-import {
-  computerTarget,
-  computerChooseTarget,
-  computerAttack,
-} from "./computerLogic.js";
+import { targetListener, attackListener, checkAllSunk } from "./listeners.js";
+import { computerTarget, computerChooseTarget } from "./computerLogic.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Game (including position prefill for testing)
-  // TODO possibly move to it's own module
-
-  const players = createPlayers();
-  // position prefill for testing
-  gameSetUp_positionPreFill(players);
-
-  // draw gameBoard grid
-  drawGrid(players["playerOne"]);
-  drawGrid(players["playerTwo"]);
+  // Initialize Game (player setup, position prefill, draw board)
+  const players = gameInit();
 
   // assign player status - TODO, possibly redundant
   let attackingPlayer = players["playerOne"];
   let defendingPlayer = players["playerTwo"];
 
+  // start game turn event loop
   playerMove();
-  // call playerOne listeners
 
   function playerMove() {
-    const removeTargetListener = targetListener(
-      attackingPlayer, // [TODO - possibly redundant]
-      defendingPlayer
-    );
+    const removeTargetListener = targetListener(defendingPlayer);
     //  attacking
-    let attackResult = attackListener(
-      attackingPlayer, // [TODO - possibly redundant]
+    attackListener(
       defendingPlayer,
       players,
       removeTargetListener,
@@ -52,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function computerMove() {
     const moveStatus = document.querySelector(".moveStatus");
-    // TODO, maybe add an animation to this so it appears more gradually.
+    // *****TODO, maybe add an animation to this so it appears more gradually.
     // creating button
     moveStatus.textContent =
       "Computer's move. Click here for to launch computer attack";
@@ -60,29 +38,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // callback function for listener
     function triggerComputertMove() {
-      // insert logic to swap players
-      console.log("next move triggered. Now call computer move");
+      // insert logic to swap players - TODO, this may be redundant
       moveStatus.textContent = "";
       moveStatus.removeEventListener("click", triggerComputertMove);
       console.log("trigger next move removed");
 
       computerTarget(
         computerChooseTarget,
-        25,
-        50,
+        10,
+        5,
         players,
-        playMoveAfterCheckSunk
+        checkAllSunk(players, playerMove)
       );
-    }
-  }
-
-  function playMoveAfterCheckSunk() {
-    if (
-      !attackingPlayer.gameBoard.checkSunk() &&
-      !defendingPlayer.gameBoard.checkSunk()
-    ) {
-      console.log("ships afloat");
-      playerMove();
     }
   }
 });

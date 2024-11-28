@@ -35,9 +35,6 @@ class Ship {
 class Gameboard {
   boardArray = makeGrid();
 
-  // constructor(player) {
-  //   this.player = player;
-  // }
   ships = {
     C: new Ship("C", 5),
     B: new Ship("B", 4),

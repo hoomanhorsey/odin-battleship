@@ -1,4 +1,15 @@
 import { Player } from "./gameObjects.js";
+import { drawGrid } from "./display.js";
+
+function gameInit() {
+  const players = createPlayers();
+  // prefill positions
+  gameSetUp_positionPreFill(players);
+  // draw gameBoard grid
+  drawGrid(players["playerOne"]);
+  drawGrid(players["playerTwo"]);
+  return players;
+}
 
 function createPlayers(
   playerOneName = "playerOne",
@@ -23,4 +34,5 @@ function gameSetUp_positionPreFill(players) {
   players["playerTwo"].gameBoard.placeShip(4, 7, "left", "P");
   players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S");
 }
-export { createPlayers, gameSetUp_positionPreFill };
+
+export { gameInit };

@@ -33,29 +33,6 @@ function computerTarget(
   }, delay);
 }
 
-// function computerTarget(
-//   computerChooseTarget,
-//   times,
-//   delay,
-//   players,
-//   playMoveAfterCheckSunk
-// ) {
-//   const moveStatus = document.querySelector(".moveStatus");
-
-//   moveStatus.textContent = "Computer's targeting....";
-//   let count = 0;
-//   const interval = setInterval(() => {
-//     computerChooseTarget();
-//     count++;
-
-//     if (count >= times) {
-//       clearInterval(interval);
-//       computerAttack(players);
-//       if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
-//     }
-//   }, delay);
-// }
-
 function computerChooseTarget(players) {
   // remove previous gridSquare highlight
   removeActiveGridSquareHighlight();
@@ -66,29 +43,15 @@ function computerChooseTarget(players) {
 
   if (
     dupeGridSquareCheck(
-      players,
       players["playerOne"],
       gridSquareActive.id[10],
       gridSquareActive.id[12]
-    ) === false
+    )
   ) {
-    return false;
+    return true;
   } else {
     return gridSquareActive.id;
   }
-  // could turn this into a function, argument required is gridSquareActive, which then gives us the ID
-  // let shipObject =
-  //   players["playerOne"].gameBoard.boardArray[gridSquareActive.id[10]][
-  //     gridSquareActive.id[12]
-  //   ];
-
-  // if (shipObject.hit === true || shipObject.missed === true) {
-  //   console.log("already hit, dont count this one");
-  //   return false;
-  // }
-  // // console.log(shipObject.ship);
-
-  // return gridSquareActive.id;
 
   function genRandomPosition() {
     return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];

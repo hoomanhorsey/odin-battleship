@@ -1,0 +1,13 @@
+// CONSOLIDATING PLAYER VARIABLES
+- think about player variables, make consistent perhaps get ride of attacking player/defending player. But think about making it two player and how this will affect that first.
+
+- targetListener takes attackingPlayer and defendingPlayer as args, but only uses defendingPlayer
+- attackListener takes attackingPlayer, defendingPlayer and players as variables. 
+
+
+
+- Make 'computer move' text appear more gradually
+
+- review classes in display.js, some may be redundant
+
+- gameInit includes a position preffill, but this will need to be replaced with a playerPosition, and computer random position.  It will draw in tools from gameObjects. Probably oaky to include in init
