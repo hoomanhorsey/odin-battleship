@@ -1,6 +1,16 @@
 * {
   font-size: large;
 }
+
+.gameSetup {
+  display: grid;
+  grid-template-columns: 5fr 4fr 3fr 3fr 2fr;
+  column-gap: 20px;
+}
+
+.shipBlock {
+  height: 60px;
+}
 .gameBoard {
   display: grid;
   width: 100%;
@@ -17,6 +27,12 @@
   display: grid;
   margin: 20px;
   padding: 20px;
+}
+
+.shipBlock {
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
 }
 
 /* .gridDiv,

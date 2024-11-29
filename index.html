@@ -11,12 +11,24 @@
   <body>
     <div class="div">battleship</div>
     <div class="changeTurn">Change Turn</div>
+
     <div class="moveStatus"></div>
     <div class="playerTurn"></div>
     <div class="actionButtonDiv"><button class="actionBtn">Aim</button></div>
+    <div class="gameSetup">
+      <div class="shipBlock" draggable="true" id="shipBlockC">Carrier</div>
+      <div class="shipBlock" draggable="true" id="shipBlockB">Battleship</div>
+      <div class="shipBlock" draggable="true" id="shipBlockD">Destroyer</div>
+      <div class="shipBlock" draggable="true" id="shipBlockS">Submarine</div>
+      <div class="shipBlock" draggable="true" id="shipBlockP">Patrol Boat</div>
+    </div>
     <div class="gameBoard">
-      <div class="gameBoardplayerOne">Gameboard Player One</div>
-      <div class="gameBoardplayerTwo">Gameboard Player Two</div>
+      <div class="gameBoardplayerOne" id="gameBoardPlayerOne">
+        Gameboard Player One
+      </div>
+      <div class="gameBoardplayerTwo" id="gameBoardPlayerTwo">
+        Gameboard Player Two
+      </div>
     </div>
   </body>
 </html>
