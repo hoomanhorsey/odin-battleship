@@ -79,7 +79,6 @@ class Gameboard {
       return;
     }
 
-    console.log(p);
     if (player.name === "playerOne") {
       if (prompt("Are you happy with position? Y or N") === "Y") {
         placeShipOnBoard(this.boardArray, row, column, direction, ship);
