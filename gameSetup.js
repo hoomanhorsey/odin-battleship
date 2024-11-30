@@ -7,11 +7,11 @@ function gameInit() {
   // Following option allows computer to prefill postions
   // gameSetUp_positionPreFill(players);
 
-  // Following option is to allow user to selection positions
-  gameSetUp_positionFill(players);
   // draw gameBoard grid
   drawGrid(players["playerOne"]);
   drawGrid(players["playerTwo"]);
+  // Following option is to allow user to selection positions
+  gameSetUp_positionFill(players);
   return players;
 }
 
@@ -47,6 +47,14 @@ function gameSetUp_positionFill(players) {
   players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S", "playerTwo");
   // setup Draggables
 
+  // rotate shipBlock via adding class
+  document.getElementById("shipBlockC").addEventListener("wheel", myFunction);
+
+  function myFunction() {
+    shipBlockC.style.fontSize = "35px";
+    shipBlockC.classList.add("shipBlockrotate90");
+  }
+
   //  https://www.w3schools.com/html/html5_draganddrop.asp
   const gameSetupDiv = document.querySelector(".gameSetup");
 
@@ -56,15 +64,32 @@ function gameSetUp_positionFill(players) {
   const shipBlockS = document.getElementById("shipBlockS");
   const shipBlockP = document.getElementById("shipBlockP");
 
-  const gameBoardPlayerOne = document.getElementById("gameBoardPlayerOne");
+  // // // gets entireGameboard as droppable zone, but prob want each grid square
+  // const gameBoardPlayerOne = document.getElementById("gameBoardPlayerOne");
+  // // event listeners for when entire board is selected
+  // gameBoardPlayerOne.addEventListener("dragover", allowDrop);
+  // gameBoardPlayerOne.addEventListener("drop", drop);
 
-  //
+  if (document.querySelector(".gridSquare")) {
+    console.log("object exists");
+  } else {
+    console.log("object doesnt exist");
+  }
 
-  gameBoardPlayerOne.addEventListener("dragover", allowDrop);
-  gameBoardPlayerOne.addEventListener("drop", drop);
+  //gets GridSquares as droppable zones
+  const gridSquaresPlayerOne = document.querySelectorAll(".gridSquare");
+  console.log(gridSquaresPlayerOne);
+
+  gridSquaresPlayerOne.forEach((e) => {
+    console.log("adding event listener");
+
+    e.addEventListener("dragover", allowDrop);
+    e.addEventListener("drop", drop);
+  });
 
   function drag(event) {
     event.dataTransfer.setData("text", event.target.id);
+    document.getElementById(event.target.id).classList.add("shipBlockDrag");
   }
 
   function allowDrop(event) {

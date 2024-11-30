@@ -1,5 +1,5 @@
 
-- targetListener
+*** targetListener
 It's active while player is picking object. May need to trigger after set up.
 
 - Make 'computer move' text appear more gradually
@@ -8,12 +8,13 @@ It's active while player is picking object. May need to trigger after set up.
 
 - gameInit includes a position preffill, but this will need to be replaced with a playerPosition, and computer random position.  It will draw in tools from gameObjects. Probably oaky to include in init
 
-place user ships position
+***place user ships position
 user current drags ship shape onto gameBoard
 - need to drag ship shape onto grid square, rather than the board.
     - you will need to create an event listener FOR EACH, as well as prepare a remove event listener
 
     - when you drag the shape you want it to be a shape with a dotted border.
+        + can't make dotted border yet as conflict with base grid square attributes, but filled background in as pink
     - you may also wish to highlight the area that is the main part of the shipBlock
     - you may also wish to make the grid squares that intersect with the shipblock glow or do some kind of brief animation.
 
@@ -22,6 +23,7 @@ user current drags ship shape onto gameBoard
     - you want to check if it's illegal and if there are collisions - make the gameBoard flash red if it is illegal or there is a collisons
     - you want to use a mouse scroll or up and down keys to cycle through positions
     - you can use rotate() to do this apparently.
+        + I have configured mouse scoll wheel to rotate, but only once, and before it is dragged
 - create a button that confirms where you want to place the ships?
 - ideally just plopping them down on the grid square should allow you to update the array. If you move it though you can then update the array to change it. 
 

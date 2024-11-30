@@ -11,6 +11,16 @@
 .shipBlock {
   height: 60px;
 }
+
+.shipBlockDrag {
+  border-style: dotted;
+  border-color: red;
+  background-color: pink;
+}
+
+.shipBlockrotate90 {
+  transform: rotate(90deg);
+}
 .gameBoard {
   display: grid;
   width: 100%;
