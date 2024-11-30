@@ -29,35 +29,39 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 function checkMoveLegal(row, column, direction, ship) {
   switch (direction) {
     case "up":
-      if (row - ship.length < 0) {
+      if (row - ship.length < -1) {
+        console.log(row - ship.length);
+
         return false;
       } else {
         return true;
       }
     case "down":
-      if (row + ship.length > 9) {
+      if (row + ship.length > 10) {
         return false;
       } else {
         return true;
       }
     case "left":
-      if (column - ship.length < 0) {
+      if (column - ship.length < -1) {
         return false;
       } else {
         return true;
       }
     case "right":
-      if (column + ship.length > 9) {
+      if (column + ship.length > 10) {
         return false;
       } else {
         return true;
       }
     default:
+      console.log("move not legal");
       return "error";
   }
 }
 
 function checkClear(array) {
+  console.log("checking clear");
   return array.every((value) => value.ship === null);
 }
 

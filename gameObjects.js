@@ -51,7 +51,9 @@ class Gameboard {
     { P: false },
   ];
 
-  placeShip(row, column, direction, shipType) {
+  placeShip(row, column, direction, shipType, player) {
+    row = parseInt(row);
+    column = parseInt(column);
     let ship = this.ships[shipType];
 
     // create array of proposed position for testing
@@ -63,17 +65,73 @@ class Gameboard {
       ship
     );
     // check boundaries + collisons with other ships
-    if (
-      checkMoveLegal(row, column, direction, ship) &&
-      checkClear(proposedPosition)
-    ) {
-      // place ship
-      placeShipOnBoard(this.boardArray, row, column, direction, ship);
+
+    if (checkMoveLegal(row, column, direction, ship)) {
+      ("checkMoveLegal is true");
     } else {
-      console.log("position is not legal or collisions");
+      console.log("position is not legal ");
       return;
     }
+    if (checkClear(proposedPosition)) {
+      console.log("checkClear is true");
+    } else {
+      console.log("position is has collisions");
+      return;
+    }
+
+    console.log(p);
+    if (player.name === "playerOne") {
+      if (prompt("Are you happy with position? Y or N") === "Y") {
+        placeShipOnBoard(this.boardArray, row, column, direction, ship);
+      } else {
+        return;
+      }
+    } else {
+      placeShipOnBoard(this.boardArray, row, column, direction, ship);
+    }
+    // if (prompt("Are you happy with position? Y or N") === "Y") {
+    //   // place ship
+    //   console.log(this.boardArray);
+    //   placeShipOnBoard(this.boardArray, row, column, direction, ship);
+    // }
   }
+
+  // // check boundaries + collisons with other ships
+  // if (
+  //   checkMoveLegal(row, column, direction, ship) &&
+  //   checkClear(proposedPosition)
+  // ) {
+  //   // place ship
+  //   console.log(this.boardArray);
+  //   placeShipOnBoard(this.boardArray, row, column, direction, ship);
+  // } else {
+  //   console.log("position is not legal or collisions");
+  //   return;
+  // }
+
+  // // check boundaries + collisons with other ships
+  // if (
+  //   checkMoveLegal(row, column, direction, ship)
+  // ) {'checkMoveLegal is true'}  else {
+  //   console.log("position is not legal ");
+  //   return;
+  // }
+  //   if (
+  //   checkClear(proposedPosition)) {
+  //     console.log('checkClear is true');
+
+  //   } else {
+  //     console.log("position is has collisions");
+  //   return;
+  //   }
+
+  //   // place ship
+  //   console.log(this.boardArray);
+  //   placeShipOnBoard(this.boardArray, row, column, direction, ship);
+  // } else {
+  //   console.log("position is not legal or collisions");
+  //   return;
+  // }
 
   receiveAttack(row, column) {
     // updates gameBoard with a miss

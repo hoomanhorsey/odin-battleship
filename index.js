@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       computerTarget(
         computerChooseTarget,
-        10,
+        100,
         5,
         players,
         checkAllSunk(players, playerMove)
