@@ -10,6 +10,9 @@
 
 .shipBlock {
   height: 60px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
 }
 
 .shipBlockDrag {
@@ -21,19 +24,19 @@
   transform: rotate(90deg);
 }
 
-#shipBlockC {
+.shipBlockC {
   background-color: pink;
 }
-#shipBlockB {
+.shipBlockB {
   background-color: paleturquoise;
 }
-#shipBlockD {
+.shipBlockD {
   background-color: palegreen;
 }
-#shipBlockS {
+.shipBlockS {
   background-color: palegoldenrod;
 }
-#shipBlockP {
+.shipBlockP {
   background-color: lavender;
 }
 

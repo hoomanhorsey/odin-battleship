@@ -40,7 +40,7 @@ user current drags ship shape onto gameBoard
 
 For commitmsg
 
-"added grid square highlights when shipBlock dragged over, moved dragimage point to left of shipBlock"
+
 
 
 

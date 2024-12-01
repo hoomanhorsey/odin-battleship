@@ -104,6 +104,54 @@ function gameSetUp_positionFill(players) {
 
     const shipBlockId = event.dataTransfer.getData("text");
 
+    // event.target.textContent = shipBlockId;
+    // console.log(event.target);
+
+    // TODO - error check that checks if object is illegal or a collision.
+    // ------TODO - if it is an error or collision, then you need to disable allowDrop()
+    // ------ TODO - but if it is legal then you can allow drop again.
+    // TODO - then once drop, you can display on DOM.
+    // TODO - draw it in, but don't save it to array.
+    // ------Once it is drawn in, the shipBlock is still on display.
+    //--------disable piece? append piece to div? remove shipBLock?
+    // TODO - allow user to rotate the piece using up and down.
+    // TODO - once all 5 pieces are on the gameboard allow user to START GAME!
+
+    // TODO - how to keep track of ships? Create a temp array of co-ordinates.
+    // ---- once you press confirm, take the co-ords from temp array and then put into place ship
+
+    let startColumn = parseInt(event.target.dataset.column);
+    for (
+      // let i = parseInt(event.target.dataset.column);
+
+      let i = 0;
+      i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+      i++
+    ) {
+      console.log("i " + i);
+
+      let newColumn = startColumn + i;
+      console.log(newColumn);
+
+      const gridSquareExtended = document.getElementById(
+        `playerOner${event.target.dataset.row}c${newColumn}`
+      );
+
+      gridSquareExtended.classList.remove("gridSquare");
+      gridSquareExtended.classList.remove("gridSquare_playerOne");
+      gridSquareExtended.classList.remove("gridSquareDraggedOver");
+
+      gridSquareExtended.classList.add("shipBlock");
+      gridSquareExtended.classList.add("shipBlockC");
+
+      gridSquareExtended.setAttribute("draggable", true);
+
+      gridSquareExtended.textContent =
+        players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+
+      // console.log(gridSquareExtended);
+    }
+    // THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
     // placeShip function sends ships to array
     // TODO
     // but don't placeShip yet okay, wait til all ships have been dragged on:
@@ -116,31 +164,13 @@ function gameSetUp_positionFill(players) {
     //   players["playerOne"]
     // );
 
-    event.target.textContent = shipBlockId;
-    console.log(event.target);
-
-    for (
-      let i = parseInt(event.target.dataset.column);
-      i <
-      parseInt(event.target.dataset.column) +
-        players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
-      i++
-    ) {
-      let newColumn = parseInt(event.target.dataset.column) + i;
-      console.log(newColumn);
-
-      const gridSquareExtended = document.getElementById(
-        `playerOner${event.target.dataset.row}c${newColumn}`
-      );
-      gridSquareExtended.textContent =
-        players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
-      console.log(gridSquareExtended);
-    }
+    // removes the original shipBlock
+    document.getElementById(shipBlockId).remove();
 
     //ship length
-    console.log(players["playerOne"].gameBoard.ships[shipBlockId[9]].length);
+    // console.log(players["playerOne"].gameBoard.ships[shipBlockId[9]].length);
 
-    console.log(event.target.dataset.row, event.target.dataset.column);
+    // console.log(event.target.dataset.row, event.target.dataset.column);
 
     // event.target.textContent = shipBlockId;
 

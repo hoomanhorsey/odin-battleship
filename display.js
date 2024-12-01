@@ -6,7 +6,7 @@ function drawGrid(player) {
 
     gridDiv.append(gridRow);
     for (let column = 0; column < 10; column++) {
-      let gridSquare = document.createElement("gridSquare");
+      let gridSquare = document.createElement("div");
       // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
       gridSquare.classList.add(
         "gridSquare",
