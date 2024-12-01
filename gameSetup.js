@@ -64,32 +64,35 @@ function gameSetUp_positionFill(players) {
   const shipBlockS = document.getElementById("shipBlockS");
   const shipBlockP = document.getElementById("shipBlockP");
 
-  // // // gets entireGameboard as droppable zone, but prob want each grid square
-  // const gameBoardPlayerOne = document.getElementById("gameBoardPlayerOne");
-  // // event listeners for when entire board is selected
-  // gameBoardPlayerOne.addEventListener("dragover", allowDrop);
-  // gameBoardPlayerOne.addEventListener("drop", drop);
-
-  if (document.querySelector(".gridSquare")) {
-    console.log("object exists");
-  } else {
-    console.log("object doesnt exist");
-  }
-
   //gets GridSquares as droppable zones
   const gridSquaresPlayerOne = document.querySelectorAll(".gridSquare");
-  console.log(gridSquaresPlayerOne);
 
   gridSquaresPlayerOne.forEach((e) => {
-    console.log("adding event listener");
-
     e.addEventListener("dragover", allowDrop);
+    e.addEventListener("dragenter", highlightGridSquareAdd); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+    e.addEventListener("dragleave", highlightGridSquareRemove); // NOTE TODO, these event listeners haven't been removed. May need to remove.
     e.addEventListener("drop", drop);
   });
 
   function drag(event) {
     event.dataTransfer.setData("text", event.target.id);
-    document.getElementById(event.target.id).classList.add("shipBlockDrag");
+    const shipBlock = document.getElementById(event.target.id);
+    shipBlock.classList.add("shipBlockDrag");
+    event.dataTransfer.setDragImage(shipBlock, 0, 0);
+  }
+
+  function highlightGridSquareAdd(event) {
+    console.log("entering gridSquare");
+    document
+      .getElementById(event.target.id)
+      .classList.add("gridSquareDraggedOver");
+  }
+
+  function highlightGridSquareRemove(event) {
+    console.log("leaveing grid");
+    document
+      .getElementById(event.target.id)
+      .classList.remove("gridSquareDraggedOver");
   }
 
   function allowDrop(event) {
@@ -101,16 +104,48 @@ function gameSetUp_positionFill(players) {
 
     const shipBlockId = event.dataTransfer.getData("text");
 
-    players["playerOne"].gameBoard.placeShip(
-      event.target.id[10],
-      event.target.id[12],
-      "right",
-      shipBlockId[9],
-      players["playerOne"]
-    );
+    // placeShip function sends ships to array
+    // TODO
+    // but don't placeShip yet okay, wait til all ships have been dragged on:
+    // also create a button that triggers final placement
+    // players["playerOne"].gameBoard.placeShip(
+    //   event.target.id[10],
+    //   event.target.id[12],
+    //   "right",
+    //   shipBlockId[9],
+    //   players["playerOne"]
+    // );
 
-    console.log(players["playerOne"].gameBoard.ships);
-    event.target.appendChild(document.getElementById(shipBlockId));
+    event.target.textContent = shipBlockId;
+    console.log(event.target);
+
+    for (
+      let i = parseInt(event.target.dataset.column);
+      i <
+      parseInt(event.target.dataset.column) +
+        players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+      i++
+    ) {
+      let newColumn = parseInt(event.target.dataset.column) + i;
+      console.log(newColumn);
+
+      const gridSquareExtended = document.getElementById(
+        `playerOner${event.target.dataset.row}c${newColumn}`
+      );
+      gridSquareExtended.textContent =
+        players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+      console.log(gridSquareExtended);
+    }
+
+    //ship length
+    console.log(players["playerOne"].gameBoard.ships[shipBlockId[9]].length);
+
+    console.log(event.target.dataset.row, event.target.dataset.column);
+
+    // event.target.textContent = shipBlockId;
+
+    // following actually appends the item to the block
+    // event.target.appendChild(document.getElementById(shipBlockId));
   }
 
   function cleanupListeners() {

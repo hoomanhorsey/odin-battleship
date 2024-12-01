@@ -10,13 +10,16 @@ It's active while player is picking object. May need to trigger after set up.
 
 ***place user ships position
 user current drags ship shape onto gameBoard
-- need to drag ship shape onto grid square, rather than the board.
-    - you will need to create an event listener FOR EACH, as well as prepare a remove event listener
 
+
+++ DONE++ need to drag ship shape onto grid square, rather than the board.
+    - you will need to create an event listener FOR EACH, as well as prepare a remove event listener
+    
     - when you drag the shape you want it to be a shape with a dotted border.
         + can't make dotted border yet as conflict with base grid square attributes, but filled background in as pink
     - you may also wish to highlight the area that is the main part of the shipBlock
-    - you may also wish to make the grid squares that intersect with the shipblock glow or do some kind of brief animation.
+    ++ DONE you may also wish to make the grid squares that intersect with the shipblock glow or do some kind of brief animation.
+        - Currently made them change colour to grey
 
 - ship shape has a ID, which refers to the ship type.
 - once you place it on the grid Square you can then update the DOM to display, but only provisionally. You don't want to save it to the array just yet.
@@ -32,6 +35,12 @@ user current drags ship shape onto gameBoard
 
 - Then after that the computers move is initiated.
 
+
+
+
+For commitmsg
+
+"added grid square highlights when shipBlock dragged over, moved dragimage point to left of shipBlock"
 
 
 

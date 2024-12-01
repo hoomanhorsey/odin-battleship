@@ -15,12 +15,32 @@
 .shipBlockDrag {
   border-style: dotted;
   border-color: red;
-  background-color: pink;
 }
 
 .shipBlockrotate90 {
   transform: rotate(90deg);
 }
+
+#shipBlockC {
+  background-color: pink;
+}
+#shipBlockB {
+  background-color: paleturquoise;
+}
+#shipBlockD {
+  background-color: palegreen;
+}
+#shipBlockS {
+  background-color: palegoldenrod;
+}
+#shipBlockP {
+  background-color: lavender;
+}
+
+.gridSquareDraggedOver {
+  background-color: lightgrey;
+}
+
 .gameBoard {
   display: grid;
   width: 100%;
