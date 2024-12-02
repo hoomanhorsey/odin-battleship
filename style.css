@@ -10,6 +10,8 @@
 
 .shipBlock {
   height: 60px;
+  /* width: 60px; */
+
   border-width: 5px;
   border-style: solid;
   border-color: black;

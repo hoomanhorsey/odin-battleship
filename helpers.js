@@ -56,7 +56,7 @@ function checkMoveLegal(row, column, direction, ship) {
       }
     default:
       console.log("move not legal");
-      return "error";
+      return false;
   }
 }
 

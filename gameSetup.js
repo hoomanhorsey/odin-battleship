@@ -1,5 +1,6 @@
 import { Player } from "./gameObjects.js";
 import { drawGrid } from "./display.js";
+import { checkMoveLegal } from "./helpers.js";
 
 function gameInit() {
   const players = createPlayers();
@@ -48,9 +49,8 @@ function gameSetUp_positionFill(players) {
   // setup Draggables
 
   // rotate shipBlock via adding class
-  document.getElementById("shipBlockC").addEventListener("wheel", myFunction);
-
-  function myFunction() {
+  document.getElementById("shipBlockC").addEventListener("wheel", rotateBlock);
+  function rotateBlock() {
     shipBlockC.style.fontSize = "35px";
     shipBlockC.classList.add("shipBlockrotate90");
   }
@@ -64,21 +64,132 @@ function gameSetUp_positionFill(players) {
   const shipBlockS = document.getElementById("shipBlockS");
   const shipBlockP = document.getElementById("shipBlockP");
 
-  //gets GridSquares as droppable zones
-  const gridSquaresPlayerOne = document.querySelectorAll(".gridSquare");
+  // Experiment with event delegation
 
-  gridSquaresPlayerOne.forEach((e) => {
-    e.addEventListener("dragover", allowDrop);
-    e.addEventListener("dragenter", highlightGridSquareAdd); // NOTE TODO, these event listeners haven't been removed. May need to remove.
-    e.addEventListener("dragleave", highlightGridSquareRemove); // NOTE TODO, these event listeners haven't been removed. May need to remove.
-    e.addEventListener("drop", drop);
-  });
+  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+  console.log(gameBoardplayerOne);
+
+  // gameBoardplayerOne.addEventListener("dragenter", (eventA) => {
+  //   eventA.preventDefault();
+  //   console.log("dragusin");
+  //   console.log(eventA.target);
+
+  //   let target = eventA.target;
+
+  //   while (target !== gameBoardplayerOne) {
+  //     if (target.classList.contains("gridSquare")) {
+  //       // If the target is a gridSquare, trigger your checkLegal function
+  //       checkLegal();
+
+  //       break;
+  //     }
+  //     target = target.parentElement; // Traverse up to the parent
+  //   }
+  // });
+
+  gameBoardplayerOne.addEventListener("dragover", handleShipBlockDragEvent);
+  gameBoardplayerOne.addEventListener("dragenter", handleShipBlockDragEvent); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+  gameBoardplayerOne.addEventListener("dragenter", checkLegal); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+
+  gameBoardplayerOne.addEventListener("dragleave", handleShipBlockDragEvent); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+  gameBoardplayerOne.addEventListener("drop", handleShipBlockDragEvent);
+
+  function handleShipBlockDragEvent(eventB) {
+    eventB.preventDefault(); // Allow drag-and-drop functionality
+
+    let target = eventB.target;
+    // Traverse up to find the gridSquare
+    while (target !== gameBoardplayerOne) {
+      if (target.classList.contains("gridSquare")) {
+        // Handle the event based on event type
+        switch (eventB.type) {
+          case "dragover":
+            allowDrop(eventB); // Your logic for dragover
+            break;
+          case "dragenter":
+            highlightGridSquareAdd(eventB); // Your logic for dragenter
+            break;
+          case "dragleave":
+            highlightGridSquareRemove(eventB); // Your logic for dragleave
+            break;
+          case "drop":
+            drop(eventB); // Your logic for drop
+            break;
+        }
+        break;
+      }
+      target = target.parentElement; // Traverse up to the parent
+    }
+  }
+
+  // gameBoardplayerOne.addEventListener("dragenter", (eventA) => {
+  //   eventA.preventDefault();
+  //   console.log("dragusin");
+  //   console.log(eventA.target);
+
+  //   let target = eventA.target;
+
+  //   while (target !== gameBoardplayerOne) {
+  //     if (target.classList.contains("gridSquare")) {
+  //       // If the target is a gridSquare, trigger your checkLegal function
+  //       checkLegal();
+
+  //       break;
+  //     }
+  //     target = target.parentElement; // Traverse up to the parent
+  //   }
+  // });
+
+  //gets GridSquares as droppable zones
+  //// TODO - Redundant as now using event delegation
+  // const gridSquaresPlayerOne = document.querySelectorAll(".gridSquare");
+
+  // gridSquaresPlayerOne.forEach((e) => {
+  //   e.addEventListener("dragover", allowDrop);
+
+  //   e.addEventListener("dragenter", highlightGridSquareAdd); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+  //   e.addEventListener("dragleave", highlightGridSquareRemove); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+  //   e.addEventListener("drop", drop);
+  // });
 
   function drag(event) {
     event.dataTransfer.setData("text", event.target.id);
     const shipBlock = document.getElementById(event.target.id);
+    console.log(shipBlock);
+
     shipBlock.classList.add("shipBlockDrag");
     event.dataTransfer.setDragImage(shipBlock, 0, 0);
+  }
+
+  function checkLegal(event) {
+    console.log("check legal is called");
+
+    // const draggedItemId = event.dataTransfer.getData("text");
+    // console.log(draggedItemId);
+    // const draggedItem = document.getElementById(draggedItemId);
+    // console.log(draggedItem);
+    // console.log("checkinglegal");
+    // console.log(event.target.id);
+    // const shipBlock = document.getElementById(event.target.id);
+    // console.log(shipBlock);
+    // console.log(
+    //   event.target.dataset.row,
+    //   event.target.dataset.column,
+    //   event.target.id[9]
+    // );
+    // if (
+    //   checkMoveLegal(
+    //     event.target.dataset.row,
+    //     event.target.dataset.column,
+    //     "right",
+    //     event.target.id[9]
+    //   ) === false
+    // ) {
+    //   console.log("not legal");
+    //   //make gameboard red
+    // } else {
+    //   console.log("legal");
+    // }
   }
 
   function highlightGridSquareAdd(event) {
@@ -151,18 +262,6 @@ function gameSetUp_positionFill(players) {
 
       // console.log(gridSquareExtended);
     }
-    // THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
-    // placeShip function sends ships to array
-    // TODO
-    // but don't placeShip yet okay, wait til all ships have been dragged on:
-    // also create a button that triggers final placement
-    // players["playerOne"].gameBoard.placeShip(
-    //   event.target.id[10],
-    //   event.target.id[12],
-    //   "right",
-    //   shipBlockId[9],
-    //   players["playerOne"]
-    // );
 
     // removes the original shipBlock
     document.getElementById(shipBlockId).remove();
@@ -176,6 +275,30 @@ function gameSetUp_positionFill(players) {
 
     // following actually appends the item to the block
     // event.target.appendChild(document.getElementById(shipBlockId));
+    console.log(document.getElementById("playerOner0c0"));
+
+    let testElement = document.getElementById("playerOner0c0");
+    testElement.addEventListener("wheel", rotateBlockOnBoard);
+
+    function rotateBlockOnBoard() {
+      console.log("wheel");
+
+      testElement.style.fontSize = "95px";
+      testElement.classList.add("shipBlockrotate90");
+    }
+
+    // THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
+    // placeShip function sends ships to array
+    // TODO
+    // but don't placeShip yet okay, wait til all ships have been dragged on:
+    // also create a button that triggers final placement
+    // players["playerOne"].gameBoard.placeShip(
+    //   event.target.id[10],
+    //   event.target.id[12],
+    //   "right",
+    //   shipBlockId[9],
+    //   players["playerOne"]
+    // );
   }
 
   function cleanupListeners() {
@@ -186,6 +309,7 @@ function gameSetUp_positionFill(players) {
   }
 
   shipBlockC.addEventListener("dragstart", drag);
+
   // shipBlockB.addEventListener("dragstart", drag);
   // shipBlockD.addEventListener("dragstart", drag);
   // shipBlockS.addEventListener("dragstart", drag);
