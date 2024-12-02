@@ -27,11 +27,12 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 }
 
 function checkMoveLegal(row, column, direction, ship) {
+  console.log("from inside Check Move Legal");
+
   switch (direction) {
     case "up":
       if (row - ship.length < -1) {
         console.log(row - ship.length);
-
         return false;
       } else {
         return true;
@@ -49,6 +50,8 @@ function checkMoveLegal(row, column, direction, ship) {
         return true;
       }
     case "right":
+      console.log("should call this");
+
       if (column + ship.length > 10) {
         return false;
       } else {

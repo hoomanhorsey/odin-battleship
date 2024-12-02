@@ -17,7 +17,7 @@
   border-color: black;
 }
 
-.shipBlockDrag {
+.shipBlockDragging {
   border-style: dotted;
   border-color: red;
 }
@@ -47,10 +47,18 @@
 }
 
 .gameBoard {
+  border-width: 3px;
+  border-style: line;
   display: grid;
   width: 100%;
   grid-template-columns: repeat(2, 1fr);
   column-gap: 50px;
+}
+
+.gameBoardTitle {
+  margin: 40px;
+  font-family: courier;
+  font-size: larger;
 }
 
 .gameBoardPlayerOne {
@@ -62,6 +70,14 @@
   display: grid;
   margin: 20px;
   padding: 20px;
+}
+
+.gameBoardNotLegal {
+  background-color: grey;
+}
+
+.gameBoardLegal {
+  border-color: black;
 }
 
 .shipBlock {
