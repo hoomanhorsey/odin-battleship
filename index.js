@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function computerMove() {
     updateGameMoveStatus("computerMove");
-    // *****TODO, maybe add an animation to this so it appears more gradually.
     const gameMoveStatus = document.querySelector(".gameMoveStatus");
     gameMoveStatus.addEventListener("click", triggerComputertMove);
 

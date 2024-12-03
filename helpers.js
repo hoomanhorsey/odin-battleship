@@ -94,10 +94,30 @@ function placeShipOnBoard(boardArray, row, column, direction, ship) {
       return "Invalid diirection provided";
   }
 }
+
+function dupeGridSquareCheck(player, row, column) {
+  console.log("dupe checked");
+
+  let shipObject = player.gameBoard.boardArray[row][column];
+  console.log(shipObject);
+
+  console.log(player, row, column);
+  console.log(shipObject.hit);
+  console.log(shipObject.missed);
+
+  if (shipObject.hit === true || shipObject.missed === true) {
+    console.log("already hit, dont count this one");
+    return true;
+  } else {
+    return false;
+  }
+  // console.log(players["playerOne"].gameBoard.boardArray);
+}
 export {
   makeGrid,
   positionCheckArray,
   checkMoveLegal,
   checkClear,
   placeShipOnBoard,
+  dupeGridSquareCheck,
 };

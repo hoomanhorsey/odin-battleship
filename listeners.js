@@ -3,13 +3,12 @@ import {
   updateGridSquare,
 } from "./display.js";
 
-function targetListener(defendingPlayer) {
-  // [TODO - attacking player possibly redundant]
+import { dupeGridSquareCheck } from "./helpers.js";
 
+function targetListener(defendingPlayer) {
   const gridSquares = document.querySelectorAll(
     `.gridSquare_${defendingPlayer.name}`
   );
-
   const gridTargetHandler = (event) => {
     removeActiveGridSquareHighlight();
     event.target.classList.add("gridSquareActive");
@@ -34,6 +33,50 @@ function targetListener(defendingPlayer) {
 }
 
 function attackListener(
+  defendingPlayer, // TODO, might be redundant
+  players,
+  removeTargetListener,
+  computerMove
+) {
+  const gameBoardPlayerTwo = document.querySelector(".gameBoardplayerTwo");
+
+  const gridAttackHandler = (event) => {
+    console.log(event.target.id[10], event.target.id[12]);
+
+    if (event.target.classList.contains("gridSquare")) {
+      if (
+        dupeGridSquareCheck(
+          players["playerTwo"],
+          event.target.id[10],
+          event.target.id[12]
+        ) === true
+      ) {
+        alert("already been clicked");
+        return;
+      } else {
+        removeTargetListener();
+        removeAttackListener();
+
+        let attackResult = players["playerTwo"].gameBoard.receiveAttack(
+          event.target.dataset.row,
+          event.target.dataset.column
+        );
+        updateGridSquare(attackResult, event.target);
+        checkAllSunk(players, computerMove);
+      }
+    }
+  };
+
+  gameBoardPlayerTwo.addEventListener("click", gridAttackHandler);
+
+  // function to remove attack listener
+  function removeAttackListener() {
+    console.log("remove attack listener called");
+    gameBoardplayerTwo.removeEventListener("click", gridAttackHandler);
+  }
+}
+
+function TattackListener(
   defendingPlayer, // TODO, might be redundant
   players,
   removeTargetListener,
@@ -101,15 +144,15 @@ function checkAllSunk(players, nextMoveCallback) {
   }
 }
 
-function dupeGridSquareCheck(player, row, column) {
-  let shipObject = player.gameBoard.boardArray[row][column];
-  if (shipObject.hit === true || shipObject.missed === true) {
-    console.log("already hit, dont count this one");
-    return true;
-  } else {
-    return false;
-  }
-  // console.log(players["playerOne"].gameBoard.boardArray);
-}
+// function dupeGridSquareCheck(player, row, column) {
+//   let shipObject = player.gameBoard.boardArray[row][column];
+//   if (shipObject.hit === true || shipObject.missed === true) {
+//     console.log("already hit, dont count this one");
+//     return true;
+//   } else {
+//     return false;
+//   }
+//   // console.log(players["playerOne"].gameBoard.boardArray);
+// }
 
 export { targetListener, attackListener, dupeGridSquareCheck, checkAllSunk };

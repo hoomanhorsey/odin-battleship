@@ -27,7 +27,7 @@ function createPlayers(
     playerTwo: new Player(playerTwoName),
   };
 }
-
+// prefill computer player positions
 function gameSetUp_positionFill(players) {
   players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(5, 3, "up", "D", "playerTwo");
@@ -244,6 +244,8 @@ function gameSetUp_positionFill(players) {
 
     // following actually appends the item to the block
     // event.target.appendChild(document.getElementById(shipBlockId));
+
+    // rotation test
     console.log(document.getElementById("playerOner0c0"));
 
     let testElement = document.getElementById("playerOner0c0");
