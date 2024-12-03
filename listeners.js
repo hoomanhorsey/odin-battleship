@@ -6,9 +6,6 @@ import {
 function targetListener(defendingPlayer) {
   // [TODO - attacking player possibly redundant]
 
-  const moveStatus = document.querySelector(".moveStatus");
-  moveStatus.textContent = "Your move. Move cursor to target, click to attack!";
-
   const gridSquares = document.querySelectorAll(
     `.gridSquare_${defendingPlayer.name}`
   );
@@ -30,6 +27,9 @@ function targetListener(defendingPlayer) {
       e.removeEventListener("mouseover", gridTargetHandler);
     });
   };
+  // TODO - This has been put in computerAttack()
+  // updateGameMoveStatus("user");
+
   return removeTargetListener;
 }
 
@@ -101,21 +101,6 @@ function checkAllSunk(players, nextMoveCallback) {
   }
 }
 
-// function updateGridSquare(result, eventTarget) {
-//   if (result === "miss") {
-//     eventTarget.textContent = result;
-
-//     eventTarget.classList.add("gridSquareMiss");
-//     removeActiveGridSquareHighlight();
-//   } else if (result.ship !== null) {
-//     eventTarget.textContent = result.ship;
-
-//     removeActiveGridSquareHighlight();
-//     console.log(result.ship);
-//     eventTarget.classList.add("gridSquareHit");
-//   }
-// }
-
 function dupeGridSquareCheck(player, row, column) {
   let shipObject = player.gameBoard.boardArray[row][column];
   if (shipObject.hit === true || shipObject.missed === true) {
@@ -127,10 +112,4 @@ function dupeGridSquareCheck(player, row, column) {
   // console.log(players["playerOne"].gameBoard.boardArray);
 }
 
-export {
-  targetListener,
-  attackListener,
-  updateGridSquare,
-  dupeGridSquareCheck,
-  checkAllSunk,
-};
+export { targetListener, attackListener, dupeGridSquareCheck, checkAllSunk };

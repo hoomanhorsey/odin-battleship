@@ -52,4 +52,35 @@ function updateGridSquare(result, eventTarget) {
   }
 }
 
-export { drawGrid, removeActiveGridSquareHighlight, updateGridSquare };
+function updateGameMoveStatus(status) {
+  console.log("updateGameMovestatus called");
+
+  const gameMoveStatus = document.querySelector(".gameMoveStatus");
+
+  switch (status) {
+    case "userMove":
+      gameMoveStatus.textContent =
+        "Your move. Move cursor to target, click to attack!";
+      break;
+    case "computerMove":
+      gameMoveStatus.textContent =
+        "Computer's move. Click HERE for to launch computer attack";
+      break;
+    case "computerTarget":
+      gameMoveStatus.textContent =
+        "Computer's targeting...NOTE 'computer attacks follows this but is missing as user message is too fast. Need to update.";
+      break;
+    case "computerAttack":
+      gameMoveStatus.textContent = "Computer attacks!!!";
+      break;
+    default:
+      console.warn("Unknown status:", status);
+  }
+}
+
+export {
+  drawGrid,
+  removeActiveGridSquareHighlight,
+  updateGridSquare,
+  updateGameMoveStatus,
+};

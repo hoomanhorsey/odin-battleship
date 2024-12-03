@@ -2,6 +2,13 @@
   font-size: large;
 }
 
+.gameMoveStatus {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  font-size: larger;
+}
+
 .gameSetup {
   display: grid;
   grid-template-columns: 5fr 4fr 3fr 3fr 2fr;

@@ -1,6 +1,9 @@
-import { updateGridSquare, dupeGridSquareCheck } from "./listeners.js";
-
-import { removeActiveGridSquareHighlight } from "./display.js";
+import { dupeGridSquareCheck } from "./listeners.js";
+import {
+  removeActiveGridSquareHighlight,
+  updateGridSquare,
+  updateGameMoveStatus,
+} from "./display.js";
 
 // TODO maybe - Could potentially change this to an async function for more modern implemenation
 function computerTarget(
@@ -10,9 +13,7 @@ function computerTarget(
   players,
   playMoveAfterCheckSunk
 ) {
-  const moveStatus = document.querySelector(".moveStatus");
-
-  moveStatus.textContent = "Computer's targeting....";
+  updateGameMoveStatus("computerTarget");
   let count = 0;
   const interval = setInterval(() => {
     // computerChooseTarget returns false if square already hit or missed
@@ -57,9 +58,8 @@ function computerChooseTarget(players) {
 }
 
 function computerAttack(players) {
-  const moveStatus = document.querySelector(".moveStatus");
+  updateGameMoveStatus("computerAttack");
 
-  moveStatus.textContent = "Computer attacks!!!";
   const gridSquareActive = document.querySelector(".gridSquareActive");
   console.log(gridSquareActive);
   const attackResult = players["playerOne"].gameBoard.receiveAttack(
@@ -69,6 +69,8 @@ function computerAttack(players) {
 
   console.log(attackResult);
   updateGridSquare(attackResult, gridSquareActive);
+
+  updateGameMoveStatus("userMove");
 }
 
 export { computerTarget, computerChooseTarget, computerAttack };

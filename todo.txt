@@ -1,4 +1,8 @@
 
+**** updateGameMoveStatus()
+- insert an animation so that it updates in a way that's visible.
+
+
 *** targetListener
 It's active while player is picking object. May need to trigger after set up.
 
