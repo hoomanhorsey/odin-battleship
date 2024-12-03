@@ -105,8 +105,9 @@ function gameSetUp_positionFill(players) {
   function drop(event) {
     event.preventDefault();
 
+    // ship Block ID
     const shipBlockId = event.dataTransfer.getData("text");
-
+    console.log(shipBlockId);
     // event.target.textContent = shipBlockId;
     // console.log(event.target);
 
@@ -123,99 +124,90 @@ function gameSetUp_positionFill(players) {
     // TODO - how to keep track of ships? Create a temp array of co-ordinates.
     // ---- once you press confirm, take the co-ords from temp array and then put into place ship
 
-    // FILLING IN GRIDS -  when column, to the right
-    let startColumn = parseInt(event.target.dataset.column);
-    for (
-      let i = 0;
-      i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
-      i++
-    ) {
-      console.log("i " + i);
+    // let gridSquareTarget = document.getElementById("playerOner0c0");
 
-      let newColumn = startColumn + i;
-      console.log(newColumn);
+    colorGridSquaresRight();
 
-      const gridSquareExtended = document.getElementById(
-        `playerOner${event.target.dataset.row}c${newColumn}`
-      );
+    console.log(event.target.id);
 
-      gridSquareExtended.classList.remove("gridSquare");
-      gridSquareExtended.classList.remove("gridSquare_playerOne");
-      gridSquareExtended.classList.remove("gridSquareDraggedOver");
+    const gridSquareTarget = document.getElementById(event.target.id);
+    gridSquareTarget.addEventListener("wheel", ArotateBlockOnBoard);
 
-      gridSquareExtended.classList.add("shipBlock");
-      gridSquareExtended.classList.add("shipBlockC");
+    function ArotateBlockOnBoard() {
+      console.log("wheel");
 
-      gridSquareExtended.setAttribute("draggable", true);
+      console.log("poo");
 
-      gridSquareExtended.textContent =
-        players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
-
-      // console.log(gridSquareExtended);
+      gridSquareTarget.style.fontSize = "95px";
+      gridSquareTarget.classList.add("shipBlockrotate90");
+      colorGridSquaresDown();
     }
 
-    // FILLING IN GRIDS -  when row, to down
-    console.log(event.target.dataset.row);
-    let startRow = parseInt(event.target.dataset.row);
-    for (
-      let i = 0;
-      i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
-      i++
-    ) {
-      console.log("i " + i);
+    function colorGridSquaresRight() {
+      // FILLING IN GRIDS -  when column, to the right
+      let startColumn = parseInt(event.target.dataset.column);
+      for (
+        let i = 0;
+        i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+        i++
+      ) {
+        console.log("i " + i);
 
-      let newRow = startRow + i;
-      console.log(newRow);
+        let newColumn = startColumn + i;
+        console.log(newColumn);
 
-      const gridSquareExtended = document.getElementById(
-        `playerOner${newRow}c${event.target.dataset.column}`
-      );
+        const gridSquareExtended = document.getElementById(
+          `playerOner${event.target.dataset.row}c${newColumn}`
+        );
 
-      gridSquareExtended.classList.remove("gridSquare");
-      gridSquareExtended.classList.remove("gridSquare_playerOne");
-      gridSquareExtended.classList.remove("gridSquareDraggedOver");
+        gridSquareExtended.classList.remove("gridSquare");
+        gridSquareExtended.classList.remove("gridSquare_playerOne");
+        gridSquareExtended.classList.remove("gridSquareDraggedOver");
 
-      gridSquareExtended.classList.add("shipBlock");
-      gridSquareExtended.classList.add("shipBlockC");
+        gridSquareExtended.classList.add("shipBlock");
+        gridSquareExtended.classList.add("shipBlockC");
 
-      gridSquareExtended.setAttribute("draggable", true);
+        gridSquareExtended.setAttribute("draggable", true);
 
-      gridSquareExtended.textContent =
-        players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+        gridSquareExtended.textContent =
+          players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
 
-      // console.log(gridSquareExtended);
+        // console.log(gridSquareExtended);
+      }
     }
 
-    // FILLING IN GRIDS -  when row, to up
-    console.log(event.target.dataset.row);
-    let startRow = parseInt(event.target.dataset.row);
-    for (
-      let i = 0;
-      i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
-      i++
-    ) {
-      console.log("i " + i);
+    function colorGridSquaresDown() {
+      // FILLING IN GRIDS -  when row, to down
+      console.log(event.target.dataset.row);
+      let startRow = parseInt(event.target.dataset.row);
+      for (
+        let i = 0;
+        i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+        i++
+      ) {
+        console.log("i " + i);
 
-      let newRow = startRow + i;
-      console.log(newRow);
+        let newRow = startRow + i;
+        console.log(newRow);
 
-      const gridSquareExtended = document.getElementById(
-        `playerOner${newRow}c${event.target.dataset.column}`
-      );
+        const gridSquareExtended = document.getElementById(
+          `playerOner${newRow}c${event.target.dataset.column}`
+        );
 
-      gridSquareExtended.classList.remove("gridSquare");
-      gridSquareExtended.classList.remove("gridSquare_playerOne");
-      gridSquareExtended.classList.remove("gridSquareDraggedOver");
+        gridSquareExtended.classList.remove("gridSquare");
+        gridSquareExtended.classList.remove("gridSquare_playerOne");
+        gridSquareExtended.classList.remove("gridSquareDraggedOver");
 
-      gridSquareExtended.classList.add("shipBlock");
-      gridSquareExtended.classList.add("shipBlockC");
+        gridSquareExtended.classList.add("shipBlock");
+        gridSquareExtended.classList.add("shipBlockC");
 
-      gridSquareExtended.setAttribute("draggable", true);
+        gridSquareExtended.setAttribute("draggable", true);
 
-      gridSquareExtended.textContent =
-        players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+        gridSquareExtended.textContent =
+          players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
 
-      // console.log(gridSquareExtended);
+        // console.log(gridSquareExtended);
+      }
     }
 
     // removes the original shipBlock
