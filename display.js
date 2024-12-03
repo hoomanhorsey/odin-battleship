@@ -11,7 +11,7 @@ function drawGrid(player) {
       gridSquare.classList.add(
         "gridSquare",
         "gridSquare_" + player.name,
-        "r" + row + "c" + column
+        "r" + row + "c" + column // Looks potentially redundant, but not presently
       );
       gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
 
