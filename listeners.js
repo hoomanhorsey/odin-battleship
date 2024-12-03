@@ -6,28 +6,26 @@ import {
 import { dupeGridSquareCheck } from "./helpers.js";
 
 function targetListener(defendingPlayer) {
-  const gridSquares = document.querySelectorAll(
-    `.gridSquare_${defendingPlayer.name}`
-  );
+  const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
+
+  // const gridSquares = document.querySelectorAll(
+  //   `.gridSquare_${defendingPlayer.name}`
+  // );
+
   const gridTargetHandler = (event) => {
-    removeActiveGridSquareHighlight();
-    event.target.classList.add("gridSquareActive");
+    if (event.target.classList.contains("gridSquare")) {
+      removeActiveGridSquareHighlight();
+      event.target.classList.add("gridSquareActive");
+    }
   };
 
-  gridSquares.forEach((e) => {
-    console.log("target listener called");
-    e.addEventListener("mouseover", gridTargetHandler);
-  });
+  gameBoardplayerTwo.addEventListener("mouseover", gridTargetHandler);
 
   // return function to remove listeners
   const removeTargetListener = () => {
     console.log("remove  target listener called");
-    gridSquares.forEach((e) => {
-      e.removeEventListener("mouseover", gridTargetHandler);
-    });
+    gameBoardplayerTwo.removeEventListener("mouseover", gridTargetHandler);
   };
-  // TODO - This has been put in computerAttack()
-  // updateGameMoveStatus("user");
 
   return removeTargetListener;
 }
@@ -76,58 +74,6 @@ function attackListener(
   }
 }
 
-function TattackListener(
-  defendingPlayer, // TODO, might be redundant
-  players,
-  removeTargetListener,
-  computerMove
-) {
-  const gridSquares = document.querySelectorAll(
-    // TOTRY - TRY WITHOUT DEFENDING PLAYER VARIABLE
-    // `.gridSquare_${defendingPlayer.name}`
-    `.gridSquare_${players["playerTwo"].name}`
-  );
-
-  // callback function for listener
-  const gridAttackHandler = (event) => {
-    if (
-      dupeGridSquareCheck(
-        players["playerTwo"],
-        event.target.id[10],
-        event.target.id[12]
-      )
-    ) {
-      alert("already been clicked");
-      return;
-    } else {
-      removeTargetListener();
-      removeAttackListener();
-
-      // TOTRY - TRY WITHOUT DEFENDING PLAYER VARIABLE
-      // let attackResult = defendingPlayer.gameBoard.receiveAttack(
-      let attackResult = players["playerTwo"].gameBoard.receiveAttack(
-        event.target.dataset.row,
-        event.target.dataset.column
-      );
-      updateGridSquare(attackResult, event.target);
-      checkAllSunk(players, computerMove);
-    }
-  };
-
-  // assign listener
-  gridSquares.forEach((e) => {
-    e.addEventListener("click", gridAttackHandler);
-  });
-
-  // function to remove attack listener
-  const removeAttackListener = () => {
-    console.log("remove attack listener called");
-    gridSquares.forEach((e) => {
-      e.removeEventListener("click", gridAttackHandler);
-    });
-  };
-}
-
 function checkAllSunk(players, nextMoveCallback) {
   if (
     !players["playerOne"].gameBoard.checkSunk() &&
@@ -143,16 +89,5 @@ function checkAllSunk(players, nextMoveCallback) {
     }
   }
 }
-
-// function dupeGridSquareCheck(player, row, column) {
-//   let shipObject = player.gameBoard.boardArray[row][column];
-//   if (shipObject.hit === true || shipObject.missed === true) {
-//     console.log("already hit, dont count this one");
-//     return true;
-//   } else {
-//     return false;
-//   }
-//   // console.log(players["playerOne"].gameBoard.boardArray);
-// }
 
 export { targetListener, attackListener, dupeGridSquareCheck, checkAllSunk };

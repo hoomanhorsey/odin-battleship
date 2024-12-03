@@ -20,8 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
   playerMove();
 
   function playerMove() {
+    // targetListener
     const removeTargetListener = targetListener(defendingPlayer);
-    //  attacking
+    //  attackingListener
     attackListener(
       defendingPlayer,
       players,
