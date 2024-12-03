@@ -28,4 +28,28 @@ function drawGrid(player) {
   }
 }
 
-export { drawGrid };
+function removeActiveGridSquareHighlight() {
+  if (document.querySelector(".gridSquareActive")) {
+    const gridSquareActive = document.querySelector(".gridSquareActive");
+    gridSquareActive.classList.remove("gridSquareActive");
+  } else {
+    return;
+  }
+}
+
+function updateGridSquare(result, eventTarget) {
+  if (result === "miss") {
+    eventTarget.textContent = result;
+
+    eventTarget.classList.add("gridSquareMiss");
+    removeActiveGridSquareHighlight();
+  } else if (result.ship !== null) {
+    eventTarget.textContent = result.ship;
+
+    removeActiveGridSquareHighlight();
+    console.log(result.ship);
+    eventTarget.classList.add("gridSquareHit");
+  }
+}
+
+export { drawGrid, removeActiveGridSquareHighlight, updateGridSquare };

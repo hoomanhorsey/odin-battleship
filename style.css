@@ -26,6 +26,12 @@
   transform: rotate(90deg);
 }
 
+.gridSquareContainShip {
+  border-width: 5px;
+  border-style: solid;
+  border-color: black;
+}
+.gridSquareContainShipC,
 .shipBlockC {
   background-color: pink;
 }

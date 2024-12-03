@@ -135,11 +135,10 @@ function gameSetUp_positionFill(players) {
 
     function ArotateBlockOnBoard() {
       console.log("wheel");
-
       console.log("poo");
 
-      gridSquareTarget.style.fontSize = "95px";
-      gridSquareTarget.classList.add("shipBlockrotate90");
+      // gridSquareTarget.style.fontSize = "95px";
+      // gridSquareTarget.classList.add("shipBlockrotate90");
       colorGridSquaresDown();
     }
 
@@ -164,8 +163,11 @@ function gameSetUp_positionFill(players) {
         gridSquareExtended.classList.remove("gridSquare_playerOne");
         gridSquareExtended.classList.remove("gridSquareDraggedOver");
 
-        gridSquareExtended.classList.add("shipBlock");
-        gridSquareExtended.classList.add("shipBlockC");
+        gridSquareExtended.classList.add("gridSquareContainShip");
+        gridSquareExtended.classList.add("gridSquareContainShipC");
+
+        // gridSquareExtended.classList.add("shipBlock");
+        // gridSquareExtended.classList.add("shipBlockC");
 
         gridSquareExtended.setAttribute("draggable", true);
 
@@ -198,8 +200,28 @@ function gameSetUp_positionFill(players) {
         gridSquareExtended.classList.remove("gridSquare_playerOne");
         gridSquareExtended.classList.remove("gridSquareDraggedOver");
 
-        gridSquareExtended.classList.add("shipBlock");
-        gridSquareExtended.classList.add("shipBlockC");
+        const gridSquareContainShip = document.querySelectorAll(
+          ".gridSquareContainShip"
+        );
+
+        console.log(gridSquareContainShip);
+
+        gridSquareContainShip.forEach((e) => {
+          e.classList.remove("gridSquareContainShip");
+        });
+
+        const gridSquareContainShipC = document.querySelectorAll(
+          ".gridSquareContainShipC"
+        );
+
+        gridSquareContainShip.forEach((e) => {
+          e.classList.remove("gridSquareContainShipC");
+        });
+
+        gridSquareExtended.classList.add("gridSquareContainShip");
+        gridSquareExtended.classList.add("gridSquareContainShipC");
+        // gridSquareExtended.classList.add("shipBlock");
+        // gridSquareExtended.classList.add("shipBlockC");
 
         gridSquareExtended.setAttribute("draggable", true);
 

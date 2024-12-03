@@ -1,8 +1,6 @@
-import {
-  removeActiveGridSquareHighlight,
-  updateGridSquare,
-  dupeGridSquareCheck,
-} from "./listeners.js";
+import { updateGridSquare, dupeGridSquareCheck } from "./listeners.js";
+
+import { removeActiveGridSquareHighlight } from "./display.js";
 
 // TODO maybe - Could potentially change this to an async function for more modern implemenation
 function computerTarget(
