@@ -127,16 +127,17 @@ function gameSetUp_positionFill(players) {
     console.log(event.target.id);
 
     const gridSquareTarget = document.getElementById(event.target.id);
-    gridSquareTarget.addEventListener("wheel", ArotateBlockOnBoard);
+    gridSquareTarget.addEventListener("wheel", unColourGridSquares);
 
-    function ArotateBlockOnBoard() {
-      console.log("wheel");
-      console.log("poo");
+    function unColourGridSquares(event) {
+      console.log("uncolourGrid Squares");
+      console.log(event.target);
+      console.log(event, shipBlockId, "down");
 
-      // gridSquareTarget.style.fontSize = "95px";
-      // gridSquareTarget.classList.add("shipBlockrotate90");
+      // TODO, insert logic to delete colour from 'right' gridsquares.
+      // TODO, refactor logic to make it a utility function
 
-      // colorGridSquaresDown();
+      colorGridSquares(event, shipBlockId, "down");
     }
 
     function colorGridSquares(event, shipBlockId, direction) {
@@ -204,19 +205,6 @@ function gameSetUp_positionFill(players) {
 
     // following actually appends the item to the block
     // event.target.appendChild(document.getElementById(shipBlockId));
-
-    // rotation test
-    console.log(document.getElementById("playerOner0c0"));
-
-    let testElement = document.getElementById("playerOner0c0");
-    testElement.addEventListener("wheel", rotateBlockOnBoard);
-
-    function rotateBlockOnBoard() {
-      // <<< Logic disabled>>
-      // console.log("wheel");
-      // testElement.style.fontSize = "95px";
-      // testElement.classList.add("shipBlockrotate90");
-    }
 
     // THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
     //    CALLING PLACESHIP FUNCTION
