@@ -122,7 +122,7 @@ function gameSetUp_positionFill(players) {
     //Initially drop grid squares to the right.
     // colorGridSquaresRight();
 
-    colorGridSquares(event, shipBlockId, "down");
+    colorGridSquares(event, shipBlockId, "right");
 
     console.log(event.target.id);
 
@@ -156,17 +156,7 @@ function gameSetUp_positionFill(players) {
               `playerOner${event.target.dataset.row}c${newColumn}`
             );
 
-            gridSquareExtended.classList.remove("gridSquare");
-            gridSquareExtended.classList.remove("gridSquare_playerOne");
-            gridSquareExtended.classList.remove("gridSquareDraggedOver");
-
-            gridSquareExtended.classList.add("gridSquareContainShip");
-            gridSquareExtended.classList.add("gridSquareContainShipC");
-
-            gridSquareExtended.setAttribute("draggable", true);
-
-            gridSquareExtended.textContent =
-              players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+            updateGridSquareExtended(gridSquareExtended, shipBlockId[9]);
           }
           break;
 
@@ -182,19 +172,24 @@ function gameSetUp_positionFill(players) {
               `playerOner${newRow}c${event.target.dataset.column}`
             );
 
-            gridSquareExtended.classList.remove("gridSquare");
-            gridSquareExtended.classList.remove("gridSquare_playerOne");
-            gridSquareExtended.classList.remove("gridSquareDraggedOver");
-
-            gridSquareExtended.classList.add("gridSquareContainShip");
-            gridSquareExtended.classList.add("gridSquareContainShipC");
-
-            gridSquareExtended.setAttribute("draggable", true);
-
-            gridSquareExtended.textContent =
-              players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+            updateGridSquareExtended(gridSquareExtended, shipBlockId[9]);
           }
       }
+    }
+
+    function updateGridSquareExtended(gridSquareExtended, shipType) {
+      gridSquareExtended.classList.remove(
+        "gridSquare",
+        "gridSquare_playerOne",
+        "gridSquareDraggedOver"
+      );
+
+      gridSquareExtended.classList.add(
+        "gridSquareContainShip",
+        "gridSquareContainShipC"
+      );
+      gridSquareExtended.setAttribute("draggable", true);
+      gridSquareExtended.textContent = shipType;
     }
 
     // removes the original shipBlock
