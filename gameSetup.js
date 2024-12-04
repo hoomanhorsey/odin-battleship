@@ -133,13 +133,45 @@ function gameSetUp_positionFill(players) {
       console.log("uncolourGrid Squares");
       console.log(event.target);
       console.log(event, shipBlockId, "down");
+      console.log(event.target.id);
+
+      const startingGridSquare = document.getElementById(event.target.id);
+
+      console.log(event.target.dataset.row);
+      console.log(event.target.dataset.column);
+
+      let startColumn = parseInt(event.target.dataset.column);
+      for (let i = 0; i < 5; i++) {
+        let newColumn = startColumn + i;
+        const gridSquareExtended = document.getElementById(
+          `playerOner${event.target.dataset.row}c${newColumn}`
+        );
+        removeGridSquareExtended(gridSquareExtended, shipBlockId[9]);
+      }
 
       // TODO, insert logic to delete colour from 'right' gridsquares.
+
+      // creating initial function to remove gridSquares from the right only.
+
       // TODO, refactor logic to make it a utility function
 
       colorGridSquares(event, shipBlockId, "down");
     }
 
+    function removeGridSquareExtended(gridSquareExtended, shipType) {
+      gridSquareExtended.classList.remove(
+        "gridSquareContainShip",
+        "gridSquareContainShipC"
+      );
+      gridSquareExtended.classList.add(
+        "gridSquare",
+        "gridSquare_playerOne"
+        // "gridSquareDraggedOver"
+      );
+
+      // gridSquareExtended.setAttribute("draggable", true);
+      gridSquareExtended.textContent = "";
+    }
     function colorGridSquares(event, shipBlockId, direction) {
       console.log(event.target, shipBlockId, direction);
 
