@@ -173,7 +173,7 @@ class Gameboard {
     }
     // advise if all ships are sunk
     else {
-      console.log(sunkCounter + " of 5 ships sunk");
+      // console.log(sunkCounter + " of 5 ships sunk");
       return false;
     }
     console.log(sunkShips);

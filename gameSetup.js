@@ -10,7 +10,7 @@ function gameInit() {
   drawGrid(players["playerOne"]);
   drawGrid(players["playerTwo"]);
 
-  // *** FOR TESTING- function for computer to prefill postions
+  // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
   // gameSetUp_positionPreFill(players);
 
   // function to allow user to selection positions
@@ -27,6 +27,20 @@ function createPlayers(
     playerTwo: new Player(playerTwoName),
   };
 }
+
+// TODO - error check that checks if object is illegal or a collision.
+// ------TODO - if it is an error or collision, then you need to disable allowDrop()
+// ------ TODO - but if it is legal then you can allow drop again.
+// TODO - then once drop, you can display on DOM.
+// TODO - draw it in, but don't save it to array.
+// ------Once it is drawn in, the shipBlock is still on display.
+//--------disable piece? append piece to div? remove shipBLock?
+// TODO - allow user to rotate the piece using up and down.
+// TODO - once all 5 pieces are on the gameboard allow user to START GAME!
+
+// TODO - how to keep track of ships? Create a temp array of co-ordinates.
+// ---- once you press confirm, take the co-ords from temp array and then put into place ship
+
 // prefill computer player positions
 function gameSetUp_positionFill(players) {
   players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C", "playerTwo");
@@ -36,7 +50,6 @@ function gameSetUp_positionFill(players) {
   players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S", "playerTwo");
 
   // Functions for event listeners
-
   function drag(event) {
     const shipBlock = document.getElementById(event.target.id);
 
@@ -49,9 +62,6 @@ function gameSetUp_positionFill(players) {
 
   function checkLegal(event) {
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
-    console.log(players);
-    console.log("check legal is called");
 
     const draggedElement = document.querySelector(".shipBlockDragging");
     const shipTypeData = draggedElement?.getAttribute("ship-type");
@@ -79,11 +89,11 @@ function gameSetUp_positionFill(players) {
 
   function dragEnd(event) {
     console.log("drag end");
-
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     gameBoardplayerOne.classList.remove("gameBoardNotLegal");
     gameBoardplayerOne.classList.add("gameBoardLegal");
   }
+
   function highlightGridSquareAdd(event) {
     console.log("entering gridSquare");
     document
@@ -92,7 +102,7 @@ function gameSetUp_positionFill(players) {
   }
 
   function highlightGridSquareRemove(event) {
-    console.log("leaveing gridSquare");
+    console.log("leaving gridSquare");
     document
       .getElementById(event.target.id)
       .classList.remove("gridSquareDraggedOver");
@@ -108,25 +118,11 @@ function gameSetUp_positionFill(players) {
     // ship Block ID
     const shipBlockId = event.dataTransfer.getData("text");
     console.log(shipBlockId);
-    // event.target.textContent = shipBlockId;
-    // console.log(event.target);
 
-    // TODO - error check that checks if object is illegal or a collision.
-    // ------TODO - if it is an error or collision, then you need to disable allowDrop()
-    // ------ TODO - but if it is legal then you can allow drop again.
-    // TODO - then once drop, you can display on DOM.
-    // TODO - draw it in, but don't save it to array.
-    // ------Once it is drawn in, the shipBlock is still on display.
-    //--------disable piece? append piece to div? remove shipBLock?
-    // TODO - allow user to rotate the piece using up and down.
-    // TODO - once all 5 pieces are on the gameboard allow user to START GAME!
+    //Initially drop grid squares to the right.
+    // colorGridSquaresRight();
 
-    // TODO - how to keep track of ships? Create a temp array of co-ordinates.
-    // ---- once you press confirm, take the co-ords from temp array and then put into place ship
-
-    // let gridSquareTarget = document.getElementById("playerOner0c0");
-
-    colorGridSquaresRight();
+    colorGridSquares(event, shipBlockId, "down");
 
     console.log(event.target.id);
 
@@ -139,96 +135,65 @@ function gameSetUp_positionFill(players) {
 
       // gridSquareTarget.style.fontSize = "95px";
       // gridSquareTarget.classList.add("shipBlockrotate90");
-      colorGridSquaresDown();
+
+      // colorGridSquaresDown();
     }
 
-    function colorGridSquaresRight() {
-      // FILLING IN GRIDS -  when column, to the right
-      let startColumn = parseInt(event.target.dataset.column);
-      for (
-        let i = 0;
-        i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
-        i++
-      ) {
-        console.log("i " + i);
+    function colorGridSquares(event, shipBlockId, direction) {
+      console.log(event.target, shipBlockId, direction);
 
-        let newColumn = startColumn + i;
-        console.log(newColumn);
+      // FILLING IN GRIDS - at direction specified in parameters
+      switch (direction) {
+        case "right":
+          let startColumn = parseInt(event.target.dataset.column);
+          for (
+            let i = 0;
+            i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+            i++
+          ) {
+            let newColumn = startColumn + i;
+            const gridSquareExtended = document.getElementById(
+              `playerOner${event.target.dataset.row}c${newColumn}`
+            );
 
-        const gridSquareExtended = document.getElementById(
-          `playerOner${event.target.dataset.row}c${newColumn}`
-        );
+            gridSquareExtended.classList.remove("gridSquare");
+            gridSquareExtended.classList.remove("gridSquare_playerOne");
+            gridSquareExtended.classList.remove("gridSquareDraggedOver");
 
-        gridSquareExtended.classList.remove("gridSquare");
-        gridSquareExtended.classList.remove("gridSquare_playerOne");
-        gridSquareExtended.classList.remove("gridSquareDraggedOver");
+            gridSquareExtended.classList.add("gridSquareContainShip");
+            gridSquareExtended.classList.add("gridSquareContainShipC");
 
-        gridSquareExtended.classList.add("gridSquareContainShip");
-        gridSquareExtended.classList.add("gridSquareContainShipC");
+            gridSquareExtended.setAttribute("draggable", true);
 
-        // gridSquareExtended.classList.add("shipBlock");
-        // gridSquareExtended.classList.add("shipBlockC");
+            gridSquareExtended.textContent =
+              players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+          }
+          break;
 
-        gridSquareExtended.setAttribute("draggable", true);
+        case "down":
+          let startRow = parseInt(event.target.dataset.row);
+          for (
+            let i = 0;
+            i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+            i++
+          ) {
+            let newRow = startRow + i;
+            const gridSquareExtended = document.getElementById(
+              `playerOner${newRow}c${event.target.dataset.column}`
+            );
 
-        gridSquareExtended.textContent =
-          players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+            gridSquareExtended.classList.remove("gridSquare");
+            gridSquareExtended.classList.remove("gridSquare_playerOne");
+            gridSquareExtended.classList.remove("gridSquareDraggedOver");
 
-        // console.log(gridSquareExtended);
-      }
-    }
+            gridSquareExtended.classList.add("gridSquareContainShip");
+            gridSquareExtended.classList.add("gridSquareContainShipC");
 
-    function colorGridSquaresDown() {
-      // FILLING IN GRIDS -  when row, to down
-      console.log(event.target.dataset.row);
-      let startRow = parseInt(event.target.dataset.row);
-      for (
-        let i = 0;
-        i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
-        i++
-      ) {
-        console.log("i " + i);
+            gridSquareExtended.setAttribute("draggable", true);
 
-        let newRow = startRow + i;
-        console.log(newRow);
-
-        const gridSquareExtended = document.getElementById(
-          `playerOner${newRow}c${event.target.dataset.column}`
-        );
-
-        gridSquareExtended.classList.remove("gridSquare");
-        gridSquareExtended.classList.remove("gridSquare_playerOne");
-        gridSquareExtended.classList.remove("gridSquareDraggedOver");
-
-        const gridSquareContainShip = document.querySelectorAll(
-          ".gridSquareContainShip"
-        );
-
-        console.log(gridSquareContainShip);
-
-        gridSquareContainShip.forEach((e) => {
-          e.classList.remove("gridSquareContainShip");
-        });
-
-        const gridSquareContainShipC = document.querySelectorAll(
-          ".gridSquareContainShipC"
-        );
-
-        gridSquareContainShip.forEach((e) => {
-          e.classList.remove("gridSquareContainShipC");
-        });
-
-        gridSquareExtended.classList.add("gridSquareContainShip");
-        gridSquareExtended.classList.add("gridSquareContainShipC");
-        // gridSquareExtended.classList.add("shipBlock");
-        // gridSquareExtended.classList.add("shipBlockC");
-
-        gridSquareExtended.setAttribute("draggable", true);
-
-        gridSquareExtended.textContent =
-          players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
-
-        // console.log(gridSquareExtended);
+            gridSquareExtended.textContent =
+              players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
+          }
       }
     }
 
@@ -252,10 +217,10 @@ function gameSetUp_positionFill(players) {
     testElement.addEventListener("wheel", rotateBlockOnBoard);
 
     function rotateBlockOnBoard() {
-      console.log("wheel");
-
-      testElement.style.fontSize = "95px";
-      testElement.classList.add("shipBlockrotate90");
+      // <<< Logic disabled>>
+      // console.log("wheel");
+      // testElement.style.fontSize = "95px";
+      // testElement.classList.add("shipBlockrotate90");
     }
 
     // THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
@@ -344,8 +309,9 @@ function cleanupListeners() {
 // EXPERIMENT rotate shipBlock via adding class
 document.getElementById("shipBlockC").addEventListener("wheel", rotateBlock);
 function rotateBlock() {
-  shipBlockC.style.fontSize = "35px";
-  shipBlockC.classList.add("shipBlockrotate90");
+  // << logic disabled
+  // shipBlockC.style.fontSize = "35px";
+  // shipBlockC.classList.add("shipBlockrotate90");
 }
 
 // prefill positions for testing

@@ -28,11 +28,9 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 
 function checkMoveLegal(row, column, direction, ship) {
   console.log("from inside Check Move Legal");
-
   switch (direction) {
     case "up":
       if (row - ship.length < -1) {
-        console.log(row - ship.length);
         return false;
       } else {
         return true;
@@ -50,8 +48,6 @@ function checkMoveLegal(row, column, direction, ship) {
         return true;
       }
     case "right":
-      console.log("should call this");
-
       if (column + ship.length > 10) {
         return false;
       } else {
@@ -99,11 +95,6 @@ function dupeGridSquareCheck(player, row, column) {
   console.log("dupe checked");
 
   let shipObject = player.gameBoard.boardArray[row][column];
-  console.log(shipObject);
-
-  console.log(player, row, column);
-  console.log(shipObject.hit);
-  console.log(shipObject.missed);
 
   if (shipObject.hit === true || shipObject.missed === true) {
     console.log("already hit, dont count this one");

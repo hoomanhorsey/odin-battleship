@@ -3,8 +3,8 @@ import { targetListener, attackListener, checkAllSunk } from "./listeners.js";
 import { computerTarget, computerChooseTarget } from "./computerLogic.js";
 import { updateGameMoveStatus } from "./display.js";
 
-let computerTargets = 100;
-let computerTargetingTime = 25;
+let computerTargets = 50;
+let computerTargetingTime = 10;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)
