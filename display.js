@@ -9,9 +9,9 @@ function drawGrid(player) {
       let gridSquare = document.createElement("div");
       // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
       gridSquare.classList.add(
+        "r" + row + "c" + column, // Looks potentially redundant, but not presently
         "gridSquare",
-        "gridSquare_" + player.name,
-        "r" + row + "c" + column // Looks potentially redundant, but not presently
+        "gridSquare_" + player.name
       );
       gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
 

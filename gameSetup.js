@@ -146,7 +146,7 @@ function gameSetUp_positionFill(players) {
         const gridSquareExtended = document.getElementById(
           `playerOner${event.target.dataset.row}c${newColumn}`
         );
-        removeGridSquareExtended(gridSquareExtended, shipBlockId[9]);
+        removeGridSquareExtended(gridSquareExtended);
       }
 
       // TODO, insert logic to delete colour from 'right' gridsquares.
@@ -158,7 +158,7 @@ function gameSetUp_positionFill(players) {
       colorGridSquares(event, shipBlockId, "down");
     }
 
-    function removeGridSquareExtended(gridSquareExtended, shipType) {
+    function removeGridSquareExtended(gridSquareExtended) {
       gridSquareExtended.classList.remove(
         "gridSquareContainShip",
         "gridSquareContainShipC"
@@ -168,16 +168,17 @@ function gameSetUp_positionFill(players) {
         "gridSquare_playerOne"
         // "gridSquareDraggedOver"
       );
-
-      // gridSquareExtended.setAttribute("draggable", true);
+      gridSquareExtended.removeAttribute("draggable");
       gridSquareExtended.textContent = "";
     }
+
     function colorGridSquares(event, shipBlockId, direction) {
       console.log(event.target, shipBlockId, direction);
 
       // FILLING IN GRIDS - at direction specified in parameters
       switch (direction) {
         case "right":
+          // caseConsolidation("right");
           let startColumn = parseInt(event.target.dataset.column);
           for (
             let i = 0;
@@ -189,11 +190,12 @@ function gameSetUp_positionFill(players) {
               `playerOner${event.target.dataset.row}c${newColumn}`
             );
 
-            updateGridSquareExtended(gridSquareExtended, shipBlockId[9]);
+            updateGridSquareExtended(gridSquareExtended, shipBlockId[9], i);
           }
           break;
 
         case "down":
+          // caseConsolidation("down");
           let startRow = parseInt(event.target.dataset.row);
           for (
             let i = 0;
@@ -205,12 +207,42 @@ function gameSetUp_positionFill(players) {
               `playerOner${newRow}c${event.target.dataset.column}`
             );
 
-            updateGridSquareExtended(gridSquareExtended, shipBlockId[9]);
+            updateGridSquareExtended(gridSquareExtended, shipBlockId[9], i);
           }
+          break;
       }
     }
 
-    function updateGridSquareExtended(gridSquareExtended, shipType) {
+    function caseConsolidation(casevariable) {
+      let startColumn = parseInt(event.target.dataset.column);
+      let startRow = parseInt(event.target.dataset.row);
+      for (
+        let i = 0;
+        i < players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+        i++
+      ) {
+        if (casevariable === "right") {
+          let newColumn = startColumn + i;
+          const gridSquareExtended = document.getElementById(
+            `playerOner${event.target.dataset.row}c${newColumn}`
+          );
+          updateGridSquareExtended(gridSquareExtended, shipBlockId[9], i);
+        } else {
+          let newRow = startRow + i;
+          const gridSquareExtended = document.getElementById(
+            `playerOner${newRow}c${event.target.dataset.column}`
+          );
+          updateGridSquareExtended(gridSquareExtended, shipBlockId[9], i);
+        }
+      }
+    }
+
+    function updateGridSquareExtended(gridSquareExtended, shipType, i) {
+      console.log(i);
+
+      if (i === 0) {
+        gridSquareExtended.setAttribute("draggable", true);
+      }
       gridSquareExtended.classList.remove(
         "gridSquare",
         "gridSquare_playerOne",
@@ -221,7 +253,7 @@ function gameSetUp_positionFill(players) {
         "gridSquareContainShip",
         "gridSquareContainShipC"
       );
-      gridSquareExtended.setAttribute("draggable", true);
+
       gridSquareExtended.textContent = shipType;
     }
 
