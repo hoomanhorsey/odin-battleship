@@ -52,8 +52,6 @@ function updateGridSquare(result, eventTarget) {
 }
 
 function colorGridSquares(event, shipType, shipLength, direction) {
-  console.log(event.target, shipType, shipLength, direction);
-
   // FILLING IN GRIDS - at direction specified in parameters
   switch (direction) {
     case "right":
@@ -76,6 +74,7 @@ function colorGridSquares(event, shipType, shipLength, direction) {
         );
         updateGridSquareExtended(gridSquareExtended, shipType, i);
       }
+
       break;
   }
 }
@@ -138,9 +137,9 @@ function unColorGridSquares(event, shipType, shipLength, direction) {
 
     let startRow = parseInt(event.target.dataset.row);
     for (let i = 0; i < 5; i++) {
-      let newColumn = startRow + i;
+      let newRow = startRow + i;
       const gridSquareExtended = document.getElementById(
-        `playerOner${newColumn}c${event.target.dataset.row}`
+        `playerOner${newRow}c${event.target.dataset.column}`
       );
       removeGridSquareExtended(gridSquareExtended);
     }

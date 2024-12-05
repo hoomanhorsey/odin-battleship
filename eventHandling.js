@@ -146,7 +146,7 @@ function drop(event, players) {
   //Initially drop grid squares to the right.
   // colorGridSquaresRight();
 
-  colorGridSquares(event, shipType, shipLength, "right");
+  const keySquareId = colorGridSquares(event, shipType, shipLength, "right");
 
   console.log(event.target.id);
 
@@ -154,13 +154,6 @@ function drop(event, players) {
 
   // removes the original shipBlock
   document.getElementById(shipBlockId).remove();
-
-  //ship length
-  // console.log(players["playerOne"].gameBoard.ships[shipBlockId[9]].length);
-
-  // console.log(event.target.dataset.row, event.target.dataset.column);
-
-  // event.target.textContent = shipBlockId;
 
   // following actually appends the item to the block
   // event.target.appendChild(document.getElementById(shipBlockId));
