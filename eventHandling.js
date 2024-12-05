@@ -20,7 +20,7 @@ function setupGameSetupListeners(players) {
   // const shipBlockP = document.getElementById("shipBlockP");
 
   // add Eventlisteners to
-  shipBlockC.addEventListener("dragstart", () => {
+  shipBlockC.addEventListener("dragstart", (event) => {
     drag(event, players);
   });
 
@@ -133,7 +133,7 @@ function allowDrop(event) {
 
 function drop(event, players) {
   event.preventDefault();
-
+  let direction = "down";
   console.log(players);
 
   // ship Block ID
@@ -150,10 +150,7 @@ function drop(event, players) {
 
   console.log(event.target.id);
 
-  const gridSquareTarget = document.getElementById(event.target.id);
-  gridSquareTarget.addEventListener("wheel", (event) => {
-    unColorGridSquares(event, shipType, shipLength);
-  });
+  direction = shipBlockDirectionListener(direction, shipType, shipLength);
 
   // removes the original shipBlock
   document.getElementById(shipBlockId).remove();
@@ -184,8 +181,26 @@ function drop(event, players) {
   // );
 }
 
+function shipBlockDirectionListener(direction, shipType, shipLength) {
+  const gridSquareTarget = document.getElementById(event.target.id);
+  console.log(gridSquareTarget);
+
+  gridSquareTarget.addEventListener("wheel", (event) => {
+    console.log(direction);
+    console.log(event.deltaY);
+    if (event.deltaY < 0) {
+      direction = "right";
+      unColorGridSquares(event, shipType, shipLength, direction);
+      return "down";
+    } else if (event.deltaY > 0) {
+      direction = "down";
+      unColorGridSquares(event, shipType, shipLength, direction);
+      return "right";
+    }
+  });
+}
+
 function handleShipBlockDragEvent(event, players) {
-  console.log(event);
   event.preventDefault(); // Allow drag-and-drop functionality
 
   let target = event.target;
