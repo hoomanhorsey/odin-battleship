@@ -1,4 +1,4 @@
-import { dupeGridSquareCheck } from "./listeners.js";
+import { dupeGridSquareCheck } from "./eventHandling.js";
 import {
   removeActiveGridSquareHighlight,
   updateGridSquare,

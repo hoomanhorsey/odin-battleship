@@ -1,5 +1,9 @@
 import { gameInit } from "./gameSetup.js";
-import { targetListener, attackListener, checkAllSunk } from "./listeners.js";
+import {
+  targetListener,
+  attackListener,
+  checkAllSunk,
+} from "./eventHandling.js";
 import { computerTarget, computerChooseTarget } from "./computerLogic.js";
 import { updateGameMoveStatus } from "./display.js";
 

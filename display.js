@@ -52,6 +52,100 @@ function updateGridSquare(result, eventTarget) {
   }
 }
 
+function colorGridSquares(event, shipType, shipLength, direction) {
+  console.log(event.target, shipType, shipLength, direction);
+
+  // FILLING IN GRIDS - at direction specified in parameters
+  switch (direction) {
+    case "right":
+      let startColumn = parseInt(event.target.dataset.column);
+      for (let i = 0; i < shipLength; i++) {
+        let newColumn = startColumn + i;
+        const gridSquareExtended = document.getElementById(
+          `playerOner${event.target.dataset.row}c${newColumn}`
+        );
+
+        updateGridSquareExtended(gridSquareExtended, shipType, i);
+      }
+      break;
+
+    case "down":
+      let startRow = parseInt(event.target.dataset.row);
+      for (let i = 0; i < shipLength; i++) {
+        let newRow = startRow + i;
+        const gridSquareExtended = document.getElementById(
+          `playerOner${newRow}c${event.target.dataset.column}`
+        );
+
+        updateGridSquareExtended(gridSquareExtended, shipType, i);
+      }
+      break;
+  }
+}
+
+function updateGridSquareExtended(gridSquareExtended, shipType, i) {
+  console.log(i);
+
+  if (i === 0) {
+    gridSquareExtended.setAttribute("draggable", true);
+  }
+  gridSquareExtended.classList.remove(
+    "gridSquare",
+    "gridSquare_playerOne",
+    "gridSquareDraggedOver"
+  );
+
+  gridSquareExtended.classList.add(
+    "gridSquareContainShip",
+    "gridSquareContainShipC"
+  );
+
+  gridSquareExtended.textContent = shipType;
+}
+
+function unColorGridSquares(event, shipType, shipLength, direction = "down") {
+  console.log("uncolourGrid Squares");
+  console.log(event.target);
+  // console.log(event, shipBlockId, "down");
+  console.log(event.target.id);
+
+  const startingGridSquare = document.getElementById(event.target.id);
+
+  console.log(event.target.dataset.row);
+  console.log(event.target.dataset.column);
+
+  let startColumn = parseInt(event.target.dataset.column);
+  for (let i = 0; i < 5; i++) {
+    let newColumn = startColumn + i;
+    const gridSquareExtended = document.getElementById(
+      `playerOner${event.target.dataset.row}c${newColumn}`
+    );
+    removeGridSquareExtended(gridSquareExtended);
+  }
+
+  // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
+
+  // creating initial function to remove gridSquares from the right only.
+
+  // TODO, refactor logic to make it a utility function
+
+  colorGridSquares(event, shipType, shipLength, direction);
+}
+
+function removeGridSquareExtended(gridSquareExtended) {
+  gridSquareExtended.classList.remove(
+    "gridSquareContainShip",
+    "gridSquareContainShipC"
+  );
+  gridSquareExtended.classList.add(
+    "gridSquare",
+    "gridSquare_playerOne"
+    // "gridSquareDraggedOver"
+  );
+  gridSquareExtended.removeAttribute("draggable");
+  gridSquareExtended.textContent = "";
+}
+
 function updateGameMoveStatus(status) {
   console.log("updateGameMovestatus called");
 
@@ -82,5 +176,7 @@ export {
   drawGrid,
   removeActiveGridSquareHighlight,
   updateGridSquare,
+  colorGridSquares,
+  unColorGridSquares,
   updateGameMoveStatus,
 };
