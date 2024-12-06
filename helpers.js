@@ -1,3 +1,4 @@
+// makes empty boardArray for gameBoard object
 function makeGrid() {
   const tempArray = [];
   for (let row = 0; row < 10; row++) {
@@ -9,6 +10,7 @@ function makeGrid() {
   return tempArray;
 }
 
+// creates an array of a proposed position for checking, called by placeShip()
 function positionCheckArray(boardArray, row, column, direction, ship) {
   switch (direction) {
     case "up":
@@ -26,6 +28,7 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
   }
 }
 
+// checks if moves are legal and within board bounds, called by placeShip()
 function checkMoveLegal(row, column, direction, shipLength) {
   console.log("from inside Check Move Legal");
   switch (direction) {
@@ -59,6 +62,7 @@ function checkMoveLegal(row, column, direction, shipLength) {
   }
 }
 
+// checks if there are any collisions,  called by placeShip()
 function checkClear(array) {
   console.log("checking clear");
   return array.every((value) => value.ship === null);
@@ -91,8 +95,8 @@ function placeShipOnBoard(boardArray, row, column, direction, ship) {
   }
 }
 
-function dupeGridSquareCheck(player, row, column) {
-  console.log("dupe checked");
+function checkDupeGridSquare(player, row, column) {
+  console.log("dupe checked" + row + column);
 
   let shipObject = player.gameBoard.boardArray[row][column];
 
@@ -100,6 +104,8 @@ function dupeGridSquareCheck(player, row, column) {
     console.log("already hit, dont count this one");
     return true;
   } else {
+    console.log("returning false");
+
     return false;
   }
   // console.log(players["playerOne"].gameBoard.boardArray);
@@ -110,5 +116,5 @@ export {
   checkMoveLegal,
   checkClear,
   placeShipOnBoard,
-  dupeGridSquareCheck,
+  checkDupeGridSquare,
 };

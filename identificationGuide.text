@@ -13,6 +13,9 @@ id
 data-attribute
 
 
+
+***gameObjects***
+
 shipObjects
 - hits : 0
 - sunk : false
@@ -31,6 +34,20 @@ playerObject
 - name
 - gameBoard
 
+
+***helpers***
+
+- makeGrid()
+
+- positionCheckArray(boardArray, row, column, direction, ship)
+
+- checkMoveLegal(row, column, direction, shipLength)
+
+- checkClear(array)
+
+- placeShipOnBoard(boardArray, row, column, direction, ship)
+
+- checkDupeGridSquare(player, row, column)
 
 Your challenge is very common, especially in complex DOM-based projects like games. The confusion arises because the DOM provides multiple ways to identify and interact with elements, but each has its strengths and appropriate use cases. Establishing a clear methodology can significantly reduce confusion and improve maintainability.
 

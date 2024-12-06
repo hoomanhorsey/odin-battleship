@@ -4,11 +4,14 @@ import {
   attackListener,
   checkAllSunk,
 } from "./eventHandling.js";
-import { computerTarget, computerChooseTarget } from "./computerLogic.js";
-import { updateGameMoveStatus } from "./display.js";
+import { chooseRandomGridCoords, computerTarget } from "./computerLogic.js";
+import {
+  updateGameMoveStatus,
+  removeActiveGridSquareHighlight,
+} from "./display.js";
 
-let computerTargets = 50;
-let computerTargetingTime = 10;
+let computerTargets = 10;
+let computerTargetingTime = 500;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)
@@ -46,8 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
       gameMoveStatus.removeEventListener("click", triggerComputertMove);
       console.log("trigger next move removed");
 
+      updateGameMoveStatus("computerTarget");
+      // removeActiveGridSquareHighlight();
+
       computerTarget(
-        computerChooseTarget,
+        chooseRandomGridCoords,
         computerTargets,
         computerTargetingTime,
         players,

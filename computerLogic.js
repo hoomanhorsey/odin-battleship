@@ -1,11 +1,11 @@
-import { dupeGridSquareCheck } from "./eventHandling.js";
+import { checkDupeGridSquare } from "./eventHandling.js";
 import {
+  highlightActiveGridSquare,
   removeActiveGridSquareHighlight,
   updateGridSquare,
   updateGameMoveStatus,
 } from "./display.js";
 
-// TODO maybe - Could potentially change this to an async function for more modern implemenation
 function computerTarget(
   computerChooseTarget,
   times,
@@ -13,18 +13,24 @@ function computerTarget(
   players,
   playMoveAfterCheckSunk
 ) {
-  updateGameMoveStatus("computerTarget");
   let count = 0;
+
   const interval = setInterval(() => {
-    // computerChooseTarget returns false if square already hit or missed
-    let targetResult = computerChooseTarget(players);
-    if (targetResult) {
+    // remove previous gridSquare highlight
+    removeActiveGridSquareHighlight();
+
+    // choose random co-ords for computer
+    const [row, column] = chooseRandomGridCoords(players);
+
+    // check co-ords for dupe
+    if (checkDupeGridSquare(players["playerOne"], row, column)) {
+      return; // skip iteration as a dupe
+    } else {
       count++;
+      updateComputerTargetUI(row, column);
     }
 
     if (count >= times) {
-      console.log("COUNT COUNT " + count);
-
       clearInterval(interval);
       computerAttack(players);
       if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
@@ -32,30 +38,24 @@ function computerTarget(
   }, delay);
 }
 
-function computerChooseTarget(players) {
-  // remove previous gridSquare highlight
-  removeActiveGridSquareHighlight();
-
-  const [row, column] = genRandomPosition();
-  const gridSquareActive = document.querySelector(".r" + row + "c" + column);
-  gridSquareActive.classList.add("gridSquareActive");
-
-  if (
-    dupeGridSquareCheck(
-      players["playerOne"],
-      gridSquareActive.id[10],
-      gridSquareActive.id[12]
-    )
-  ) {
-    return true;
-  } else {
-    return gridSquareActive.id;
-  }
-
-  function genRandomPosition() {
-    return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
-  }
+function chooseRandomGridCoords(players) {
+  return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 }
+
+function updateComputerTargetUI(row, column) {
+  removeActiveGridSquareHighlight();
+  highlightActiveGridSquare(row, column);
+}
+
+// function chooseRandomGridCoords(players) {
+//   const row = Math.floor(Math.random() * 10);
+//   const column = Math.floor(Math.random() * 10);
+
+//   if (checkDupeGridSquare(players["playerOne"], row, column)) {
+//     return { row, column, valid: true };
+//   }
+//   return { row, column, valid: false };
+// }
 
 function computerAttack(players) {
   updateGameMoveStatus("computerAttack");
@@ -73,4 +73,4 @@ function computerAttack(players) {
   updateGameMoveStatus("userMove");
 }
 
-export { computerTarget, computerChooseTarget, computerAttack };
+export { computerTarget, computerAttack, chooseRandomGridCoords };

@@ -9,11 +9,11 @@ function drawGrid(player) {
       let gridSquare = document.createElement("div");
       // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
       gridSquare.classList.add(
-        "r" + row + "c" + column, // Looks potentially redundant, but not presently
+        // "r" + row + "c" + column, // Looks potentially redundant, but not presently
         "gridSquare",
         "gridSquare_" + player.name
       );
-      gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
+      // gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
 
       gridSquare.dataset.playerName = player.name;
       gridSquare.dataset.row = row;
@@ -25,6 +25,13 @@ function drawGrid(player) {
       gridRow.append(gridSquare);
     }
   }
+}
+
+function highlightActiveGridSquare(row, column) {
+  const gridSquareActive = document.querySelector(
+    `[data-row="${row}"][data-column="${column}"]`
+  );
+  gridSquareActive.classList.add("gridSquareActive");
 }
 
 function removeActiveGridSquareHighlight() {
@@ -224,6 +231,7 @@ function updateGameMoveStatus(status) {
 
 export {
   drawGrid,
+  highlightActiveGridSquare,
   removeActiveGridSquareHighlight,
   updateGridSquare,
   colorGridSquares,

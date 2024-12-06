@@ -5,7 +5,7 @@ import {
   unColorGridSquares,
 } from "./display.js";
 
-import { checkMoveLegal, dupeGridSquareCheck } from "./helpers.js";
+import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
 
 // gameSetup handlers
 function setupGameSetupListeners(players) {
@@ -289,14 +289,14 @@ function attackListener(
   const gameBoardPlayerTwo = document.querySelector(".gameBoardplayerTwo");
 
   const gridAttackHandler = (event) => {
-    console.log(event.target.id[10], event.target.id[12]);
+    console.log(event.target.dataset.row, event.target.dataset.column);
 
     if (event.target.classList.contains("gridSquare")) {
       if (
-        dupeGridSquareCheck(
+        checkDupeGridSquare(
           players["playerTwo"],
-          event.target.id[10],
-          event.target.id[12]
+          event.target.dataset.row,
+          event.target.dataset.column
         ) === true
       ) {
         alert("already been clicked");
@@ -344,6 +344,6 @@ export {
   setupGameSetupListeners,
   targetListener,
   attackListener,
-  dupeGridSquareCheck,
+  checkDupeGridSquare,
   checkAllSunk,
 };
