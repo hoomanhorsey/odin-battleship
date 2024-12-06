@@ -1,4 +1,4 @@
-function drawGrid(player) {
+function drawGrid(player, populateGridSquare) {
   const gridDiv = document.querySelector(".gameBoard" + player.name);
   for (let row = 0; row < 10; row++) {
     let gridRow = document.createElement("div");
@@ -8,23 +8,26 @@ function drawGrid(player) {
     for (let column = 0; column < 10; column++) {
       let gridSquare = document.createElement("div");
       // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
-      gridSquare.classList.add(
-        // "r" + row + "c" + column, // Looks potentially redundant, but not presently
-        "gridSquare",
-        "gridSquare_" + player.name
-      );
-      // gridSquare.setAttribute("id", player.name + "r" + row + "c" + column);
+      gridSquare.classList.add("gridSquare", "gridSquare_" + player.name);
 
       gridSquare.dataset.playerName = player.name;
       gridSquare.dataset.row = row;
       gridSquare.dataset.column = column;
 
-      if (player.name === "playerOne") {
-        gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
+      if (populateGridSquare) {
+        populateGridSquare(gridSquare, row, column, player);
       }
       gridRow.append(gridSquare);
     }
   }
+}
+function populateGridSquare(gridSquare, row, column, player) {
+  console.log("pop is claled");
+
+  if (player.name === "playerOne")
+    gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
+  if (player.name === "playerTwo")
+    gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
 }
 
 function highlightTargetedGridSquare(event) {
@@ -238,6 +241,7 @@ function updateGameMoveStatus(status) {
 
 export {
   drawGrid,
+  populateGridSquare,
   highlightTargetedGridSquare,
   highlightActiveGridSquare,
   removeActiveGridSquareHighlight,

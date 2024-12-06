@@ -1,5 +1,10 @@
 import { Player } from "./gameObjects.js";
-import { drawGrid, colorGridSquares, unColorGridSquares } from "./display.js";
+import {
+  drawGrid,
+  populateGridSquare,
+  colorGridSquares,
+  unColorGridSquares,
+} from "./display.js";
 import { checkMoveLegal } from "./helpers.js";
 import { setupGameSetupListeners } from "./eventHandling.js";
 
@@ -8,8 +13,8 @@ function gameInit() {
   // prefill positions
 
   // draw gameBoard grid
-  drawGrid(players["playerOne"]);
-  drawGrid(players["playerTwo"]);
+  drawGrid(players["playerOne"], populateGridSquare);
+  drawGrid(players["playerTwo"], populateGridSquare);
 
   // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
   // gameSetUp_positionPreFill(players);
