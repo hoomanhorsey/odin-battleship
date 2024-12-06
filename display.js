@@ -27,6 +27,13 @@ function drawGrid(player) {
   }
 }
 
+function highlightTargetedGridSquare(event) {
+  if (event.target.classList.contains("gridSquare")) {
+    removeActiveGridSquareHighlight();
+    event.target.classList.add("gridSquareActive");
+  }
+}
+
 function highlightActiveGridSquare(row, column) {
   const gridSquareActive = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
@@ -231,6 +238,7 @@ function updateGameMoveStatus(status) {
 
 export {
   drawGrid,
+  highlightTargetedGridSquare,
   highlightActiveGridSquare,
   removeActiveGridSquareHighlight,
   updateGridSquare,

@@ -15,7 +15,7 @@ import {
   removeActiveGridSquareHighlight,
 } from "./display.js";
 
-let computerTargets = 10;
+let numComputerTargets = 10;
 let computerTargetingTime = 500;
 
 document.addEventListener("DOMContentLoaded", () => {

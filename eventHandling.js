@@ -3,6 +3,7 @@ import {
   updateGridSquare,
   colorGridSquares,
   unColorGridSquares,
+  highlightTargetedGridSquare,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -258,22 +259,25 @@ function handleShipBlockDragEvent(event, players) {
 function targetListener(defendingPlayer) {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
-  const gridTargetHandler = (event) => {
-    if (event.target.classList.contains("gridSquare")) {
-      removeActiveGridSquareHighlight();
-      event.target.classList.add("gridSquareActive");
-    }
-  };
+  // Update grid Square
+  const gridTargetHandler = (event) => highlightTargetedGridSquare(event);
 
-  gameBoardplayerTwo.addEventListener("mouseover", gridTargetHandler);
+  // attach Listener
+  addGridSquareTargetListener(gameBoardplayerTwo, gridTargetHandler);
 
   // return function to remove listeners
-  const removeTargetListener = () => {
-    console.log("remove  target listener called");
-    gameBoardplayerTwo.removeEventListener("mouseover", gridTargetHandler);
+  return () => {
+    console.log("remove target listener called");
+    removeGridSquareTargetListener(gameBoardplayerTwo, gridTargetHandler);
   };
+}
 
-  return removeTargetListener;
+function addGridSquareTargetListener(element, handler) {
+  element.addEventListener("mouseover", handler);
+}
+
+function removeGridSquareTargetListener(element, handler) {
+  element.removeEventListener("mouseover", handler);
 }
 
 function attackListener(
