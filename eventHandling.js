@@ -76,6 +76,8 @@ function checkLegal(event, players) {
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("ship-type");
 
+  console.log(shipTypeData);
+
   const ship = players["playerOne"].gameBoard.ships[shipTypeData[9]];
 
   console.log(shipTypeData);
@@ -139,6 +141,14 @@ function drop(event, players) {
   // ship Block ID
   const shipBlockId = event.dataTransfer.getData("text");
 
+  console.log(event.target.id);
+  const keyGridSquare = document.getElementById(event.target.id);
+
+  keyGridSquare.addEventListener("dragstart", (event) => {
+    drag(event, players);
+  });
+
+  keyGridSquare.setAttribute("ship-type", event.target.id);
   const shipType = players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
   const shipLength =
     players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
@@ -179,6 +189,26 @@ function drop(event, players) {
   //   shipBlockId[9],
   //   players["playerOne"]
   // );
+}
+
+function shipBlockDirectionListenerKey(direction, shipType, shipLength) {
+  const gridSquareTarget = document.getElementById(event.target.id);
+  console.log(gridSquareTarget);
+
+  gridSquareTarget.addEventListener("keydown", (event) => {
+    console.log(event.key);
+    // console.log(direction);
+    // console.log(event.deltaY);
+    // if (event.deltaY < 0) {
+    //   direction = "right";
+    //   unColorGridSquares(event, shipType, shipLength, direction);
+    //   return "down";
+    // } else if (event.deltaY > 0) {
+    //   direction = "down";
+    //   unColorGridSquares(event, shipType, shipLength, direction);
+    //   return "right";
+    // }
+  });
 }
 
 function shipBlockDirectionListener(direction, shipType, shipLength) {
