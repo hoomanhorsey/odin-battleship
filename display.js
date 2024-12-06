@@ -1,3 +1,5 @@
+import { interpretAttackResult } from "./gameLogic.js";
+
 function drawGrid(player, populateGridSquare) {
   const gridDiv = document.querySelector(".gameBoard" + player.name);
   for (let row = 0; row < 10; row++) {
@@ -15,19 +17,14 @@ function drawGrid(player, populateGridSquare) {
       gridSquare.dataset.column = column;
 
       if (populateGridSquare) {
-        populateGridSquare(gridSquare, row, column, player);
+        populateShipOnGridSquare(gridSquare, row, column, player);
       }
       gridRow.append(gridSquare);
     }
   }
 }
-function populateGridSquare(gridSquare, row, column, player) {
-  console.log("pop is claled");
-
-  if (player.name === "playerOne")
-    gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
-  if (player.name === "playerTwo")
-    gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
+function populateShipOnGridSquare(gridSquare, row, column, player) {
+  gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
 }
 
 function highlightTargetedGridSquare(event) {
@@ -36,6 +33,8 @@ function highlightTargetedGridSquare(event) {
     event.target.classList.add("gridSquareActive");
   }
 }
+
+// gridSquare highlighting and unhighlighting
 
 function highlightActiveGridSquare(row, column) {
   const gridSquareActive = document.querySelector(
@@ -54,16 +53,20 @@ function removeActiveGridSquareHighlight() {
 }
 
 function updateGridSquare(result, eventTarget) {
+  const interpretation = interpretAttackResult(result);
+
+  if (interpretation) {
+    eventTarget.textContext = interpretation.text;
+    eventTarget.classList.add(interpretation.class);
+  }
+}
+
+function TESTupdateGridSquare(result, eventTarget) {
   if (result === "miss") {
     eventTarget.textContent = result;
-
     eventTarget.classList.add("gridSquareMiss");
-    removeActiveGridSquareHighlight();
   } else if (result.ship !== null) {
     eventTarget.textContent = result.ship;
-
-    removeActiveGridSquareHighlight();
-    console.log(result.ship);
     eventTarget.classList.add("gridSquareHit");
   }
 }
@@ -241,7 +244,7 @@ function updateGameMoveStatus(status) {
 
 export {
   drawGrid,
-  populateGridSquare,
+  populateShipOnGridSquare,
   highlightTargetedGridSquare,
   highlightActiveGridSquare,
   removeActiveGridSquareHighlight,

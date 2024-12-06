@@ -13,29 +13,26 @@ function computerTarget(
   players,
   playMoveAfterCheckSunk
 ) {
-  let count = 0;
-
-  const interval = setInterval(() => {
-    // remove previous gridSquare highlight
-    removeActiveGridSquareHighlight();
-
-    // choose random co-ords for computer
-    const [row, column] = chooseRandomGridCoords(players);
-
-    // check co-ords for dupe
-    if (checkDupeGridSquare(players["playerOne"], row, column)) {
-      return; // skip iteration as a dupe
-    } else {
-      count++;
-      updateComputerTargetUI(row, column);
-    }
-
-    if (count >= times) {
-      clearInterval(interval);
-      computerAttack(players);
-      if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
-    }
-  }, delay);
+  //TO DO, delete due to async function***********
+  // let count = 0;
+  // const interval = setInterval(() => {
+  //   // remove previous gridSquare highlight
+  //   removeActiveGridSquareHighlight();
+  //   // choose random co-ords for computer
+  //   const [row, column] = chooseRandomGridCoords(players);
+  //   // check co-ords for dupe
+  //   if (checkDupeGridSquare(players["playerOne"], row, column)) {
+  //     return; // skip iteration as a dupe
+  //   } else {
+  //     count++;
+  //     updateComputerTargetUI(row, column);
+  //   }
+  //   if (count >= times) {
+  //     clearInterval(interval);
+  //     computerAttack(players);
+  //     if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
+  //   }
+  // }, delay);
 }
 
 async function computerTargetAsync(
