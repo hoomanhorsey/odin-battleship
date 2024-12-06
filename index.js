@@ -4,7 +4,12 @@ import {
   attackListener,
   checkAllSunk,
 } from "./eventHandling.js";
-import { chooseRandomGridCoords, computerTarget } from "./computerLogic.js";
+import {
+  chooseRandomGridCoords,
+  computerTarget,
+  computerTargetAsync,
+  updateComputerTargetUI,
+} from "./computerLogic.js";
 import {
   updateGameMoveStatus,
   removeActiveGridSquareHighlight,
@@ -40,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function computerMove() {
     updateGameMoveStatus("computerMove");
+
+    // TODOIs this a mix of concerns?
     const gameMoveStatus = document.querySelector(".gameMoveStatus");
     gameMoveStatus.addEventListener("click", triggerComputertMove);
 
@@ -52,12 +59,21 @@ document.addEventListener("DOMContentLoaded", () => {
       updateGameMoveStatus("computerTarget");
       // removeActiveGridSquareHighlight();
 
-      computerTarget(
+      // computerTarget(
+      //   chooseRandomGridCoords,
+      //   computerTargets,
+      //   computerTargetingTime,
+      //   players,
+      //   checkAllSunk(players, playerMove)
+      // );
+
+      computerTargetAsync(
         chooseRandomGridCoords,
-        computerTargets,
+        numComputerTargets,
         computerTargetingTime,
         players,
-        checkAllSunk(players, playerMove)
+        checkAllSunk(players, playerMove),
+        updateComputerTargetUI
       );
     }
   }

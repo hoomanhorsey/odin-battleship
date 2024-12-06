@@ -258,10 +258,6 @@ function handleShipBlockDragEvent(event, players) {
 function targetListener(defendingPlayer) {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
-  // const gridSquares = document.querySelectorAll(
-  //   `.gridSquare_${defendingPlayer.name}`
-  // );
-
   const gridTargetHandler = (event) => {
     if (event.target.classList.contains("gridSquare")) {
       removeActiveGridSquareHighlight();

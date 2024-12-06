@@ -38,6 +38,38 @@ function computerTarget(
   }, delay);
 }
 
+async function computerTargetAsync(
+  chooseRandomGridCoords,
+  numComputerTargets,
+  computerTargetingTime,
+  players,
+  playMoveAfterCheckSunk,
+  uiUpdater
+) {
+  let count = 0;
+
+  while (count < numComputerTargets) {
+    // choose random co-ords for computer
+    const [row, column] = chooseRandomGridCoords(players);
+
+    // check co-ords for dupe
+    if (checkDupeGridSquare(players["playerOne"], row, column)) {
+      continue; // skip iteration as a dupe
+    } else {
+      count++;
+    }
+    // Pass UI updates to the function passed as an argument
+    uiUpdater(row, column);
+
+    // Wait for the delay before continuing
+    await new Promise((resolve) => setTimeout(resolve, computerTargetingTime));
+  }
+
+  // After completing the required times
+  computerAttack(players);
+  if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
+}
+
 function chooseRandomGridCoords(players) {
   return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 }
@@ -73,4 +105,10 @@ function computerAttack(players) {
   updateGameMoveStatus("userMove");
 }
 
-export { computerTarget, computerAttack, chooseRandomGridCoords };
+export {
+  computerTarget,
+  computerTargetAsync,
+  computerAttack,
+  chooseRandomGridCoords,
+  updateComputerTargetUI,
+};
