@@ -11,7 +11,6 @@ function drawGrid(player, populateGridSquare) {
       let gridSquare = document.createElement("div");
       // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
       gridSquare.classList.add("gridSquare", "gridSquare_" + player.name);
-
       gridSquare.dataset.playerName = player.name;
       gridSquare.dataset.row = row;
       gridSquare.dataset.column = column;
@@ -23,51 +22,36 @@ function drawGrid(player, populateGridSquare) {
     }
   }
 }
+
 function populateShipOnGridSquare(gridSquare, row, column, player) {
   gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
 }
 
-function highlightTargetedGridSquare(event) {
-  if (event.target.classList.contains("gridSquare")) {
-    removeActiveGridSquareHighlight();
-    event.target.classList.add("gridSquareActive");
-  }
-}
-
 // gridSquare highlighting and unhighlighting
-
-function highlightActiveGridSquare(row, column) {
+function locateActiveGridSquare(row, column) {
   const gridSquareActive = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
   );
-  gridSquareActive.classList.add("gridSquareActive");
+  activeGridSquareAddHighlight(gridSquareActive);
 }
 
-function removeActiveGridSquareHighlight() {
-  if (document.querySelector(".gridSquareActive")) {
-    const gridSquareActive = document.querySelector(".gridSquareActive");
+// gridSquare highlighting and unhighlighting
+function activeGridSquareAddHighlight(gridSquare) {
+  gridSquare.classList.add("gridSquareActive");
+}
+
+function activeGridSquareRemoveHighlight() {
+  const gridSquareActive = document.querySelector(".gridSquareActive");
+  if (gridSquareActive) {
     gridSquareActive.classList.remove("gridSquareActive");
-  } else {
-    return;
   }
 }
 
-function updateGridSquare(result, eventTarget) {
+function updateGridSquareAfterAttack(result, eventTarget) {
   const interpretation = interpretAttackResult(result);
-
   if (interpretation) {
     eventTarget.textContext = interpretation.text;
     eventTarget.classList.add(interpretation.class);
-  }
-}
-
-function TESTupdateGridSquare(result, eventTarget) {
-  if (result === "miss") {
-    eventTarget.textContent = result;
-    eventTarget.classList.add("gridSquareMiss");
-  } else if (result.ship !== null) {
-    eventTarget.textContent = result.ship;
-    eventTarget.classList.add("gridSquareHit");
   }
 }
 
@@ -245,10 +229,10 @@ function updateGameMoveStatus(status) {
 export {
   drawGrid,
   populateShipOnGridSquare,
-  highlightTargetedGridSquare,
-  highlightActiveGridSquare,
-  removeActiveGridSquareHighlight,
-  updateGridSquare,
+  activeGridSquareAddHighlight,
+  locateActiveGridSquare,
+  activeGridSquareRemoveHighlight,
+  updateGridSquareAfterAttack,
   colorGridSquares,
   unColorGridSquares,
   updateGameMoveStatus,

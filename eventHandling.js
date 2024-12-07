@@ -1,9 +1,9 @@
 import {
-  removeActiveGridSquareHighlight,
-  updateGridSquare,
+  activeGridSquareRemoveHighlight,
+  updateGridSquareAfterAttack,
   colorGridSquares,
   unColorGridSquares,
-  highlightTargetedGridSquare,
+  activeGridSquareAddHighlight,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -34,8 +34,6 @@ function setupGameSetupListeners(players) {
   // Event listeners - gameBoard
 
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
-  console.log(players);
 
   gameBoardplayerOne.addEventListener("dragenter", (event) =>
     handleShipBlockDragEvent(event, players)
@@ -260,7 +258,7 @@ function targetListener(defendingPlayer) {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
   // Update grid Square
-  const gridTargetHandler = (event) => highlightTargetedGridSquare(event);
+  const gridTargetHandler = (event) => targetGridSquare(event);
 
   // attach Listener
   addGridSquareTargetListener(gameBoardplayerTwo, gridTargetHandler);
@@ -278,6 +276,15 @@ function addGridSquareTargetListener(element, handler) {
 
 function removeGridSquareTargetListener(element, handler) {
   element.removeEventListener("mouseover", handler);
+}
+
+// targeting square highlighting
+
+function targetGridSquare(event) {
+  if (event.target.classList.contains("gridSquare")) {
+    activeGridSquareRemoveHighlight();
+    activeGridSquareAddHighlight(event.target);
+  }
 }
 
 function attackListener(
@@ -309,7 +316,7 @@ function attackListener(
           event.target.dataset.row,
           event.target.dataset.column
         );
-        updateGridSquare(attackResult, event.target);
+        updateGridSquareAfterAttack(attackResult, event.target);
         checkAllSunk(players, computerMove);
       }
     }

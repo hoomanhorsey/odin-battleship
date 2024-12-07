@@ -6,13 +6,12 @@ import {
 } from "./eventHandling.js";
 import {
   chooseRandomGridCoords,
-  computerTarget,
   computerTargetAsync,
   updateComputerTargetUI,
 } from "./computerLogic.js";
 import {
   updateGameMoveStatus,
-  removeActiveGridSquareHighlight,
+  activeGridSquareRemoveHighlight,
 } from "./display.js";
 
 let numComputerTargets = 10;
@@ -57,15 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("trigger next move removed");
 
       updateGameMoveStatus("computerTarget");
-      // removeActiveGridSquareHighlight();
-
-      // computerTarget(
-      //   chooseRandomGridCoords,
-      //   computerTargets,
-      //   computerTargetingTime,
-      //   players,
-      //   checkAllSunk(players, playerMove)
-      // );
 
       computerTargetAsync(
         chooseRandomGridCoords,
