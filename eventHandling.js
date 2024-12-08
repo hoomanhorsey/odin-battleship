@@ -60,12 +60,15 @@ function setupGameSetupListeners(players) {
 
 // Functions for event listeners
 function drag(event) {
+  // get shipType from event.target dataset
+  console.log(event.target.dataset.shipType);
+
+  // get shipBlock by ID to set class
   const shipBlock = document.getElementById(event.target.id);
-
+  console.log(shipBlock);
   shipBlock.classList.add("shipBlockDragging");
-  shipBlock.setAttribute("ship-type", event.target.id);
 
-  event.dataTransfer.setData("text", event.target.id);
+  event.dataTransfer.setData("text", event.target.dataset.shipType);
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
 }
 
@@ -73,13 +76,9 @@ function checkLegal(event, players) {
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
   const draggedElement = document.querySelector(".shipBlockDragging");
-  const shipTypeData = draggedElement?.getAttribute("ship-type");
+  const shipTypeData = draggedElement?.getAttribute("data-ship-type");
 
-  console.log(shipTypeData);
-
-  const ship = players["playerOne"].gameBoard.ships[shipTypeData[9]];
-
-  console.log(shipTypeData);
+  const ship = players["playerOne"].gameBoard.ships[shipTypeData];
 
   if (
     checkMoveLegal(
@@ -139,18 +138,17 @@ function drop(event, players) {
 
   // ship Block ID
   const shipBlockId = event.dataTransfer.getData("text");
+  console.log(shipBlockId);
 
-  console.log(event.target.id);
-  const keyGridSquare = document.getElementById(event.target.id);
+  const keyGridSquare = event.target;
 
   keyGridSquare.addEventListener("dragstart", (event) => {
     drag(event, players);
   });
 
-  keyGridSquare.setAttribute("ship-type", event.target.id);
-  const shipType = players["playerOne"].gameBoard.ships[shipBlockId[9]].type;
-  const shipLength =
-    players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
+  keyGridSquare.setAttribute("ship-type", shipBlockId);
+  const shipType = players["playerOne"].gameBoard.ships[shipBlockId].type;
+  const shipLength = players["playerOne"].gameBoard.ships[shipBlockId].length;
 
   //Initially drop grid squares to the right.
   // gridSquaresColorRight();
@@ -159,7 +157,9 @@ function drop(event, players) {
 
   console.log(event.target.id);
 
-  direction = shipBlockDirectionListener(direction, shipType, shipLength);
+  // direction = shipBlockDirectionListener(direction, shipType, shipLength);
+
+  direciton = shipBlockChangeAxisListener(direciton, shipType, shipLength);
 
   // removes the original shipBlock
   document.getElementById(shipBlockId).remove();
@@ -203,24 +203,24 @@ function shipBlockDirectionListenerKey(direction, shipType, shipLength) {
   });
 }
 
-function shipBlockDirectionListener(direction, shipType, shipLength) {
-  const gridSquareTarget = document.getElementById(event.target.id);
-  console.log(gridSquareTarget);
+// function shipBlockDirectionListener(direction, shipType, shipLength) {
+//   const gridSquareTarget = document.getElementById(event.target.id);
+//   console.log(gridSquareTarget);
 
-  gridSquareTarget.addEventListener("wheel", (event) => {
-    console.log(direction);
-    console.log(event.deltaY);
-    if (event.deltaY < 0) {
-      direction = "right";
-      gridSquaresUncolor(event, shipType, shipLength, direction);
-      return "down";
-    } else if (event.deltaY > 0) {
-      direction = "down";
-      gridSquaresUncolor(event, shipType, shipLength, direction);
-      return "right";
-    }
-  });
-}
+//   gridSquareTarget.addEventListener("wheel", (event) => {
+//     console.log(direction);
+//     console.log(event.deltaY);
+//     if (event.deltaY < 0) {
+//       direction = "right";
+//       gridSquaresUncolor(event, shipType, shipLength, direction);
+//       return "down";
+//     } else if (event.deltaY > 0) {
+//       direction = "down";
+//       gridSquaresUncolor(event, shipType, shipLength, direction);
+//       return "right";
+//     }
+//   });
+// }
 
 function handleShipBlockDragEvent(event, players) {
   event.preventDefault(); // Allow drag-and-drop functionality
@@ -280,7 +280,7 @@ function removeGridSquareTargetListener(element, handler) {
 function gridSquareTarget(event) {
   if (event.target.classList.contains("gridSquare")) {
     gridSquareNonActiveRemoveHighlight();
-    gridSquareActiveAddHighlight(event.target);
+    gridSquareActiveAddHighlight(event);
   }
 }
 
@@ -296,6 +296,8 @@ function attackListener(players, removeTargetListener, computerMove) {
     console.log(players);
 
     if (event.target.classList.contains("gridSquare")) {
+      console.log(players);
+
       // checks if the gridSquare has already been hit (dupe)
       if (
         checkDupeGridSquare(
@@ -305,6 +307,8 @@ function attackListener(players, removeTargetListener, computerMove) {
         ) === true
       ) {
         alert("already been clicked");
+        console.log("alreadybeenclicked");
+
         return;
       } else {
         // removeTargetListener();
@@ -325,6 +329,8 @@ function attackListener(players, removeTargetListener, computerMove) {
     }
   }
 
+  console.log(players["playerTwo"]);
+
   addGridSquareAttackListener(gameBoardplayerTwo, (event) =>
     gridAttackHandler(event, players)
   );
@@ -338,8 +344,14 @@ function attackListener(players, removeTargetListener, computerMove) {
   return { removeAttackListener };
 }
 
-function addGridSquareAttackListener(element, handler, players) {
-  element.addEventListener("click", (event) => handler(event, players));
+// function addGridSquareAttackListener(element, handler, players) {
+//   console.log(players);
+
+//   element.addEventListener("click", (event) => handler(event, players));
+// }
+
+function addGridSquareAttackListener(element, handler) {
+  element.addEventListener("click", handler);
 }
 
 function removeGridSquareAttackListener(element, handler) {

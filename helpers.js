@@ -96,6 +96,8 @@ function placeShipOnBoard(boardArray, row, column, direction, ship) {
 }
 
 function checkDupeGridSquare(player, row, column) {
+  console.log(player);
+
   console.log("dupe checked" + row + column);
 
   let shipObject = player.gameBoard.boardArray[row][column];

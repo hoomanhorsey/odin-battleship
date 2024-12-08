@@ -15,7 +15,7 @@ import {
 } from "./display.js";
 
 let numComputerTargets = 10;
-let computerTargetingTime = 500;
+let computerTargetingTime = 50;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)

@@ -34,18 +34,15 @@ function gridSquareActiveLocate(row, column) {
   const gridSquareActive = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
   );
+
+  console.log(gridSquareActive);
+
   gridSquareActiveAddHighlight(gridSquareActive);
 }
 
-// function gridSquareNonActiveRemoveHighlight(event) {
-//   console.log("leaving gridSquare");
-//   document
-//     .getElementById(event.target.id)
-//     .classList.remove("gridSquareDraggedOver");
-// }
 // gridSquare highlighting and unhighlighting
-function gridSquareActiveAddHighlight(gridSquare) {
-  gridSquare.classList.add("gridSquareActive");
+function gridSquareActiveAddHighlight(event) {
+  event.target.classList.add("gridSquareActive");
 }
 
 function gridSquareNonActiveRemoveHighlight() {
@@ -55,8 +52,8 @@ function gridSquareNonActiveRemoveHighlight() {
   }
 }
 
-function gridSquareUpdateAfterAttack(result, eventTarget) {
-  const interpretation = interpretAttackResult(result);
+function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
+  const interpretation = interpretAttackResult(attackResult);
 
   console.log(interpretation.text);
 
@@ -73,8 +70,9 @@ function gridSquaresColor(event, shipType, shipLength, direction) {
       let startColumn = parseInt(event.target.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
-        const gridSquareExtended = document.getElementById(
-          `playerOner${event.target.dataset.row}c${newColumn}`
+
+        const gridSquareExtended = document.querySelector(
+          `[data-row="${event.target.dataset.row}"][data-column="${newColumn}"]`
         );
         updateGridSquareExtended(gridSquareExtended, shipType, i);
       }
@@ -84,8 +82,9 @@ function gridSquaresColor(event, shipType, shipLength, direction) {
       let startRow = parseInt(event.target.dataset.row);
       for (let i = 0; i < shipLength; i++) {
         let newRow = startRow + i;
-        const gridSquareExtended = document.getElementById(
-          `playerOner${newRow}c${event.target.dataset.column}`
+
+        const gridSquareExtended = document.querySelector(
+          `[data-row="${newRow}"][data-column="${event.target.dataset.column}"]`
         );
         updateGridSquareExtended(gridSquareExtended, shipType, i);
       }
