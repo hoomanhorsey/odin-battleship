@@ -66,9 +66,16 @@ document.addEventListener("DOMContentLoaded", () => {
         numComputerTargets,
         computerTargetingTime,
         players,
+        // The function passed in below is effective what starts the next move.  I don't like how it is expressed cos it's super unclear
         checkAllSunk(players, playerMove),
+        // checkAllSunk(players, emptyTest),
+
         updateComputerTargetUI
       );
     }
   }
 });
+
+function emptyTest() {
+  console.log("empty test");
+}
