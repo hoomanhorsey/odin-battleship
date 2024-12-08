@@ -18,38 +18,44 @@ function drawGrid(player, populateGridSquare) {
 
       // ***TO DO, FOR PREFILL TESTING ONLY - I think this function is only used when playerONe is prechosen. As it reveals the position of ships.  The computer's ships will never be revealed at the outset.  So it and the populateShipOnGridSquare() as well as the arguments in drawGrid can probably be deleted.
       if (populateGridSquare) {
-        populateShipOnGridSquare(gridSquare, row, column, player);
+        gridSquarePopulateWithShip(gridSquare, row, column, player);
       }
       gridRow.append(gridSquare);
     }
   }
 }
 
-function populateShipOnGridSquare(gridSquare, row, column, player) {
+function gridSquarePopulateWithShip(gridSquare, row, column, player) {
   gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
 }
 
 // gridSquare highlighting and unhighlighting
-function locateActiveGridSquare(row, column) {
+function gridSquareActiveLocate(row, column) {
   const gridSquareActive = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
   );
-  activeGridSquareAddHighlight(gridSquareActive);
+  gridSquareActiveAddHighlight(gridSquareActive);
 }
 
+// function gridSquareNonActiveRemoveHighlight(event) {
+//   console.log("leaving gridSquare");
+//   document
+//     .getElementById(event.target.id)
+//     .classList.remove("gridSquareDraggedOver");
+// }
 // gridSquare highlighting and unhighlighting
-function activeGridSquareAddHighlight(gridSquare) {
+function gridSquareActiveAddHighlight(gridSquare) {
   gridSquare.classList.add("gridSquareActive");
 }
 
-function activeGridSquareRemoveHighlight() {
+function gridSquareNonActiveRemoveHighlight() {
   const gridSquareActive = document.querySelector(".gridSquareActive");
   if (gridSquareActive) {
     gridSquareActive.classList.remove("gridSquareActive");
   }
 }
 
-function updateGridSquareAfterAttack(result, eventTarget) {
+function gridSquareUpdateAfterAttack(result, eventTarget) {
   const interpretation = interpretAttackResult(result);
 
   console.log(interpretation.text);
@@ -60,7 +66,7 @@ function updateGridSquareAfterAttack(result, eventTarget) {
   }
 }
 
-function colorGridSquares(event, shipType, shipLength, direction) {
+function gridSquaresColor(event, shipType, shipLength, direction) {
   // FILLING IN GRIDS - at direction specified in parameters
   switch (direction) {
     case "right":
@@ -83,7 +89,6 @@ function colorGridSquares(event, shipType, shipLength, direction) {
         );
         updateGridSquareExtended(gridSquareExtended, shipType, i);
       }
-
       break;
   }
 }
@@ -105,7 +110,7 @@ function updateGridSquareExtended(gridSquareExtended, shipType, i) {
   gridSquareExtended.textContent = shipType;
 }
 
-function unColorGridSquares(event, shipType, shipLength, direction) {
+function gridSquaresUncolor(event, shipType, shipLength, direction) {
   console.log(direction);
 
   if (direction === "down") {
@@ -131,7 +136,7 @@ function unColorGridSquares(event, shipType, shipLength, direction) {
     // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
     // creating initial function to remove gridSquares from the right only.
     // TODO, refactor logic to make it a utility function
-    colorGridSquares(event, shipType, shipLength, direction);
+    gridSquaresColor(event, shipType, shipLength, direction);
 
     return "right";
   } else {
@@ -156,12 +161,12 @@ function unColorGridSquares(event, shipType, shipLength, direction) {
     // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
     // creating initial function to remove gridSquares from the right only.
     // TODO, refactor logic to make it a utility function
-    colorGridSquares(event, shipType, shipLength, direction);
+    gridSquaresColor(event, shipType, shipLength, direction);
   }
   return "down";
 }
 
-function unColorGridSquaresDown(
+function gridSquaresUncolorDown(
   event,
   shipType,
   shipLength,
@@ -188,7 +193,7 @@ function unColorGridSquaresDown(
   // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
   // creating initial function to remove gridSquares from the right only.
   // TODO, refactor logic to make it a utility function
-  colorGridSquares(event, shipType, shipLength, direction);
+  gridSquaresColor(event, shipType, shipLength, direction);
 }
 
 function removeGridSquareExtended(gridSquareExtended) {
@@ -233,12 +238,14 @@ function updateGameMoveStatus(status) {
 
 export {
   drawGrid,
-  populateShipOnGridSquare,
-  activeGridSquareAddHighlight,
-  locateActiveGridSquare,
-  activeGridSquareRemoveHighlight,
-  updateGridSquareAfterAttack,
-  colorGridSquares,
-  unColorGridSquares,
+  gridSquarePopulateWithShip,
+  gridSquareActiveAddHighlight,
+  gridSquareNonActiveRemoveHighlight,
+  gridSquareActiveLocate,
+  gridSquareUpdateAfterAttack,
+  gridSquaresColor,
+  gridSquaresUncolor,
   updateGameMoveStatus,
 };
+
+gridSquaresUncolor;

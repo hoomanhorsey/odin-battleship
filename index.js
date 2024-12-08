@@ -11,7 +11,7 @@ import {
 } from "./computerLogic.js";
 import {
   updateGameMoveStatus,
-  activeGridSquareRemoveHighlight,
+  gridSquareNonActiveRemoveHighlight,
 } from "./display.js";
 
 let numComputerTargets = 10;

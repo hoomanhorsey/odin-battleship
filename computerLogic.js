@@ -1,8 +1,8 @@
 import { checkDupeGridSquare } from "./eventHandling.js";
 import {
-  locateActiveGridSquare,
-  activeGridSquareRemoveHighlight,
-  updateGridSquareAfterAttack,
+  gridSquareActiveLocate,
+  gridSquareNonActiveRemoveHighlight,
+  gridSquareUpdateAfterAttack,
   updateGameMoveStatus,
 } from "./display.js";
 
@@ -43,8 +43,8 @@ function chooseRandomGridCoords(players) {
 }
 
 function updateComputerTargetUI(row, column) {
-  activeGridSquareRemoveHighlight();
-  locateActiveGridSquare(row, column);
+  gridSquareNonActiveRemoveHighlight();
+  gridSquareActiveLocate(row, column);
 }
 
 // function chooseRandomGridCoords(players) {
@@ -68,7 +68,7 @@ function computerAttack(players) {
   );
 
   console.log(attackResult);
-  updateGridSquareAfterAttack(attackResult, gridSquareActive);
+  gridSquareUpdateAfterAttack(attackResult, gridSquareActive);
 
   updateGameMoveStatus("userMove");
 }

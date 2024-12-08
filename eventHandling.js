@@ -1,9 +1,9 @@
 import {
-  activeGridSquareRemoveHighlight,
-  updateGridSquareAfterAttack,
-  colorGridSquares,
-  unColorGridSquares,
-  activeGridSquareAddHighlight,
+  gridSquareNonActiveRemoveHighlight,
+  gridSquareUpdateAfterAttack,
+  gridSquaresColor,
+  gridSquaresUncolor,
+  gridSquareActiveAddHighlight,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -114,19 +114,19 @@ function dragEnd(event) {
   gameBoardplayerOne.classList.add("gameBoardLegal");
 }
 
-function highlightGridSquareAdd(event) {
-  console.log("entering gridSquare");
-  document
-    .getElementById(event.target.id)
-    .classList.add("gridSquareDraggedOver");
-}
+// function gridSquareActiveAddHighlight(event) {
+//   console.log("entering gridSquare");
+//   document
+//     .getElementById(event.target.id)
+//     .classList.add("gridSquareDraggedOver");
+// }
 
-function highlightGridSquareRemove(event) {
-  console.log("leaving gridSquare");
-  document
-    .getElementById(event.target.id)
-    .classList.remove("gridSquareDraggedOver");
-}
+// function gridSquareNonActiveRemoveHighlight(event) {
+//   console.log("leaving gridSquare");
+//   document
+//     .getElementById(event.target.id)
+//     .classList.remove("gridSquareDraggedOver");
+// }
 
 function allowDrop(event) {
   event.preventDefault();
@@ -153,9 +153,9 @@ function drop(event, players) {
     players["playerOne"].gameBoard.ships[shipBlockId[9]].length;
 
   //Initially drop grid squares to the right.
-  // colorGridSquaresRight();
+  // gridSquaresColorRight();
 
-  const keySquareId = colorGridSquares(event, shipType, shipLength, "right");
+  const keySquareId = gridSquaresColor(event, shipType, shipLength, "right");
 
   console.log(event.target.id);
 
@@ -193,11 +193,11 @@ function shipBlockDirectionListenerKey(direction, shipType, shipLength) {
     // console.log(event.deltaY);
     // if (event.deltaY < 0) {
     //   direction = "right";
-    //   unColorGridSquares(event, shipType, shipLength, direction);
+    //   gridSquaresUncolor(event, shipType, shipLength, direction);
     //   return "down";
     // } else if (event.deltaY > 0) {
     //   direction = "down";
-    //   unColorGridSquares(event, shipType, shipLength, direction);
+    //   gridSquaresUncolor(event, shipType, shipLength, direction);
     //   return "right";
     // }
   });
@@ -212,11 +212,11 @@ function shipBlockDirectionListener(direction, shipType, shipLength) {
     console.log(event.deltaY);
     if (event.deltaY < 0) {
       direction = "right";
-      unColorGridSquares(event, shipType, shipLength, direction);
+      gridSquaresUncolor(event, shipType, shipLength, direction);
       return "down";
     } else if (event.deltaY > 0) {
       direction = "down";
-      unColorGridSquares(event, shipType, shipLength, direction);
+      gridSquaresUncolor(event, shipType, shipLength, direction);
       return "right";
     }
   });
@@ -233,13 +233,13 @@ function handleShipBlockDragEvent(event, players) {
       switch (event.type) {
         case "dragenter":
           checkLegal(event, players);
-          highlightGridSquareAdd(event); // Your logic for dragenter
+          gridSquareActiveAddHighlight(event); // Your logic for dragenter
           break;
         case "dragover":
           allowDrop(event, players); // Your logic for dragover
           break;
         case "dragleave":
-          highlightGridSquareRemove(event, players); // Your logic for dragleave
+          gridSquareNonActiveRemoveHighlight(); // Your logic for dragleave
           break;
         case "dragend":
           dragEnd(event, players);
@@ -258,12 +258,12 @@ function targetListener() {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
   // attach Listener
-  addGridSquareTargetListener(gameBoardplayerTwo, targetGridSquare);
+  addGridSquareTargetListener(gameBoardplayerTwo, gridSquareTarget);
 
   // return function to remove listeners
   function removeTargetListener() {
     console.log("remove target listener called");
-    removeGridSquareTargetListener(gameBoardplayerTwo, targetGridSquare);
+    removeGridSquareTargetListener(gameBoardplayerTwo, gridSquareTarget);
   }
   return removeTargetListener;
 }
@@ -277,10 +277,10 @@ function removeGridSquareTargetListener(element, handler) {
 }
 
 // targeting square highlighting
-function targetGridSquare(event) {
+function gridSquareTarget(event) {
   if (event.target.classList.contains("gridSquare")) {
-    activeGridSquareRemoveHighlight();
-    activeGridSquareAddHighlight(event.target);
+    gridSquareNonActiveRemoveHighlight();
+    gridSquareActiveAddHighlight(event.target);
   }
 }
 
@@ -316,7 +316,7 @@ function attackListener(players, removeTargetListener, computerMove) {
           event.target.dataset.row,
           event.target.dataset.column
         );
-        updateGridSquareAfterAttack(attackResult, event.target);
+        gridSquareUpdateAfterAttack(attackResult, event.target);
 
         checkAllSunk(players, () =>
           computerMove(removeTargetListener, removeAttackListener)

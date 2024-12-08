@@ -1,9 +1,9 @@
 import { Player } from "./gameObjects.js";
 import {
   drawGrid,
-  populateShipOnGridSquare,
-  colorGridSquares,
-  unColorGridSquares,
+  gridSquarePopulateWithShip,
+  gridSquaresColor,
+  gridSquaresUncolor,
 } from "./display.js";
 import { checkMoveLegal } from "./helpers.js";
 import { setupGameSetupListeners } from "./eventHandling.js";
@@ -13,8 +13,8 @@ function gameInit() {
   // prefill positions
 
   // draw gameBoard grid
-  drawGrid(players["playerOne"], populateShipOnGridSquare);
-  drawGrid(players["playerTwo"], populateShipOnGridSquare);
+  drawGrid(players["playerOne"], gridSquarePopulateWithShip);
+  drawGrid(players["playerTwo"], gridSquarePopulateWithShip);
 
   // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
   // gameSetUp_positionPreFill(players);
