@@ -254,20 +254,18 @@ function handleShipBlockDragEvent(event, players) {
   }
 }
 
-function targetListener(defendingPlayer) {
+function targetListener() {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
-  // Update grid Square
-  const gridTargetHandler = (event) => targetGridSquare(event);
-
   // attach Listener
-  addGridSquareTargetListener(gameBoardplayerTwo, gridTargetHandler);
+  addGridSquareTargetListener(gameBoardplayerTwo, targetGridSquare);
 
   // return function to remove listeners
-  return () => {
+  function removeTargetListener() {
     console.log("remove target listener called");
-    removeGridSquareTargetListener(gameBoardplayerTwo, gridTargetHandler);
-  };
+    removeGridSquareTargetListener(gameBoardplayerTwo, targetGridSquare);
+  }
+  return removeTargetListener;
 }
 
 function addGridSquareTargetListener(element, handler) {
@@ -279,7 +277,6 @@ function removeGridSquareTargetListener(element, handler) {
 }
 
 // targeting square highlighting
-
 function targetGridSquare(event) {
   if (event.target.classList.contains("gridSquare")) {
     activeGridSquareRemoveHighlight();
@@ -287,18 +284,19 @@ function targetGridSquare(event) {
   }
 }
 
-function attackListener(
-  defendingPlayer, // TODO, might be redundant
-  players,
-  removeTargetListener,
-  computerMove
-) {
-  const gameBoardPlayerTwo = document.querySelector(".gameBoardplayerTwo");
+function attackListener(players, removeTargetListener, computerMove) {
+  console.log(players);
 
-  const gridAttackHandler = (event) => {
-    console.log(event.target.dataset.row, event.target.dataset.column);
+  // gets the playerBoard
+  const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
+
+  // gridAttackHandler that actually handles the attack.
+  function gridAttackHandler(event, players) {
+    console.log(event);
+    console.log(players);
 
     if (event.target.classList.contains("gridSquare")) {
+      // checks if the gridSquare has already been hit (dupe)
       if (
         checkDupeGridSquare(
           players["playerTwo"],
@@ -309,26 +307,43 @@ function attackListener(
         alert("already been clicked");
         return;
       } else {
-        removeTargetListener();
-        removeAttackListener();
+        // removeTargetListener();
+        // removeAttackListener();
+
+        // calls receive Attack to update boardArray if there is a succeful attack
 
         let attackResult = players["playerTwo"].gameBoard.receiveAttack(
           event.target.dataset.row,
           event.target.dataset.column
         );
         updateGridSquareAfterAttack(attackResult, event.target);
-        checkAllSunk(players, computerMove);
+
+        checkAllSunk(players, () =>
+          computerMove(removeTargetListener, removeAttackListener)
+        );
       }
     }
-  };
+  }
 
-  gameBoardPlayerTwo.addEventListener("click", gridAttackHandler);
+  addGridSquareAttackListener(gameBoardplayerTwo, (event) =>
+    gridAttackHandler(event, players)
+  );
 
   // function to remove attack listener
   function removeAttackListener() {
     console.log("remove attack listener called");
-    gameBoardplayerTwo.removeEventListener("click", gridAttackHandler);
+    removeGridSquareAttackListener(gameBoardplayerTwo, gridAttackHandler);
   }
+
+  return { removeAttackListener };
+}
+
+function addGridSquareAttackListener(element, handler, players) {
+  element.addEventListener("click", (event) => handler(event, players));
+}
+
+function removeGridSquareAttackListener(element, handler) {
+  element.addEventListener("click", handler);
 }
 
 function checkAllSunk(players, nextMoveCallback) {

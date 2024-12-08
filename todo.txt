@@ -4,7 +4,10 @@
 
 
 *** targetListener
-It's active while player is picking object. May need to trigger after set up.
+It's active while player is picking object. It's also active when computer is attacking. 
+
+I think it's a timing thing.  The 'removeListeners' don't seem to be triggering. Or another function is triggering before they get a chance to trigger.
+May need to trigger after set up.
 
 - Make 'computer move' text appear more gradually
 

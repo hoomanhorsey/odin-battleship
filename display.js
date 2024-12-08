@@ -10,11 +10,13 @@ function drawGrid(player, populateGridSquare) {
     for (let column = 0; column < 10; column++) {
       let gridSquare = document.createElement("div");
       // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
-      gridSquare.classList.add("gridSquare", "gridSquare_" + player.name);
+      gridSquare.classList.add("gridSquare");
+      // previously added this class, but prob redundant - "gridSquare_" + player.name
       gridSquare.dataset.playerName = player.name;
       gridSquare.dataset.row = row;
       gridSquare.dataset.column = column;
 
+      // ***TO DO, FOR PREFILL TESTING ONLY - I think this function is only used when playerONe is prechosen. As it reveals the position of ships.  The computer's ships will never be revealed at the outset.  So it and the populateShipOnGridSquare() as well as the arguments in drawGrid can probably be deleted.
       if (populateGridSquare) {
         populateShipOnGridSquare(gridSquare, row, column, player);
       }
@@ -49,8 +51,11 @@ function activeGridSquareRemoveHighlight() {
 
 function updateGridSquareAfterAttack(result, eventTarget) {
   const interpretation = interpretAttackResult(result);
+
+  console.log(interpretation.text);
+
   if (interpretation) {
-    eventTarget.textContext = interpretation.text;
+    eventTarget.textContent = interpretation.text;
     eventTarget.classList.add(interpretation.class);
   }
 }
@@ -89,7 +94,7 @@ function updateGridSquareExtended(gridSquareExtended, shipType, i) {
   }
   gridSquareExtended.classList.remove(
     "gridSquare",
-    "gridSquare_playerOne",
+    // "gridSquare_playerOne",
     "gridSquareDraggedOver"
   );
 
@@ -192,8 +197,8 @@ function removeGridSquareExtended(gridSquareExtended) {
     "gridSquareContainShipC"
   );
   gridSquareExtended.classList.add(
-    "gridSquare",
-    "gridSquare_playerOne"
+    "gridSquare"
+    // "gridSquare_playerOne"
     // "gridSquareDraggedOver"
   );
   gridSquareExtended.removeAttribute("draggable");

@@ -27,22 +27,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let attackingPlayer = players["playerOne"];
   let defendingPlayer = players["playerTwo"];
 
-  // start game turn event loop
-  playerMove();
+  // start game turn ev ent loop
+  const { removeTargetListener, removeAttackListener } = playerMove();
 
   function playerMove() {
     // targetListener
-    const removeTargetListener = targetListener(defendingPlayer);
+    const removeTargetListener = targetListener();
     //  attackingListener
-    attackListener(
-      defendingPlayer,
+    const removeAttackListener = attackListener(
       players,
       removeTargetListener,
       computerMove
     );
+    return { removeTargetListener, removeAttackListener };
   }
 
-  function computerMove() {
+  function computerMove(removeTargetListener, removeAttackListener) {
+    removeTargetListener();
+    removeAttackListener();
+    // console.log(removeTargetListener);
+    // console.log(removeAttackListener);
     updateGameMoveStatus("computerMove");
 
     // TODOIs this a mix of concerns?
