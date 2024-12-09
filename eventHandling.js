@@ -78,13 +78,18 @@ function checkLegal(event, players) {
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
 
   const ship = players["playerOne"].gameBoard.ships[shipTypeData];
+  console.log(
+    event.target.dataset.row,
+    event.target.dataset.column,
+    ship.type,
+    ship.length
+  );
 
   if (
     checkMoveLegal(
       parseInt(event.target.dataset.row),
       parseInt(event.target.dataset.column),
       "right",
-      ship.type,
       ship.length
     ) === false
   ) {
