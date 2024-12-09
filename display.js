@@ -34,15 +34,12 @@ function gridSquareActiveLocate(row, column) {
   const gridSquareActive = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
   );
-
-  console.log(gridSquareActive);
-
   gridSquareActiveAddHighlight(gridSquareActive);
 }
 
 // gridSquare highlighting and unhighlighting
-function gridSquareActiveAddHighlight(event) {
-  event.target.classList.add("gridSquareActive");
+function gridSquareActiveAddHighlight(eventTarget) {
+  eventTarget.classList.add("gridSquareActive");
 }
 
 function gridSquareNonActiveRemoveHighlight() {

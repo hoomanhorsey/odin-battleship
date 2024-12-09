@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // start game turn ev ent loop
   const { removeTargetListener, removeAttackListener } = playerMove();
 
+  //  playerMoves function
   function playerMove() {
     // targetListener
     const removeTargetListener = targetListener();
@@ -69,13 +70,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // The function passed in below is effective what starts the next move.  I don't like how it is expressed cos it's super unclear
         checkAllSunk(players, playerMove),
         // checkAllSunk(players, emptyTest),
-
         updateComputerTargetUI
       );
     }
   }
 });
-
+// TODO - get rid of eventually
 function emptyTest() {
   console.log("empty test");
 }

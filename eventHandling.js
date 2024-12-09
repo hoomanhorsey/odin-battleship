@@ -210,7 +210,7 @@ function handleShipBlockDragEvent(event, players) {
       switch (event.type) {
         case "dragenter":
           checkLegal(event, players);
-          gridSquareActiveAddHighlight(event); // Your logic for dragenter
+          gridSquareActiveAddHighlight(event.target); // Your logic for dragenter
           break;
         case "dragover":
           allowDrop(event, players); // Your logic for dragover
@@ -245,6 +245,8 @@ function targetListener() {
   return removeTargetListener;
 }
 
+// functions to support targetListener
+
 function addGridSquareTargetListener(element, handler) {
   element.addEventListener("mouseover", handler);
 }
@@ -257,7 +259,7 @@ function removeGridSquareTargetListener(element, handler) {
 function gridSquareTarget(event) {
   if (event.target.classList.contains("gridSquare")) {
     gridSquareNonActiveRemoveHighlight();
-    gridSquareActiveAddHighlight(event);
+    gridSquareActiveAddHighlight(event.target);
   }
 }
 
@@ -283,9 +285,8 @@ function attackListener(players, removeTargetListener, computerMove) {
 
         return;
       } else {
-        // removeTargetListener();
-        // removeAttackListener();
-
+        removeTargetListener();
+        removeAttackListener();
         // calls receive Attack to update boardArray if there is a succeful attack
 
         let attackResult = players["playerTwo"].gameBoard.receiveAttack(
@@ -362,58 +363,3 @@ export {
 //   shipBlockId[9],
 //   players["playerOne"]
 // );
-
-function shipBlockDirectionListenerKey(direction, shipType, shipLength) {
-  const gridSquareTarget = document.getElementById(event.target.id);
-  console.log(gridSquareTarget);
-
-  gridSquareTarget.addEventListener("keydown", (event) => {
-    console.log(event.key);
-    // console.log(direction);
-    // console.log(event.deltaY);
-    // if (event.deltaY < 0) {
-    //   direction = "right";
-    //   gridSquaresUncolor(event, shipType, shipLength, direction);
-    //   return "down";
-    // } else if (event.deltaY > 0) {
-    //   direction = "down";
-    //   gridSquaresUncolor(event, shipType, shipLength, direction);
-    //   return "right";
-    // }
-  });
-}
-
-// function shipBlockDirectionListener(direction, shipType, shipLength) {
-//   const gridSquareTarget = document.getElementById(event.target.id);
-//   console.log(gridSquareTarget);
-
-//   gridSquareTarget.addEventListener("wheel", (event) => {
-//     console.log(direction);
-//     console.log(event.deltaY);
-//     if (event.deltaY < 0) {
-//       direction = "right";
-//       gridSquaresUncolor(event, shipType, shipLength, direction);
-//       return "down";
-//     } else if (event.deltaY > 0) {
-//       direction = "down";
-//       gridSquaresUncolor(event, shipType, shipLength, direction);
-//       return "right";
-//     }
-//   });
-// }
-
-function ashipBlockChangeAxis(gridSquareMain, shipType, shipLength, direction) {
-  console.log("shipBLockChange Axis direciton " + direction);
-  console.log(gridSquareMain, shipType, shipLength, direction);
-
-  if (direction === "right") {
-    gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction);
-    console.log(gridSquareMain);
-
-    direction = "down";
-
-    console.log(direction);
-
-    return direction;
-  }
-}
