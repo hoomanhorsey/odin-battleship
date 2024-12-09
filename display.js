@@ -63,43 +63,45 @@ function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
   }
 }
 
-function gridSquaresColor(event, shipType, shipLength, direction) {
+function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
   // FILLING IN GRIDS - at direction specified in parameters
+
   switch (direction) {
     case "right":
-      let startColumn = parseInt(event.target.dataset.column);
+      let startColumn = parseInt(gridSquareMain.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
 
         const gridSquareExtended = document.querySelector(
-          `[data-row="${event.target.dataset.row}"][data-column="${newColumn}"]`
+          `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
         );
-        updateGridSquareExtended(gridSquareExtended, shipType, i);
+        gridSquareExtendedUpdate(gridSquareExtended, shipType, i);
       }
       break;
 
     case "down":
-      let startRow = parseInt(event.target.dataset.row);
+      let startRow = parseInt(gridSquareMain.dataset.row);
       for (let i = 0; i < shipLength; i++) {
         let newRow = startRow + i;
 
         const gridSquareExtended = document.querySelector(
-          `[data-row="${newRow}"][data-column="${event.target.dataset.column}"]`
+          `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
         );
-        updateGridSquareExtended(gridSquareExtended, shipType, i);
+        gridSquareExtendedUpdate(gridSquareExtended, shipType, i);
       }
       break;
   }
 }
 
-function updateGridSquareExtended(gridSquareExtended, shipType, i) {
+function gridSquareExtendedUpdate(gridSquareExtended, shipType, i) {
+  console.log("callilng gridSquareExtendedUpdate");
+
   if (i === 0) {
     gridSquareExtended.setAttribute("draggable", true);
   }
   gridSquareExtended.classList.remove(
-    "gridSquare",
-    // "gridSquare_playerOne",
-    "gridSquareDraggedOver"
+    "gridSquare"
+    // "gridSquareDraggedOver" // redundandt
   );
 
   gridSquareExtended.classList.add(
@@ -109,102 +111,37 @@ function updateGridSquareExtended(gridSquareExtended, shipType, i) {
   gridSquareExtended.textContent = shipType;
 }
 
-function gridSquaresUncolor(event, shipType, shipLength, direction) {
-  console.log(direction);
-
-  if (direction === "down") {
-    console.log("uncolourGrid Squares");
-    console.log(event.target);
-    // console.log(event, shipBlockId, "down");
-    console.log(event.target.id);
-
-    const startingGridSquare = document.getElementById(event.target.id);
-
-    console.log(event.target.dataset.row);
-    console.log(event.target.dataset.column);
-
-    let startColumn = parseInt(event.target.dataset.column);
+function gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction) {
+  if (direction === "right") {
+    let startColumn = parseInt(gridSquareMain.dataset.column);
     for (let i = 0; i < 5; i++) {
       let newColumn = startColumn + i;
-      const gridSquareExtended = document.getElementById(
-        `playerOner${event.target.dataset.row}c${newColumn}`
+      const gridSquareExtended = document.querySelector(
+        `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
       );
-      removeGridSquareExtended(gridSquareExtended);
+
+      gridSquareExtendedRemove(gridSquareExtended);
     }
-
-    // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
-    // creating initial function to remove gridSquares from the right only.
-    // TODO, refactor logic to make it a utility function
-    gridSquaresColor(event, shipType, shipLength, direction);
-
-    return "right";
   } else {
-    console.log("uncolourGrid SquaresDown");
-    console.log(event.target);
-    console.log(event.target.id);
-
-    const startingGridSquare = document.getElementById(event.target.id);
-
-    console.log(event.target.dataset.row);
-    console.log(event.target.dataset.column);
-
-    let startRow = parseInt(event.target.dataset.row);
+    let startRow = parseInt(gridSquareMain.dataset.row);
     for (let i = 0; i < 5; i++) {
       let newRow = startRow + i;
-      const gridSquareExtended = document.getElementById(
-        `playerOner${newRow}c${event.target.dataset.column}`
+      const gridSquareExtended = document.querySelector(
+        `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
       );
-      removeGridSquareExtended(gridSquareExtended);
+      gridSquareExtendedRemove(gridSquareExtended);
     }
-
-    // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
-    // creating initial function to remove gridSquares from the right only.
-    // TODO, refactor logic to make it a utility function
-    gridSquaresColor(event, shipType, shipLength, direction);
   }
-  return "down";
 }
 
-function gridSquaresUncolorDown(
-  event,
-  shipType,
-  shipLength,
-  direction = "right"
-) {
-  console.log("uncolourGrid SquaresDown");
-  console.log(event.target);
-  console.log(event.target.id);
+function gridSquareExtendedRemove(gridSquareExtended) {
+  gridSquareExtended.classList.add("gridSquare");
 
-  const startingGridSquare = document.getElementById(event.target.id);
-
-  console.log(event.target.dataset.row);
-  console.log(event.target.dataset.column);
-
-  let startRow = parseInt(event.target.dataset.row);
-  for (let i = 0; i < 5; i++) {
-    let newColumn = startRow + i;
-    const gridSquareExtended = document.getElementById(
-      `playerOner${newColumn}c${event.target.dataset.row}`
-    );
-    removeGridSquareExtended(gridSquareExtended);
-  }
-
-  // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
-  // creating initial function to remove gridSquares from the right only.
-  // TODO, refactor logic to make it a utility function
-  gridSquaresColor(event, shipType, shipLength, direction);
-}
-
-function removeGridSquareExtended(gridSquareExtended) {
   gridSquareExtended.classList.remove(
     "gridSquareContainShip",
     "gridSquareContainShipC"
   );
-  gridSquareExtended.classList.add(
-    "gridSquare"
-    // "gridSquare_playerOne"
-    // "gridSquareDraggedOver"
-  );
+  gridSquareExtended.classList.add("gridSquare");
   gridSquareExtended.removeAttribute("draggable");
   gridSquareExtended.textContent = "";
 }
@@ -247,4 +184,32 @@ export {
   updateGameMoveStatus,
 };
 
-gridSquaresUncolor;
+// function gridSquaresUncolorDown(
+//   event,
+//   shipType,
+//   shipLength,
+//   direction = "right"
+// ) {
+//   console.log("uncolourGrid SquaresDown");
+//   console.log(event.target);
+//   console.log(event.target.id);
+
+//   const startingGridSquare = document.getElementById(event.target.id);
+
+//   console.log(event.target.dataset.row);
+//   console.log(event.target.dataset.column);
+
+//   let startRow = parseInt(event.target.dataset.row);
+//   for (let i = 0; i < 5; i++) {
+//     let newColumn = startRow + i;
+//     const gridSquareExtended = document.getElementById(
+//       `playerOner${newColumn}c${event.target.dataset.row}`
+//     );
+//     removeGridSquareExtended(gridSquareExtended);
+//   }
+
+//   // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
+//   // creating initial function to remove gridSquares from the right only.
+//   // TODO, refactor logic to make it a utility function
+//   gridSquaresColor(event, shipType, shipLength, direction);
+// }

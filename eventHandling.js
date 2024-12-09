@@ -65,7 +65,6 @@ function drag(event) {
 
   // get shipBlock by ID to set class
   const shipBlock = document.getElementById(event.target.id);
-  console.log(shipBlock);
   shipBlock.classList.add("shipBlockDragging");
 
   event.dataTransfer.setData("text", event.target.dataset.shipType);
@@ -113,114 +112,92 @@ function dragEnd(event) {
   gameBoardplayerOne.classList.add("gameBoardLegal");
 }
 
-// function gridSquareActiveAddHighlight(event) {
-//   console.log("entering gridSquare");
-//   document
-//     .getElementById(event.target.id)
-//     .classList.add("gridSquareDraggedOver");
-// }
-
-// function gridSquareNonActiveRemoveHighlight(event) {
-//   console.log("leaving gridSquare");
-//   document
-//     .getElementById(event.target.id)
-//     .classList.remove("gridSquareDraggedOver");
-// }
-
 function allowDrop(event) {
   event.preventDefault();
 }
 
 function drop(event, players) {
   event.preventDefault();
-  let direction = "down";
-  console.log(players);
 
   // ship Block ID
   const shipBlockId = event.dataTransfer.getData("text");
-  console.log(shipBlockId);
 
-  const keyGridSquare = event.target;
+  const gridSquareMain = event.target;
 
-  keyGridSquare.addEventListener("dragstart", (event) => {
+  gridSquareMain.addEventListener("dragstart", (event) => {
     drag(event, players);
   });
 
-  keyGridSquare.setAttribute("ship-type", shipBlockId);
+  gridSquareMain.setAttribute("ship-type", shipBlockId);
+
   const shipType = players["playerOne"].gameBoard.ships[shipBlockId].type;
   const shipLength = players["playerOne"].gameBoard.ships[shipBlockId].length;
 
-  //Initially drop grid squares to the right.
-  // gridSquaresColorRight();
+  // //  ****TODO IS THAT KEYSQUAREID used anywhere?
+  // const keySquareId = gridSquaresColor(
+  //   gridSquareMain,
+  //   shipType,
+  //   shipLength,
+  //   direction
+  // );
 
-  const keySquareId = gridSquaresColor(event, shipType, shipLength, "right");
+  //Initial paint
+  let direction = "right";
 
-  console.log(event.target.id);
+  direction = shipBlockPaintDirection(
+    gridSquareMain,
+    shipType,
+    shipLength,
+    direction
+  );
 
-  // direction = shipBlockDirectionListener(direction, shipType, shipLength);
-
-  direciton = shipBlockChangeAxisListener(direciton, shipType, shipLength);
+  direction = shipBlockChangeAxisListener(
+    gridSquareMain,
+    shipType,
+    shipLength,
+    direction
+  );
 
   // removes the original shipBlock
-  document.getElementById(shipBlockId).remove();
-
-  // following actually appends the item to the block
-  // event.target.appendChild(document.getElementById(shipBlockId));
-
-  // THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
-  //    CALLING PLACESHIP FUNCTION
-  // ALTHOUGH DO I NEED TO PUT SHIPS INTO ARRAY TO DETECT COLLISIONS? I THINK I DO
-  // placeShip function sends ships to array
-  // TODO
-  // but don't placeShip yet okay, wait til all ships have been dragged on:
-  // also create a button that triggers final placement
-  // players["playerOne"].gameBoard.placeShip(
-  //   event.target.id[10],
-  //   event.target.id[12],
-  //   "right",
-  //   shipBlockId[9],
-  //   players["playerOne"]
-  // );
+  document.querySelector(`[data-ship-type="${shipBlockId}"]`).remove();
 }
 
-function shipBlockDirectionListenerKey(direction, shipType, shipLength) {
-  const gridSquareTarget = document.getElementById(event.target.id);
-  console.log(gridSquareTarget);
-
-  gridSquareTarget.addEventListener("keydown", (event) => {
-    console.log(event.key);
-    // console.log(direction);
-    // console.log(event.deltaY);
-    // if (event.deltaY < 0) {
-    //   direction = "right";
-    //   gridSquaresUncolor(event, shipType, shipLength, direction);
-    //   return "down";
-    // } else if (event.deltaY > 0) {
-    //   direction = "down";
-    //   gridSquaresUncolor(event, shipType, shipLength, direction);
-    //   return "right";
-    // }
-  });
+function shipBlockChangeAxisListener(
+  gridSquareMain,
+  shipType,
+  shipLength,
+  direction
+) {
+  console.log("<<<called shipBlockChangeAxisListener");
+  gridSquareMain.addEventListener(
+    "click",
+    () =>
+      (direction = shipBlockPaintDirection(
+        gridSquareMain,
+        shipType,
+        shipLength,
+        direction
+      ))
+    // gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction)
+  );
 }
 
-// function shipBlockDirectionListener(direction, shipType, shipLength) {
-//   const gridSquareTarget = document.getElementById(event.target.id);
-//   console.log(gridSquareTarget);
-
-//   gridSquareTarget.addEventListener("wheel", (event) => {
-//     console.log(direction);
-//     console.log(event.deltaY);
-//     if (event.deltaY < 0) {
-//       direction = "right";
-//       gridSquaresUncolor(event, shipType, shipLength, direction);
-//       return "down";
-//     } else if (event.deltaY > 0) {
-//       direction = "down";
-//       gridSquaresUncolor(event, shipType, shipLength, direction);
-//       return "right";
-//     }
-//   });
-// }
+function shipBlockPaintDirection(
+  gridSquareMain,
+  shipType,
+  shipLength,
+  direction
+) {
+  if (direction === "right") {
+    gridSquaresUncolor(gridSquareMain, shipType, shipLength, "down");
+    gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
+    return "down";
+  } else {
+    gridSquaresUncolor(gridSquareMain, shipType, shipLength, "right");
+    gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
+    return "right";
+  }
+}
 
 function handleShipBlockDragEvent(event, players) {
   event.preventDefault(); // Allow drag-and-drop functionality
@@ -285,16 +262,11 @@ function gridSquareTarget(event) {
 }
 
 function attackListener(players, removeTargetListener, computerMove) {
-  console.log(players);
-
   // gets the playerBoard
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
   // gridAttackHandler that actually handles the attack.
   function gridAttackHandler(event, players) {
-    console.log(event);
-    console.log(players);
-
     if (event.target.classList.contains("gridSquare")) {
       console.log(players);
 
@@ -329,8 +301,6 @@ function attackListener(players, removeTargetListener, computerMove) {
     }
   }
 
-  console.log(players["playerTwo"]);
-
   addGridSquareAttackListener(gameBoardplayerTwo, (event) =>
     gridAttackHandler(event, players)
   );
@@ -340,15 +310,8 @@ function attackListener(players, removeTargetListener, computerMove) {
     console.log("remove attack listener called");
     removeGridSquareAttackListener(gameBoardplayerTwo, gridAttackHandler);
   }
-
   return { removeAttackListener };
 }
-
-// function addGridSquareAttackListener(element, handler, players) {
-//   console.log(players);
-
-//   element.addEventListener("click", (event) => handler(event, players));
-// }
 
 function addGridSquareAttackListener(element, handler) {
   element.addEventListener("click", handler);
@@ -381,3 +344,76 @@ export {
   checkDupeGridSquare,
   checkAllSunk,
 };
+
+// following actually appends the item to the block
+// event.target.appendChild(document.getElementById(shipBlockId));
+
+// THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
+//    CALLING PLACESHIP FUNCTION
+// ALTHOUGH DO I NEED TO PUT SHIPS INTO ARRAY TO DETECT COLLISIONS? I THINK I DO
+// placeShip function sends ships to array
+// TODO
+// but don't placeShip yet okay, wait til all ships have been dragged on:
+// also create a button that triggers final placement
+// players["playerOne"].gameBoard.placeShip(
+//   event.target.id[10],
+//   event.target.id[12],
+//   "right",
+//   shipBlockId[9],
+//   players["playerOne"]
+// );
+
+function shipBlockDirectionListenerKey(direction, shipType, shipLength) {
+  const gridSquareTarget = document.getElementById(event.target.id);
+  console.log(gridSquareTarget);
+
+  gridSquareTarget.addEventListener("keydown", (event) => {
+    console.log(event.key);
+    // console.log(direction);
+    // console.log(event.deltaY);
+    // if (event.deltaY < 0) {
+    //   direction = "right";
+    //   gridSquaresUncolor(event, shipType, shipLength, direction);
+    //   return "down";
+    // } else if (event.deltaY > 0) {
+    //   direction = "down";
+    //   gridSquaresUncolor(event, shipType, shipLength, direction);
+    //   return "right";
+    // }
+  });
+}
+
+// function shipBlockDirectionListener(direction, shipType, shipLength) {
+//   const gridSquareTarget = document.getElementById(event.target.id);
+//   console.log(gridSquareTarget);
+
+//   gridSquareTarget.addEventListener("wheel", (event) => {
+//     console.log(direction);
+//     console.log(event.deltaY);
+//     if (event.deltaY < 0) {
+//       direction = "right";
+//       gridSquaresUncolor(event, shipType, shipLength, direction);
+//       return "down";
+//     } else if (event.deltaY > 0) {
+//       direction = "down";
+//       gridSquaresUncolor(event, shipType, shipLength, direction);
+//       return "right";
+//     }
+//   });
+// }
+
+function ashipBlockChangeAxis(gridSquareMain, shipType, shipLength, direction) {
+  console.log("shipBLockChange Axis direciton " + direction);
+  console.log(gridSquareMain, shipType, shipLength, direction);
+
+  if (direction === "right") {
+    gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction);
+    console.log(gridSquareMain);
+
+    direction = "down";
+
+    console.log(direction);
+
+    return direction;
+  }
+}
