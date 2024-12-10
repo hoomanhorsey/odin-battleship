@@ -153,9 +153,9 @@ function drop(event, players) {
   // );
 
   //Initial paint
-  let direction = "right";
+  // let direction = "right";
 
-  const previousGridSquareMain = gridSquareDeletePreviousShipBlock();
+  let direction = gridSquareDeletePreviousShipBlock();
 
   // alert(previousGridSquareMain.classList);
 
@@ -170,11 +170,8 @@ function drop(event, players) {
     );
     console.log(previousGridSquareMain);
 
+    // condition excludes originating shipBlock
     if (previousGridSquareMain.id !== "shipBlockC") {
-      console.log("calling gridUnsquare color");
-
-      console.log(previousGridSquareMain.dataset.direction);
-
       gridSquaresUncolor(
         previousGridSquareMain,
         "C",
@@ -182,8 +179,7 @@ function drop(event, players) {
         previousGridSquareMain.dataset.direction
       );
     }
-
-    return previousGridSquareMain;
+    return previousGridSquareMain.dataset.direction;
   }
 
   direction = shipBlockPaintDirection(
@@ -200,9 +196,10 @@ function drop(event, players) {
     direction
   );
 
-  // removes the original shipBlock
-  document.querySelector(`[data-ship-type="${shipBlockId}"]`).remove();
-
+  // removes the original shipBlock only, and not subequent gridSquareMains.
+  if (gridSquareMain.id === "shipBlockC") {
+    document.querySelector(`[data-ship-type="${shipBlockId}"]`).remove();
+  }
   gridSquareMain.addEventListener("dragstart", (event) => {
     drag(event, players);
   });
