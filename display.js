@@ -72,7 +72,7 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
         const gridSquareExtended = document.querySelector(
           `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
         );
-        gridSquareExtendedUpdate(gridSquareExtended, shipType, i);
+        gridSquareExtendedUpdate(gridSquareExtended, shipType, i, "right");
       }
       break;
 
@@ -84,17 +84,18 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
         const gridSquareExtended = document.querySelector(
           `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
         );
-        gridSquareExtendedUpdate(gridSquareExtended, shipType, i);
+        gridSquareExtendedUpdate(gridSquareExtended, shipType, i, "down");
       }
       break;
   }
 }
 
-function gridSquareExtendedUpdate(gridSquareExtended, shipType, i) {
+function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
   console.log("callilng gridSquareExtendedUpdate");
 
   if (i === 0) {
     gridSquareExtended.setAttribute("draggable", true);
+    gridSquareExtended.setAttribute("data-direction", direction);
   }
   gridSquareExtended.classList.remove(
     "gridSquare"

@@ -62,9 +62,14 @@ function setupGameSetupListeners(players) {
 function drag(event) {
   // get shipType from event.target dataset
   console.log(event.target.dataset.shipType);
+  console.log(event.target);
 
   // get shipBlock by ID to set class
-  const shipBlock = document.getElementById(event.target.id);
+  const shipBlock = document.querySelector(
+    `[data-ship-type="${event.target.dataset.shipType}"]`
+  );
+
+  // const shipBlock = document.getElementById(event.target.id);
   shipBlock.classList.add("shipBlockDragging");
 
   event.dataTransfer.setData("text", event.target.dataset.shipType);
@@ -109,7 +114,7 @@ function checkLegal(event, players) {
     );
   }
 }
-
+///TODO NOT Sure this fuction works
 function dragEnd(event) {
   console.log("drag end");
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
@@ -133,7 +138,8 @@ function drop(event, players) {
     drag(event, players);
   });
 
-  gridSquareMain.setAttribute("ship-type", shipBlockId);
+  gridSquareMain.setAttribute("data-ship-type", shipBlockId);
+  gridSquareMain.classList.add("shipBlock", `shipBlock${shipBlockId}`);
 
   const shipType = players["playerOne"].gameBoard.ships[shipBlockId].type;
   const shipLength = players["playerOne"].gameBoard.ships[shipBlockId].length;
@@ -148,6 +154,37 @@ function drop(event, players) {
 
   //Initial paint
   let direction = "right";
+
+  const previousGridSquareMain = gridSquareDeletePreviousShipBlock();
+
+  // alert(previousGridSquareMain.classList);
+
+  // previousGridSquareMain.textContent = "Now get rid";
+
+  // Function searches for previous display of shipBlock on gridBoard and deletes it, but excludes originating shipBlock. Does not currently affect any save back into gridArray.
+
+  // Currently also only deletes it if it's right. Will need to put a data atttribute with the direcion of the block into the shipBlock element and then pass that as an argument into the gridSquareUncolor function
+  function gridSquareDeletePreviousShipBlock() {
+    const previousGridSquareMain = document.querySelector(
+      `[data-ship-type="${shipBlockId}"]`
+    );
+    console.log(previousGridSquareMain);
+
+    if (previousGridSquareMain.id !== "shipBlockC") {
+      console.log("calling gridUnsquare color");
+
+      console.log(previousGridSquareMain.dataset.direction);
+
+      gridSquaresUncolor(
+        previousGridSquareMain,
+        "C",
+        5,
+        previousGridSquareMain.dataset.direction
+      );
+    }
+
+    return previousGridSquareMain;
+  }
 
   direction = shipBlockPaintDirection(
     gridSquareMain,
@@ -165,6 +202,10 @@ function drop(event, players) {
 
   // removes the original shipBlock
   document.querySelector(`[data-ship-type="${shipBlockId}"]`).remove();
+
+  gridSquareMain.addEventListener("dragstart", (event) => {
+    drag(event, players);
+  });
 }
 
 function shipBlockChangeAxisListener(
