@@ -44,9 +44,9 @@ function chooseRandomGridCoords(players) {
 }
 
 function updateComputerTargetUI(row, column) {
-  const eventTarget = document.querySelector(
-    `[data-row="${row}"][data-column="${column}"]`
-  );
+  // The eleemnt being selected is the one that currently has the 'gridSquareActive' class, which is the previous element to the one being targeted by the computer
+  const eventTarget = document.querySelector(".gridSquareActive");
+
   gridSquareNonActiveRemoveHighlight(eventTarget);
   gridSquareActiveLocate(row, column);
 }

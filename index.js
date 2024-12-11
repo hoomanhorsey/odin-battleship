@@ -9,13 +9,10 @@ import {
   computerTargetAsync,
   updateComputerTargetUI,
 } from "./computerLogic.js";
-import {
-  updateGameMoveStatus,
-  gridSquareNonActiveRemoveHighlight,
-} from "./display.js";
+import { updateGameMoveStatus } from "./display.js";
 
 let numComputerTargets = 10;
-let computerTargetingTime = 50;
+let computerTargetingTime = 250;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)

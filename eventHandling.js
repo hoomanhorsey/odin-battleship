@@ -293,18 +293,49 @@ function targetListener() {
 
 function addGridSquareTargetListener(element, handler) {
   element.addEventListener("mouseover", handler);
+  element.addEventListener("mouseout", handler);
 }
 
 function removeGridSquareTargetListener(element, handler) {
   element.removeEventListener("mouseover", handler);
+  element.removeEventListener("mouseout", handler);
 }
 
 // targeting square highlighting
 function gridSquareTarget(event) {
-  if (event.target.classList.contains("gridSquare")) {
-    gridSquareNonActiveRemoveHighlight(event.target);
-    gridSquareActiveAddHighlight(event.target);
+  const target = event.target;
+
+  if (event.type === "mouseover") {
+    // Adding highlight on mouse enter
+    gridSquareActiveAddHighlight(target);
+    console.log(
+      "add highlight " + event.target.dataset.row,
+      event.target.dataset.column
+    );
+  } else if (event.type === "mouseout") {
+    // Removing highlight on mouse leave
+    console.log(
+      "takeaway highlight " + event.target.dataset.row,
+      event.target.dataset.column
+    );
+
+    gridSquareNonActiveRemoveHighlight(target);
   }
+
+  // // console.log("mouse is activated at least");
+  // gridSquareActiveAddHighlight(event.target);
+
+  // if (event.target.classList.contains("gridSquareActive")) {
+  //   console.log("it contains gridSquareActive");
+  //   console.log(event.target.dataset.row, event.target.dataset.column);
+
+  //   gridSquareNonActiveRemoveHighlight();
+
+  //   // gridSquareNonActiveRemoveHighlight(event.target);
+
+  //   console.log(event.target);
+  //   gridSquareActiveAddHighlight(event.target);
+  // }
 }
 
 function attackListener(players, removeTargetListener, computerMove) {

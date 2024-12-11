@@ -40,9 +40,18 @@ function gridSquareActiveAddHighlight(eventTarget) {
   eventTarget.classList.add("gridSquareActive");
 }
 
-function gridSquareNonActiveRemoveHighlight(eventTarget) {
-  console.log(eventTarget);
-  eventTarget.classList.remove("gridSquareActive");
+// function gridSquareNonActiveRemoveHighlight(eventTarget) {
+//   console.log(eventTarget);
+//   console.log("so its been removed");
+
+//   eventTarget.classList.remove("gridSquareActive");
+// }
+
+function gridSquareNonActiveRemoveHighlight() {
+  const gridSquareActive = document.querySelector(".gridSquareActive");
+  if (gridSquareActive) {
+    gridSquareActive.classList.remove("gridSquareActive");
+  }
 }
 
 function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
