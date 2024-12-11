@@ -73,7 +73,6 @@ class Gameboard {
       return;
     }
     if (checkClear(proposedPosition)) {
-      console.log("checkClear is true");
     } else {
       console.log("position is has collisions");
       return;

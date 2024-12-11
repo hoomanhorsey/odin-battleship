@@ -4,6 +4,7 @@ import {
   gridSquaresColor,
   gridSquaresUncolor,
   gridSquareActiveAddHighlight,
+  gridSquareExtendedRemove,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -60,19 +61,16 @@ function setupGameSetupListeners(players) {
 
 // Functions for event listeners
 function drag(event) {
-  // get shipType from event.target dataset
-  console.log(event.target.dataset.shipType);
-  console.log(event.target);
-
-  // get shipBlock by ID to set class
+  // get shipBlock by dataset shipType to set class
   const shipBlock = document.querySelector(
     `[data-ship-type="${event.target.dataset.shipType}"]`
   );
-
-  // const shipBlock = document.getElementById(event.target.id);
   shipBlock.classList.add("shipBlockDragging");
 
+  // passes shipType info onto drag event to be passed to the drop event when dropped.
   event.dataTransfer.setData("text", event.target.dataset.shipType);
+
+  // Orients drag to left side of shipBlock
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
 }
 
@@ -83,12 +81,6 @@ function checkLegal(event, players) {
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
 
   const ship = players["playerOne"].gameBoard.ships[shipTypeData];
-  console.log(
-    event.target.dataset.row,
-    event.target.dataset.column,
-    ship.type,
-    ship.length
-  );
 
   if (
     checkMoveLegal(
@@ -106,7 +98,6 @@ function checkLegal(event, players) {
       handleShipBlockDragEvent(event, shipType)
     );
   } else {
-    console.log("legal"); // legal
     gameBoardplayerOne.classList.remove("gameBoardNotLegal");
     gameBoardplayerOne.classList.add("gameBoardLegal");
     gameBoardplayerOne.addEventListener("drop", (event) =>
@@ -132,11 +123,14 @@ function drop(event, players) {
   // ship Block ID
   const shipBlockId = event.dataTransfer.getData("text");
 
-  const gridSquareMain = event.target;
+  // check for previous shipBlock on gameBoard
+  let direction = gridSquareDeletePreviousShipBlock();
 
-  gridSquareMain.addEventListener("dragstart", (event) => {
-    drag(event, players);
-  });
+  //1. chedk for previous shipBlocks on board to delete.
+  //2. then place next shipBlock
+
+  // gridSquare dropped on
+  const gridSquareMain = event.target;
 
   gridSquareMain.setAttribute("data-ship-type", shipBlockId);
   gridSquareMain.classList.add("shipBlock", `shipBlock${shipBlockId}`);
@@ -155,8 +149,6 @@ function drop(event, players) {
   //Initial paint
   // let direction = "right";
 
-  let direction = gridSquareDeletePreviousShipBlock();
-
   // alert(previousGridSquareMain.classList);
 
   // previousGridSquareMain.textContent = "Now get rid";
@@ -168,7 +160,6 @@ function drop(event, players) {
     const previousGridSquareMain = document.querySelector(
       `[data-ship-type="${shipBlockId}"]`
     );
-    console.log(previousGridSquareMain);
 
     // condition excludes originating shipBlock
     if (previousGridSquareMain.id !== "shipBlockC") {
@@ -197,9 +188,18 @@ function drop(event, players) {
   );
 
   // removes the original shipBlock only, and not subequent gridSquareMains.
-  if (gridSquareMain.id === "shipBlockC") {
-    document.querySelector(`[data-ship-type="${shipBlockId}"]`).remove();
+
+  const shipBlockOriginal = document.querySelector(
+    `[data-ship-type="${shipBlockId}"]`
+  );
+
+  console.log(shipBlockOriginal.id);
+
+  if (shipBlockOriginal.id === "shipBlockC") {
+    shipBlockOriginal.remove();
   }
+
+  // assigns drag functionality onto new gridSquaremain/shipBlock
   gridSquareMain.addEventListener("dragstart", (event) => {
     drag(event, players);
   });
@@ -253,19 +253,21 @@ function handleShipBlockDragEvent(event, players) {
       switch (event.type) {
         case "dragenter":
           checkLegal(event, players);
-          gridSquareActiveAddHighlight(event.target); // Your logic for dragenter
+          gridSquareActiveAddHighlight(event.target); // Y
           break;
         case "dragover":
-          allowDrop(event, players); // Your logic for dragover
+          allowDrop(event, players);
           break;
         case "dragleave":
-          gridSquareNonActiveRemoveHighlight(); // Your logic for dragleave
+          gridSquareNonActiveRemoveHighlight(event.target);
+          console.log("Event target:", event.target);
+
           break;
         case "dragend":
           dragEnd(event, players);
           break;
         case "drop":
-          drop(event, players); // Your logic for drop
+          drop(event, players);
           break;
       }
       break;

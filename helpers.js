@@ -30,7 +30,6 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 
 // checks if moves are legal and within board bounds, called by placeShip()
 function checkMoveLegal(row, column, direction, shipLength) {
-  console.log("from inside Check Move Legal");
   switch (direction) {
     case "up":
       if (row - shipLength < -1) {
@@ -57,14 +56,12 @@ function checkMoveLegal(row, column, direction, shipLength) {
         return true;
       }
     default:
-      console.log("move not legal");
       return false;
   }
 }
 
 // checks if there are any collisions,  called by placeShip()
 function checkClear(array) {
-  console.log("checking clear");
   return array.every((value) => value.ship === null);
 }
 

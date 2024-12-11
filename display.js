@@ -42,11 +42,8 @@ function gridSquareActiveAddHighlight(eventTarget) {
   eventTarget.classList.add("gridSquareActive");
 }
 
-function gridSquareNonActiveRemoveHighlight() {
-  const gridSquareActive = document.querySelector(".gridSquareActive");
-  if (gridSquareActive) {
-    gridSquareActive.classList.remove("gridSquareActive");
-  }
+function gridSquareNonActiveRemoveHighlight(eventTarget) {
+  eventTarget.classList.remove("gridSquareActive");
 }
 
 function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
@@ -97,19 +94,21 @@ function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
     gridSquareExtended.setAttribute("draggable", true);
     gridSquareExtended.setAttribute("data-direction", direction);
   }
-  gridSquareExtended.classList.remove(
-    "gridSquare"
-    // "gridSquareDraggedOver" // redundandt
-  );
+
+  // TOD - not sure this needs to be removed.
+  // gridSquareExtended.classList.remove(
+  //   "gridSquare"
 
   gridSquareExtended.classList.add(
     "gridSquareContainShip",
     "gridSquareContainShipC"
   );
+
   gridSquareExtended.textContent = shipType;
 }
 
-function gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction) {
+function gridSquaresUncolor(gridSquareMain, direction) {
+  debugger;
   if (direction === "right") {
     let startColumn = parseInt(gridSquareMain.dataset.column);
     for (let i = 0; i < 5; i++) {
@@ -118,7 +117,9 @@ function gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction) {
         `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
       );
 
-      gridSquareExtendedRemove(gridSquareExtended);
+      console.log(gridSquareExtended);
+
+      gridSquareExtendedRemove(gridSquareExtended, i);
     }
   } else {
     let startRow = parseInt(gridSquareMain.dataset.row);
@@ -127,17 +128,25 @@ function gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction) {
       const gridSquareExtended = document.querySelector(
         `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
       );
-      gridSquareExtendedRemove(gridSquareExtended);
+      gridSquareExtendedRemove(gridSquareExtended, i);
     }
   }
 }
 
-function gridSquareExtendedRemove(gridSquareExtended) {
+function gridSquareExtendedRemove(gridSquareExtended, i) {
+  if (i === 0) {
+    //remove axis listener
+  }
+  console.log("gridSquareExtendedRemove");
+
   gridSquareExtended.classList.add("gridSquare");
 
   gridSquareExtended.classList.remove(
     "gridSquareContainShip",
-    "gridSquareContainShipC"
+    "gridSquareContainShipC",
+    "shipBlock",
+    "shipBlockC",
+    "shipBlockDragging"
   );
   gridSquareExtended.classList.add("gridSquare");
   gridSquareExtended.removeAttribute("draggable");
@@ -179,6 +188,7 @@ export {
   gridSquareUpdateAfterAttack,
   gridSquaresColor,
   gridSquaresUncolor,
+  gridSquareExtendedRemove,
   updateGameMoveStatus,
 };
 
