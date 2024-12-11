@@ -9,9 +9,7 @@ function drawGrid(player, populateGridSquare) {
     gridDiv.append(gridRow);
     for (let column = 0; column < 10; column++) {
       let gridSquare = document.createElement("div");
-      // TODO - Some of these classes may be redundant, but just keep them in here for now in case you wish to customise the grids for each player for some reason?
       gridSquare.classList.add("gridSquare");
-      // previously added this class, but prob redundant - "gridSquare_" + player.name
       gridSquare.dataset.playerName = player.name;
       gridSquare.dataset.row = row;
       gridSquare.dataset.column = column;
@@ -43,6 +41,7 @@ function gridSquareActiveAddHighlight(eventTarget) {
 }
 
 function gridSquareNonActiveRemoveHighlight(eventTarget) {
+  console.log(eventTarget);
   eventTarget.classList.remove("gridSquareActive");
 }
 
@@ -108,7 +107,6 @@ function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
 }
 
 function gridSquaresUncolor(gridSquareMain, direction) {
-  debugger;
   if (direction === "right") {
     let startColumn = parseInt(gridSquareMain.dataset.column);
     for (let i = 0; i < 5; i++) {

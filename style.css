@@ -117,6 +117,10 @@
 }
 
 .gridSquare {
+  display: grid;
+
+  justify-content: center;
+  align-items: center;
   border-width: 5px;
   border-style: solid;
   border-color: black;

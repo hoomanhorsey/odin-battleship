@@ -12,7 +12,7 @@ async function computerTargetAsync(
   computerTargetingTime,
   players,
   playMoveAfterCheckSunk,
-  uiUpdater
+  updateComputerTargetUI
 ) {
   let count = 0;
 
@@ -27,7 +27,7 @@ async function computerTargetAsync(
       count++;
     }
     // Pass UI updates to the function passed as an argument
-    uiUpdater(row, column);
+    updateComputerTargetUI(row, column);
 
     // Wait for the delay before continuing
     await new Promise((resolve) => setTimeout(resolve, computerTargetingTime));
@@ -44,7 +44,10 @@ function chooseRandomGridCoords(players) {
 }
 
 function updateComputerTargetUI(row, column) {
-  gridSquareNonActiveRemoveHighlight();
+  const eventTarget = document.querySelector(
+    `[data-row="${row}"][data-column="${column}"]`
+  );
+  gridSquareNonActiveRemoveHighlight(eventTarget);
   gridSquareActiveLocate(row, column);
 }
 

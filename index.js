@@ -24,8 +24,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateGameMoveStatus("userMove");
 
   // ?????assign player status - TODO, possibly redundant
-  let attackingPlayer = players["playerOne"];
-  let defendingPlayer = players["playerTwo"];
+  // let attackingPlayer = players["playerOne"];
+  // let defendingPlayer = players["playerTwo"];
 
   // start game turn ev ent loop
   const { removeTargetListener, removeAttackListener } = playerMove();

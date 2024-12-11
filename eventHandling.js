@@ -4,7 +4,6 @@ import {
   gridSquaresColor,
   gridSquaresUncolor,
   gridSquareActiveAddHighlight,
-  gridSquareExtendedRemove,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -303,7 +302,7 @@ function removeGridSquareTargetListener(element, handler) {
 // targeting square highlighting
 function gridSquareTarget(event) {
   if (event.target.classList.contains("gridSquare")) {
-    gridSquareNonActiveRemoveHighlight();
+    gridSquareNonActiveRemoveHighlight(event.target);
     gridSquareActiveAddHighlight(event.target);
   }
 }
@@ -364,7 +363,7 @@ function addGridSquareAttackListener(element, handler) {
 }
 
 function removeGridSquareAttackListener(element, handler) {
-  element.addEventListener("click", handler);
+  element.removeEventListener("click", handler);
 }
 
 function checkAllSunk(players, nextMoveCallback) {
