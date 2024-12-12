@@ -37,7 +37,9 @@ function gridSquareActiveLocate(row, column) {
 
 // gridSquare highlighting and unhighlighting
 function gridSquareActiveAddHighlight(eventTarget) {
-  eventTarget.classList.add("gridSquareActive");
+  if (eventTarget.classList.contains("gridSquare")) {
+    eventTarget.classList.add("gridSquareActive");
+  }
 }
 
 // function gridSquareNonActiveRemoveHighlight(eventTarget) {

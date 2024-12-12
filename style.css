@@ -12,19 +12,23 @@
 
 .gameSetup {
   display: grid;
-  grid-template-columns: 5fr 4fr 3fr 3fr 2fr;
+  grid-template-columns: repeat(5, 1fr);
+
+  /* grid-template-columns: 5fr 4fr 3fr 3fr 2fr; */
   column-gap: 20px;
 }
 
-.shipBlock {
-  height: 60px;
-  /* width: 60px; */
-
-  border-width: 5px;
+.shipBlockSub {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  height: 95px;
+  border-radius: 50%;
+  /* border-width: 3px;
   border-style: solid;
-  border-color: black;
+  border-color: black; */
+  font-size: 40px;
 }
-
 .shipBlockDragging {
   border-style: dotted;
   border-color: red;
@@ -35,25 +39,57 @@
 }
 
 .gridSquareContainShip {
-  border-width: 5px;
+  /* border-width: 5px;
   border-style: solid;
-  border-color: black;
+  border-color: black; */
 }
+
 .gridSquareContainShipC,
-.shipBlockC {
+.shipBlockSubC {
+  display: grid;
   background-color: pink;
 }
-.shipBlockB {
-  background-color: paleturquoise;
+.shipBlockSubB {
+  display: grid;
+  background-color: lavender;
 }
-.shipBlockD {
+.shipBlockSubD {
+  display: grid;
   background-color: palegreen;
 }
-.shipBlockS {
+.shipBlockSubS {
+  display: grid;
   background-color: palegoldenrod;
 }
-.shipBlockP {
+.shipBlockSubP {
+  display: grid;
   background-color: lavender;
+}
+
+.shipBlockC {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 100px;
+}
+.shipBlockB {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 100px;
+}
+.shipBlockD {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 100px;
+}
+.shipBlockS {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 100px;
+}
+.shipBlockP {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  height: 100px;
 }
 
 .gridSquareDraggedOver {
@@ -90,18 +126,18 @@
 }
 
 .gameBoardNotLegal {
-  background-color: grey;
+  background-color: lightskyblue;
 }
 
 .gameBoardLegal {
   border-color: black;
 }
 
-.shipBlock {
+/* .shipBlock {
   border-width: 5px;
   border-style: solid;
   border-color: black;
-}
+} */
 
 /* .gridDiv,
 .gridDivOne,
@@ -118,20 +154,22 @@
 
 .gridSquare {
   display: grid;
-
   justify-content: center;
   align-items: center;
   border-width: 5px;
   border-style: solid;
-  border-color: black;
-  /* border-radius: 50%; */
+  border-color: lightblue;
+  border-radius: 50%;
+  background-color: lightblue;
+  font-size: 40px;
 
   height: 70px;
   width: 70px;
 }
 
 .gridSquareActive {
-  border-color: red;
+  border-style: solid;
+  border-color: darkblue;
   border-width: 5px;
 }
 
