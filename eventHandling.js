@@ -116,9 +116,13 @@ function allowDrop(event) {
   event.preventDefault();
 }
 
+let dropCounter = 0;
+
 function drop(event, players) {
   event.preventDefault();
-  console.log("***DROP IS Called***");
+
+  dropCounter++;
+  console.log(`Drop called ${dropCounter} times`);
 
   gridSquareNonActiveRemoveHighlight();
 
