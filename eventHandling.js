@@ -93,15 +93,19 @@ function checkLegal(event, players) {
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     gameBoardplayerOne.classList.remove("gameBoardLegal");
     gameBoardplayerOne.classList.add("gameBoardNotLegal");
-    gameBoardplayerOne.removeEventListener("drop", (event) =>
-      handleShipBlockDragEvent(event, shipType)
-    );
+
+    // THESE SHOULD BE DELETED AS THEY DUPLICAT THE DROP ALMOST IN A CIRCULAR FASHION
+    // gameBoardplayerOne.removeEventListener("drop", (event) =>
+    //   handleShipBlockDragEvent(event, shipType)
+    // );
   } else {
     gameBoardplayerOne.classList.remove("gameBoardNotLegal");
     gameBoardplayerOne.classList.add("gameBoardLegal");
-    gameBoardplayerOne.addEventListener("drop", (event) =>
-      handleShipBlockDragEvent(event, players)
-    );
+
+    // THESE SHOULD BE DELETED AS THEY DUPLICAT THE DROP ALMOST IN A CIRCULAR FASHION
+    // gameBoardplayerOne.addEventListener("drop", (event) =>
+    //   handleShipBlockDragEvent(event, players)
+    // );
   }
 }
 ///TODO NOT Sure this fuction works
