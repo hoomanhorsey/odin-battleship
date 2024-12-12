@@ -118,6 +118,9 @@ function allowDrop(event) {
 
 function drop(event, players) {
   event.preventDefault();
+  console.log("***DROP IS Called***");
+
+  gridSquareNonActiveRemoveHighlight();
 
   // ship Block ID
   const shipBlockId = event.dataTransfer.getData("text");
@@ -159,12 +162,13 @@ function drop(event, players) {
     const previousGridSquareMain = document.querySelector(
       `[data-ship-type="${shipBlockId}"]`
     );
+    console.log("found ship with " + shipBlockId);
 
     // condition excludes originating shipBlock
     if (previousGridSquareMain.id !== "shipBlockC") {
       gridSquaresUncolor(
         previousGridSquareMain,
-        "C",
+        "C", // TODO, note these args need to be customised
         5,
         previousGridSquareMain.dataset.direction
       );
@@ -235,6 +239,7 @@ function shipBlockPaintDirection(
     gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
     return "down";
   } else {
+    //down
     gridSquaresUncolor(gridSquareMain, shipType, shipLength, "right");
     gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
     return "right";

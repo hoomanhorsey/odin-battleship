@@ -117,7 +117,8 @@ function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
   gridSquareExtended.textContent = shipType;
 }
 
-function gridSquaresUncolor(gridSquareMain, direction) {
+function gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction) {
+  // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
   if (direction === "right") {
     let startColumn = parseInt(gridSquareMain.dataset.column);
     for (let i = 0; i < 5; i++) {
