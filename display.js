@@ -51,6 +51,7 @@ function gridSquareActiveAddHighlight(eventTarget) {
 
 function gridSquareNonActiveRemoveHighlight() {
   const gridSquareActive = document.querySelector(".gridSquareActive");
+
   if (gridSquareActive) {
     gridSquareActive.classList.remove("gridSquareActive");
   }
@@ -66,7 +67,36 @@ function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
     eventTarget.classList.add(interpretation.class);
   }
 }
+function gridSquaresUncolor(
+  gridSquareMainPrevious,
+  shipType,
+  shipLength,
+  direction
+) {
+  // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
 
+  if (direction === "right") {
+    let startColumn = parseInt(gridSquareMainPrevious.dataset.column);
+    for (let i = 0; i < 5; i++) {
+      let newColumn = startColumn + i;
+      gridSquareExtendedRemove(
+        document.querySelector(
+          `[data-row="${gridSquareMainPrevious.dataset.row}"][data-column="${newColumn}"]`
+        ),
+        i
+      );
+    }
+  } else {
+    let startRow = parseInt(gridSquareMain.dataset.row);
+    for (let i = 0; i < 5; i++) {
+      let newRow = startRow + i;
+      const gridSquareExtended = document.querySelector(
+        `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
+      );
+      gridSquareExtendedRemove(gridSquareExtended, i);
+    }
+  }
+}
 function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
   // FILLING IN GRIDS - at direction specified in parameters
 
@@ -103,49 +133,29 @@ function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
   if (i === 0) {
     gridSquareExtended.setAttribute("draggable", true);
     gridSquareExtended.setAttribute("data-direction", direction);
-  }
 
-  // TOD - not sure this needs to be removed.
-  // gridSquareExtended.classList.remove(
-  //   "gridSquare"
+    gridSquareExtended.setAttribute("data-ship-type", shipType);
+    // Following hard codes, prob should be deleted.
+    // gridSquareMain.setAttribute("data-direction", "right");
+    // Following adds shipBlock classes. as it's a grid square, not quite the same as a shipblock so that may not be needed.
+    // gridSquareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
+  }
 
   gridSquareExtended.classList.add(
     "gridSquareContainShip",
-    "gridSquareContainShipC"
+    "gridSquareContainShipC",
+    "shipColorC"
   );
 
   gridSquareExtended.textContent = shipType;
 }
 
-function gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction) {
-  // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
-  if (direction === "right") {
-    let startColumn = parseInt(gridSquareMain.dataset.column);
-    for (let i = 0; i < 5; i++) {
-      let newColumn = startColumn + i;
-      const gridSquareExtended = document.querySelector(
-        `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
-      );
-
-      console.log(gridSquareExtended);
-
-      gridSquareExtendedRemove(gridSquareExtended, i);
-    }
-  } else {
-    let startRow = parseInt(gridSquareMain.dataset.row);
-    for (let i = 0; i < 5; i++) {
-      let newRow = startRow + i;
-      const gridSquareExtended = document.querySelector(
-        `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
-      );
-      gridSquareExtendedRemove(gridSquareExtended, i);
-    }
-  }
-}
-
 function gridSquareExtendedRemove(gridSquareExtended, i) {
   if (i === 0) {
     //remove axis listener
+    gridSquareExtended.removeAttribute("draggable");
+    gridSquareExtended.removeAttribute("data-ship-type");
+    gridSquareExtended.removeAttribute("data-direction");
   }
   console.log("gridSquareExtendedRemove");
 
@@ -154,12 +164,13 @@ function gridSquareExtendedRemove(gridSquareExtended, i) {
   gridSquareExtended.classList.remove(
     "gridSquareContainShip",
     "gridSquareContainShipC",
-    "shipBlock",
-    "shipBlockC",
-    "shipBlockDragging"
+    "shipBlock", // these are no longer in the thing anymore
+    "shipBlockC", // these are no longer in the thing anymore
+    "shipBlockDragging",
+    "shipColorC"
   );
   gridSquareExtended.classList.add("gridSquare");
-  gridSquareExtended.removeAttribute("draggable");
+
   gridSquareExtended.textContent = "";
 }
 
@@ -201,33 +212,3 @@ export {
   gridSquareExtendedRemove,
   updateGameMoveStatus,
 };
-
-// function gridSquaresUncolorDown(
-//   event,
-//   shipType,
-//   shipLength,
-//   direction = "right"
-// ) {
-//   console.log("uncolourGrid SquaresDown");
-//   console.log(event.target);
-//   console.log(event.target.id);
-
-//   const startingGridSquare = document.getElementById(event.target.id);
-
-//   console.log(event.target.dataset.row);
-//   console.log(event.target.dataset.column);
-
-//   let startRow = parseInt(event.target.dataset.row);
-//   for (let i = 0; i < 5; i++) {
-//     let newColumn = startRow + i;
-//     const gridSquareExtended = document.getElementById(
-//       `playerOner${newColumn}c${event.target.dataset.row}`
-//     );
-//     removeGridSquareExtended(gridSquareExtended);
-//   }
-
-//   // TODO, insert logic to delete colour from 'right' gridsquares. ///*** DONE */
-//   // creating initial function to remove gridSquares from the right only.
-//   // TODO, refactor logic to make it a utility function
-//   gridSquaresColor(event, shipType, shipLength, direction);
-// }

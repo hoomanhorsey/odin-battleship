@@ -45,7 +45,8 @@
 }
 
 .gridSquareContainShipC,
-.shipBlockSubC {
+.shipBlockSubC,
+.shipColorC {
   display: grid;
   background-color: pink;
 }

@@ -93,19 +93,9 @@ function checkLegal(event, players) {
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     gameBoardplayerOne.classList.remove("gameBoardLegal");
     gameBoardplayerOne.classList.add("gameBoardNotLegal");
-
-    // THESE SHOULD BE DELETED AS THEY DUPLICAT THE DROP ALMOST IN A CIRCULAR FASHION
-    // gameBoardplayerOne.removeEventListener("drop", (event) =>
-    //   handleShipBlockDragEvent(event, shipType)
-    // );
   } else {
     gameBoardplayerOne.classList.remove("gameBoardNotLegal");
     gameBoardplayerOne.classList.add("gameBoardLegal");
-
-    // THESE SHOULD BE DELETED AS THEY DUPLICAT THE DROP ALMOST IN A CIRCULAR FASHION
-    // gameBoardplayerOne.addEventListener("drop", (event) =>
-    //   handleShipBlockDragEvent(event, players)
-    // );
   }
 }
 ///TODO NOT Sure this fuction works
@@ -125,66 +115,46 @@ let dropCounter = 0;
 function drop(event, players) {
   event.preventDefault();
 
+  // keeps count drop() calls
   dropCounter++;
   console.log(`Drop called ${dropCounter} times`);
 
+  // removes targeting  highlight
   gridSquareNonActiveRemoveHighlight();
 
-  // ship Block ID
-  const shipBlockId = event.dataTransfer.getData("text");
-
-  // check for previous shipBlock on gameBoard
-  let direction = gridSquareDeletePreviousShipBlock();
-
-  //1. chedk for previous shipBlocks on board to delete.
-  //2. then place next shipBlock
-
-  // gridSquare dropped on
-  const gridSquareMain = event.target;
-
-  gridSquareMain.setAttribute("data-ship-type", shipBlockId);
-  gridSquareMain.classList.add("shipBlock", `shipBlock${shipBlockId}`);
-
-  const shipType = players["playerOne"].gameBoard.ships[shipBlockId].type;
-  const shipLength = players["playerOne"].gameBoard.ships[shipBlockId].length;
-
-  // //  ****TODO IS THAT KEYSQUAREID used anywhere?
-  // const keySquareId = gridSquaresColor(
-  //   gridSquareMain,
-  //   shipType,
-  //   shipLength,
-  //   direction
-  // );
-
-  //Initial paint
-  // let direction = "right";
-
-  // alert(previousGridSquareMain.classList);
-
-  // previousGridSquareMain.textContent = "Now get rid";
-
-  // Function searches for previous display of shipBlock on gridBoard and deletes it, but excludes originating shipBlock. Does not currently affect any save back into gridArray.
-
-  // Currently also only deletes it if it's right. Will need to put a data atttribute with the direcion of the block into the shipBlock element and then pass that as an argument into the gridSquareUncolor function
-  function gridSquareDeletePreviousShipBlock() {
-    const previousGridSquareMain = document.querySelector(
-      `[data-ship-type="${shipBlockId}"]`
-    );
-    console.log("found ship with " + shipBlockId);
-
-    // condition excludes originating shipBlock
-    if (previousGridSquareMain.id !== "shipBlockC") {
-      gridSquaresUncolor(
-        previousGridSquareMain,
-        "C", // TODO, note these args need to be customised
-        5,
-        previousGridSquareMain.dataset.direction
-      );
-    }
-    return previousGridSquareMain.dataset.direction;
+  // REMOVES ORIGINAL SHIPBLOCK
+  // gets shipBlockOriginal
+  let shipBlockOriginal = document.querySelector('[data-ship-type="C"]');
+  // removes the original shipBlock
+  if (shipBlockOriginal.id === "shipBlockC") {
+    shipBlockOriginal.remove();
   }
 
-  direction = shipBlockPaintDirection(
+  //********************
+  // get ship Block ID
+  const shipBlockIdFromData = event.dataTransfer.getData("text");
+  console.log(shipBlockIdFromData);
+
+  // GETS PREVIOUS GridSquareMain where the shipBlock lives
+  let gridSquareMainPrevious = document.querySelector('[data-ship-type="C"]');
+  console.log("gridSquareMainPrevious -if null, means no previous yet");
+  console.log(gridSquareMainPrevious);
+
+  // gets gridSquareMain, the gridSquare being targeted being targeted
+  const gridSquareMain = event.target;
+  console.log(gridSquareMain);
+
+  let direction = "right";
+
+  const shipType =
+    players["playerOne"].gameBoard.ships[shipBlockIdFromData].type;
+  const shipLength =
+    players["playerOne"].gameBoard.ships[shipBlockIdFromData].length;
+
+  //Initial paint
+
+  direction = shipBlockColorAndUnColor(
+    gridSquareMainPrevious,
     gridSquareMain,
     shipType,
     shipLength,
@@ -198,17 +168,15 @@ function drop(event, players) {
     direction
   );
 
+  // NOTE - moved this to the front
   // removes the original shipBlock only, and not subequent gridSquareMains.
+  // const shipBlockOriginal = document.querySelector(
+  //   `[data-ship-type="${shipBlockIdFromData}"]`
+  // );
 
-  const shipBlockOriginal = document.querySelector(
-    `[data-ship-type="${shipBlockId}"]`
-  );
-
-  console.log(shipBlockOriginal.id);
-
-  if (shipBlockOriginal.id === "shipBlockC") {
-    shipBlockOriginal.remove();
-  }
+  // if (shipBlockOriginal.id === "shipBlockC") {
+  //   shipBlockOriginal.remove();
+  // }
 
   // assigns drag functionality onto new gridSquaremain/shipBlock
   gridSquareMain.addEventListener("dragstart", (event) => {
@@ -226,7 +194,7 @@ function shipBlockChangeAxisListener(
   gridSquareMain.addEventListener(
     "click",
     () =>
-      (direction = shipBlockPaintDirection(
+      (direction = shipBlockColorAndUnColor(
         gridSquareMain,
         shipType,
         shipLength,
@@ -236,7 +204,48 @@ function shipBlockChangeAxisListener(
   );
 }
 
-function shipBlockPaintDirection(
+function shipBlockColorAndUnColor(
+  gridSquareMainPrevious,
+  gridSquareMain,
+  shipType,
+  shipLength,
+  direction
+) {
+  console.log("gridSquareMain");
+  console.log(gridSquareMain);
+
+  if (gridSquareMainPrevious !== null) {
+    console.log(gridSquareMain.dataset.direction);
+    gridSquaresUncolor(gridSquareMainPrevious, shipType, shipLength, direction);
+  }
+
+  if (direction === "right") {
+    gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
+
+    return "down";
+  } else {
+    //down
+    gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
+    return "right";
+  }
+  // TODO trying to remove attributes after removing gridSquare uncolor
+  previousGridSquareMain.removeAttribute("data-direction");
+  previousGridSquareMain.removeAttribute("data-ship-type");
+
+  /// preivous verseion
+  // if (direction === "right") {
+  //   gridSquaresUncolor(gridSquareMain, shipType, shipLength, "down");
+  //   gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
+  //   return "down";
+  // } else {
+  //   //down
+  //   gridSquaresUncolor(gridSquareMain, shipType, shipLength, "right");
+  //   gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
+  //   return "right";
+  // }
+}
+
+function OriginalshipBlockColorAndUnColor(
   gridSquareMain,
   shipType,
   shipLength,
@@ -321,17 +330,8 @@ function gridSquareTarget(event) {
   if (event.type === "mouseover") {
     // Adding highlight on mouse enter
     gridSquareActiveAddHighlight(target);
-    console.log(
-      "add highlight " + event.target.dataset.row,
-      event.target.dataset.column
-    );
   } else if (event.type === "mouseout") {
     // Removing highlight on mouse leave
-    console.log(
-      "takeaway highlight " + event.target.dataset.row,
-      event.target.dataset.column
-    );
-
     gridSquareNonActiveRemoveHighlight(target);
   }
 
@@ -390,6 +390,7 @@ function attackListener(players, removeTargetListener, computerMove) {
     }
   }
 
+  // VERYIMPORTANT - currently removed addGridSquareAttackListener. Need to re add
   addGridSquareAttackListener(gameBoardplayerTwo, (event) =>
     gridAttackHandler(event, players)
   );
