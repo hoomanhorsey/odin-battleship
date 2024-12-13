@@ -71,11 +71,17 @@ function gridSquaresUncolor(
   gridSquareMainPrevious,
   shipType,
   shipLength,
-  direction
+  directionUncolor
 ) {
+  console.log("called grisSquaresUncolor");
+
+  console.log(directionUncolor);
+
   // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
 
-  if (direction === "right") {
+  if (directionUncolor === "right") {
+    console.log("uncolor right");
+
     let startColumn = parseInt(gridSquareMainPrevious.dataset.column);
     for (let i = 0; i < 5; i++) {
       let newColumn = startColumn + i;
@@ -87,11 +93,14 @@ function gridSquaresUncolor(
       );
     }
   } else {
-    let startRow = parseInt(gridSquareMain.dataset.row);
+    console.log("uncolor down");
+
+    console.log(gridSquareMainPrevious);
+    let startRow = parseInt(gridSquareMainPrevious.dataset.row);
     for (let i = 0; i < 5; i++) {
       let newRow = startRow + i;
       const gridSquareExtended = document.querySelector(
-        `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
+        `[data-row="${newRow}"][data-column="${gridSquareMainPrevious.dataset.column}"]`
       );
       gridSquareExtendedRemove(gridSquareExtended, i);
     }
@@ -102,6 +111,8 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
 
   switch (direction) {
     case "right":
+      console.log("gridSquaresColor right");
+
       let startColumn = parseInt(gridSquareMain.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
@@ -114,6 +125,8 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
       break;
 
     case "down":
+      console.log("gridSquaresColor down");
+
       let startRow = parseInt(gridSquareMain.dataset.row);
       for (let i = 0; i < shipLength; i++) {
         let newRow = startRow + i;
