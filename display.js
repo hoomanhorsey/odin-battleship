@@ -141,8 +141,6 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
 }
 
 function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
-  console.log("callilng gridSquareExtendedUpdate");
-
   if (i === 0) {
     gridSquareExtended.setAttribute("draggable", true);
     gridSquareExtended.setAttribute("data-direction", direction);
