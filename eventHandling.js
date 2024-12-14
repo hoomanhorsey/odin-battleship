@@ -78,6 +78,8 @@ function checkLegal(event, players) {
 
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
+  const direction = draggedElement.dataset.direction;
+  console.log(direction);
 
   const ship = players["playerOne"].gameBoard.ships[shipTypeData];
 
@@ -85,7 +87,7 @@ function checkLegal(event, players) {
     checkMoveLegal(
       parseInt(event.target.dataset.row),
       parseInt(event.target.dataset.column),
-      "right",
+      direction,
       ship.length
     ) === false
   ) {
@@ -128,28 +130,22 @@ function drop(event, players) {
   // get ship Block ID
   const shipBlockIdFromData = event.dataTransfer.getData("text");
 
-  // GETS PREVIOUS GridSquareMain where the shipBlock lives.  If it's the first gridSquare being populated, there's no previous as the shipBlock has been removed
+  // Gets gridSquareMainPrevious and the direction the shipBlock is facing, direction, unless it's the first shipBlock placed in which case it's null.
+
+  let directionColor;
+  let directionUncolor;
   let gridSquareMainPrevious = document.querySelector('[data-ship-type="C"]');
   console.log("gridSquareMainPrevious -if null, means no previous yet");
-
-  // Gets gridSquareMainPrevious direction where that exists.
-  let gridSquareMainPreviousDirection;
-  console.log(gridSquareMainPrevious);
   if (gridSquareMainPrevious !== null) {
-    gridSquareMainPreviousDirection = gridSquareMainPrevious.dataset.direction;
+    directionColor = gridSquareMainPrevious.dataset.direction;
+    directionUncolor = gridSquareMainPrevious.dataset.direction;
   } else {
-    gridSquareMainPreviousDirection = "right";
+    directionColor = "right";
+    directionUncolor = "right";
   }
-  console.log(
-    "gridSquareMainPrevious.dataset.direction - " +
-      gridSquareMainPreviousDirection
-  );
 
-  // gets gridSquareMain, the gridSquare being targeted being targeted
+  // gets gridSquareMain, the gridSquare being targeted
   const gridSquareMain = event.target;
-
-  let directionColor = gridSquareMainPreviousDirection;
-  let directionUncolor = gridSquareMainPreviousDirection;
 
   const shipType =
     players["playerOne"].gameBoard.ships[shipBlockIdFromData].type;
@@ -306,21 +302,6 @@ function gridSquareTarget(event) {
     // Removing highlight on mouse leave
     gridSquareNonActiveRemoveHighlight(target);
   }
-
-  // // console.log("mouse is activated at least");
-  // gridSquareActiveAddHighlight(event.target);
-
-  // if (event.target.classList.contains("gridSquareActive")) {
-  //   console.log("it contains gridSquareActive");
-  //   console.log(event.target.dataset.row, event.target.dataset.column);
-
-  //   gridSquareNonActiveRemoveHighlight();
-
-  //   // gridSquareNonActiveRemoveHighlight(event.target);
-
-  //   console.log(event.target);
-  //   gridSquareActiveAddHighlight(event.target);
-  // }
 }
 
 function attackListener(players, removeTargetListener, computerMove) {

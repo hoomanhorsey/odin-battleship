@@ -31,24 +31,24 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 // checks if moves are legal and within board bounds, called by placeShip()
 function checkMoveLegal(row, column, direction, shipLength) {
   switch (direction) {
-    case "up":
-      if (row - shipLength < -1) {
-        return false;
-      } else {
-        return true;
-      }
+    // case "up":
+    //   if (row - shipLength < -1) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
     case "down":
       if (row + shipLength > 10) {
         return false;
       } else {
         return true;
       }
-    case "left":
-      if (column - shipLength < -1) {
-        return false;
-      } else {
-        return true;
-      }
+    // case "left":
+    //   if (column - shipLength < -1) {
+    //     return false;
+    //   } else {
+    //     return true;
+    //   }
     case "right":
       if (column + shipLength > 10) {
         return false;
