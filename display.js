@@ -94,8 +94,6 @@ function gridSquaresUncolor(
     }
   } else {
     console.log("uncolor down");
-
-    console.log(gridSquareMainPrevious);
     let startRow = parseInt(gridSquareMainPrevious.dataset.row);
     for (let i = 0; i < 5; i++) {
       let newRow = startRow + i;
@@ -168,8 +166,6 @@ function gridSquareExtendedRemove(gridSquareExtended, i) {
     gridSquareExtended.removeAttribute("data-ship-type");
     gridSquareExtended.removeAttribute("data-direction");
   }
-  console.log("gridSquareExtendedRemove");
-
   gridSquareExtended.classList.add("gridSquare");
 
   gridSquareExtended.classList.remove(

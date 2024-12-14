@@ -150,17 +150,13 @@ function drop(event, players) {
 
   let directionColor = gridSquareMainPreviousDirection;
   let directionUncolor = gridSquareMainPreviousDirection;
-  // let directionColor = "right";
-  // let directionUncolor = "right";
 
   const shipType =
     players["playerOne"].gameBoard.ships[shipBlockIdFromData].type;
   const shipLength =
     players["playerOne"].gameBoard.ships[shipBlockIdFromData].length;
 
-  //Initial paint
-
-  // directionColor =
+  // Initial colouring of gameBoard for shipBlock
   shipBlockColorAndUnColor(
     gridSquareMainPrevious,
     gridSquareMain,
@@ -170,14 +166,14 @@ function drop(event, players) {
     directionUncolor
   );
 
-  // directionColor =
+  // Listener for shipBlock change axis
   shipBlockChangeAxisListener(
-    gridSquareMain,
+    // gridSquareMain,
     gridSquareMain,
     shipType,
-    shipLength,
-    directionColor,
-    directionUncolor
+    shipLength
+    // directionColor,
+    // directionUncolor
   );
 
   // assigns drag functionality onto new gridSquaremain/shipBlock
@@ -187,66 +183,42 @@ function drop(event, players) {
 }
 
 function shipBlockChangeAxisListener(
-  gridSquareMainPrevious,
+  // gridSquareMainPrevious,
   gridSquareMain,
   shipType,
-  shipLength,
-  directionColor,
-  directionUncolor
+  shipLength
+  // directionColor,
+  // directionUncolor
 ) {
-  console.log(gridSquareMain, shipType, shipLength, directionColor);
-
-  // let directionUncolor;
-  // if (directionColor === "right") {
-  //   directionUncolor = "right";
-  //   directionColor = "down";
-  // } else if (directionColor === "down") {
-  //   directionColor = "right";
-  //   directionUncolor = "down";
-  // }
-
-  // console.log(
-  //   "directionColor: " +
-  //     directionColor +
-  //     ", directionUncolor: " +
-  //     directionUncolor
-  // );
-
   gridSquareMain.addEventListener("click", () =>
     shipBlockColorAndUncolorOnChangeAxisClick(
-      gridSquareMain,
+      // gridSquareMain,
       gridSquareMain,
       shipType,
-      shipLength,
-      directionColor,
-      directionUncolor
+      shipLength
+      // directionColor,
+      // directionUncolor
     )
   );
-  // (directionColor = shipBlockColorAndUnColor(
-  //   gridSquareMain,
-  //   gridSquareMain,
-  //   shipType,
-  //   shipLength,
-  //   directionColor,
-  //   directionUncolor
-  // ))
-  // gridSquaresUncolor(gridSquareMain, shipType, shipLength, direction)
-  // );
 }
 
 function shipBlockColorAndUncolorOnChangeAxisClick(
-  gridSquareMainPrevious,
+  // gridSquareMainPrevious,
   gridSquareMain,
   shipType,
-  shipLength,
-  directionColor,
-  directionUncolor
+  shipLength
+  // directionColor,
+  // directionUncolor
 ) {
-  console.log("inside shipBlockColorandUncoloronChangeAxisCli ");
-  console.log(gridSquareMain.dataset.direction);
-  directionColor = gridSquareMain.dataset.direction;
+  let directionColor = gridSquareMain.dataset.direction;
+  let directionUncolor;
+  console.log(
+    "214 direction color - " +
+      directionColor +
+      ", directionUncolor - " +
+      directionUncolor
+  );
 
-  // let directionUncolor;
   if (directionColor === "right") {
     directionUncolor = "right";
     directionColor = "down";
@@ -254,11 +226,10 @@ function shipBlockColorAndUncolorOnChangeAxisClick(
     directionColor = "right";
     directionUncolor = "down";
   }
-
   console.log(
-    "directionColor: " +
+    "214 direction color - " +
       directionColor +
-      ", directionUncolor: " +
+      ", directionUncolor - " +
       directionUncolor
   );
 
@@ -280,8 +251,6 @@ function shipBlockColorAndUnColor(
   directionColor,
   directionUncolor
 ) {
-  console.log(directionColor, directionUncolor);
-
   if (gridSquareMainPrevious !== null) {
     gridSquaresUncolor(
       gridSquareMainPrevious,
@@ -290,7 +259,6 @@ function shipBlockColorAndUnColor(
       directionUncolor
     );
   }
-
   if (directionColor === "right") {
     gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
     return "right";
@@ -298,39 +266,6 @@ function shipBlockColorAndUnColor(
     //down
     gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
     return "down";
-  }
-  // TODO trying to remove attributes after removing gridSquare uncolor
-  previousGridSquareMain.removeAttribute("data-direction");
-  previousGridSquareMain.removeAttribute("data-ship-type");
-
-  /// preivous verseion
-  // if (direction === "right") {
-  //   gridSquaresUncolor(gridSquareMain, shipType, shipLength, "down");
-  //   gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
-  //   return "down";
-  // } else {
-  //   //down
-  //   gridSquaresUncolor(gridSquareMain, shipType, shipLength, "right");
-  //   gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
-  //   return "right";
-  // }
-}
-
-function OriginalshipBlockColorAndUnColor(
-  gridSquareMain,
-  shipType,
-  shipLength,
-  direction
-) {
-  if (direction === "right") {
-    gridSquaresUncolor(gridSquareMain, shipType, shipLength, "down");
-    gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
-    return "down";
-  } else {
-    //down
-    gridSquaresUncolor(gridSquareMain, shipType, shipLength, "right");
-    gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
-    return "right";
   }
 }
 
@@ -352,8 +287,6 @@ function handleShipBlockDragEvent(event, players) {
           break;
         case "dragleave":
           gridSquareNonActiveRemoveHighlight(event.target);
-          console.log("Event target:", event.target);
-
           break;
         case "dragend":
           dragEnd(event, players);
