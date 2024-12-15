@@ -196,6 +196,32 @@ function updateGameMoveStatus(status) {
       console.warn("Unknown status:", status);
   }
 }
+function shipBlockOriginalRemove(shipTypeFromShipBlockData) {
+  let shipBlockOriginal = document.querySelector(
+    `[data-ship-type="${shipTypeFromShipBlockData}"]`
+  );
+
+  console.log(shipBlockOriginal);
+
+  // removes the original shipBlock only, which has an ID.  Later grid squares will share the shipType
+  if (shipBlockOriginal.id === `shipBlock${shipTypeFromShipBlockData}`) {
+    shipBlockOriginal.remove();
+  }
+}
+
+function shipBlockGetDirectionData(gridSquareMainPrevious) {
+  console.log(
+    "gridSquareMainPrevious -if null, means no shipBlock has been placed yet"
+  );
+  if (gridSquareMainPrevious !== null) {
+    return {
+      directionColor: gridSquareMainPrevious.dataset.direction,
+      directionUncolor: gridSquareMainPrevious.dataset.direction,
+    };
+  } else {
+    return { directionColor: "right", directionUncolor: "right" };
+  }
+}
 
 export {
   drawGrid,
@@ -208,4 +234,6 @@ export {
   gridSquaresUncolor,
   gridSquareExtendedRemove,
   updateGameMoveStatus,
+  shipBlockOriginalRemove,
+  shipBlockGetDirectionData,
 };

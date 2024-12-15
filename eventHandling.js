@@ -4,6 +4,8 @@ import {
   gridSquaresUncolor,
   gridSquareActiveAddHighlight,
   gridSquareNonActiveRemoveHighlight,
+  shipBlockOriginalRemove,
+  shipBlockGetDirectionData,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -116,64 +118,55 @@ function dragEnd(event) {
 function allowDrop(event) {
   event.preventDefault();
 }
-
+//
+//
+//
+///
+//
+//
 function drop(event, players) {
   event.preventDefault();
 
-  // removes targeting  highlight
+  // removes targeting highlight
   gridSquareNonActiveRemoveHighlight();
 
-  // REMOVES ORIGINAL SHIPBLOCK
-  // gets shipBlockOriginal
-  let shipBlockOriginal = document.querySelector('[data-ship-type="C"]');
-  // removes the original shipBlock
-  if (shipBlockOriginal.id === "shipBlockC") {
-    shipBlockOriginal.remove();
-  }
+  // get shipType from event.target data
+  const shipTypeFromShipBlockData = event.dataTransfer.getData("text");
 
-  //********************
-  // get ship Block ID
-  const shipBlockIdFromData = event.dataTransfer.getData("text");
+  // removes shipBlock original, using data attribute.
+  shipBlockOriginalRemove(shipTypeFromShipBlockData);
 
-  // Gets gridSquareMainPrevious and the direction the shipBlock is facing, direction, unless it's the first shipBlock placed in which case it's null.
+  // gets gridSquareMainPrevious (unless drop() is called on the first shipBlock, in which case the gridSquareMainPrevious will be null)
+  let gridSquareMainPrevious = document.querySelector(
+    `[data-ship-type="${shipTypeFromShipBlockData}"]`
+  );
 
-  let directionColor;
-  let directionUncolor;
-  let gridSquareMainPrevious = document.querySelector('[data-ship-type="C"]');
-  console.log("gridSquareMainPrevious -if null, means no previous yet");
-  if (gridSquareMainPrevious !== null) {
-    directionColor = gridSquareMainPrevious.dataset.direction;
-    directionUncolor = gridSquareMainPrevious.dataset.direction;
-  } else {
-    directionColor = "right";
-    directionUncolor = "right";
-  }
+  // gets direction data of the placed shipBlock
+  const { directionColor, directionUncolor } = shipBlockGetDirectionData(
+    gridSquareMainPrevious
+  );
 
   // gets gridSquareMain, the gridSquare being targeted
   const gridSquareMain = event.target;
-
-  const shipType =
-    players["playerOne"].gameBoard.ships[shipBlockIdFromData].type;
+  // gets shipLength
   const shipLength =
-    players["playerOne"].gameBoard.ships[shipBlockIdFromData].length;
+    players["playerOne"].gameBoard.ships[shipTypeFromShipBlockData].length;
 
   // Initial colouring of gameBoard for shipBlock
   shipBlockColorAndUnColor(
     gridSquareMainPrevious,
     gridSquareMain,
-    shipType,
+    shipTypeFromShipBlockData,
     shipLength,
     directionColor,
     directionUncolor
   );
 
   // Listener for shipBlock change axis
-  let shipBlockColorAndUncolorOnChangeAxisClickLogger;
   shipBlockChangeAxisListener(
     gridSquareMain,
-    shipType,
-    shipLength,
-    shipBlockColorAndUncolorOnChangeAxisClickLogger
+    shipTypeFromShipBlockData,
+    shipLength
   );
 
   // assigns drag functionality onto new gridSquaremain/shipBlock
@@ -182,18 +175,12 @@ function drop(event, players) {
   });
 }
 
-function shipBlockChangeAxisListener(
-  gridSquareMain,
-  shipType,
-  shipLength,
-  shipBlockColorAndUncolorOnChangeAxisClickLogger
-) {
+function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
   gridSquareMain.addEventListener("click", () =>
     shipBlockColorAndUncolorOnChangeAxisClick(
       gridSquareMain,
       shipType,
-      shipLength,
-      shipBlockColorAndUncolorOnChangeAxisClickLogger
+      shipLength
     )
   );
 }
@@ -201,12 +188,9 @@ function shipBlockChangeAxisListener(
 function shipBlockColorAndUncolorOnChangeAxisClick(
   gridSquareMain,
   shipType,
-  shipLength,
-  shipBlockColorAndUncolorOnChangeAxisClickLogger
+  shipLength
 ) {
   console.log("axis click operating");
-  shipBlockColorAndUncolorOnChangeAxisClickLogger++;
-  console.log(shipBlockColorAndUncolorOnChangeAxisClickLogger);
 
   // get directions of shipBlock
   let directionColor = gridSquareMain.dataset.direction;
