@@ -42,16 +42,8 @@ function gridSquareActiveAddHighlight(eventTarget) {
   }
 }
 
-// function gridSquareNonActiveRemoveHighlight(eventTarget) {
-//   console.log(eventTarget);
-//   console.log("so its been removed");
-
-//   eventTarget.classList.remove("gridSquareActive");
-// }
-
 function gridSquareNonActiveRemoveHighlight() {
   const gridSquareActive = document.querySelector(".gridSquareActive");
-
   if (gridSquareActive) {
     gridSquareActive.classList.remove("gridSquareActive");
   }
@@ -183,9 +175,7 @@ function gridSquareExtendedRemove(gridSquareExtended, i) {
 
 function updateGameMoveStatus(status) {
   console.log("updateGameMovestatus called");
-
   const gameMoveStatus = document.querySelector(".gameMoveStatus");
-
   switch (status) {
     case "userMove":
       gameMoveStatus.textContent =

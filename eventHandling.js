@@ -1,20 +1,19 @@
 import {
-  gridSquareNonActiveRemoveHighlight,
   gridSquareUpdateAfterAttack,
   gridSquaresColor,
   gridSquaresUncolor,
   gridSquareActiveAddHighlight,
+  gridSquareNonActiveRemoveHighlight,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
 
 // gameSetup handlers
-function setupGameSetupListeners(players) {
+function shipBlockListenersSetUp(players) {
   // shipBlock draggables
 
   //  *****Todo, conider finding by class, and then attaching via forEaCH
   const shipBlockC = document.getElementById("shipBlockC");
-  // ** inactive below
   // const shipBlockB = document.getElementById("shipBlockB");
   // const shipBlockD = document.getElementById("shipBlockD");
   // const shipBlockS = document.getElementById("shipBlockS");
@@ -24,12 +23,18 @@ function setupGameSetupListeners(players) {
   shipBlockC.addEventListener("dragstart", (event) => {
     drag(event, players);
   });
-
-  // drag);
-  // shipBlockB.addEventListener("dragstart", drag);
-  // shipBlockD.addEventListener("dragstart", drag);
-  // shipBlockS.addEventListener("dragstart", drag);
-  // shipBlockP.addEventListener("dragstart", drag);
+  // shipBlockB.addEventListener("dragstart", (event) => {
+  //   drag(event, players);
+  // });
+  // shipBlockD.addEventListener("dragstart", (event) => {
+  //   drag(event, players);
+  // });
+  // shipBlockS.addEventListener("dragstart", (event) => {
+  //   drag(event, players);
+  // });
+  // shipBlockP.addEventListener("dragstart", (event) => {
+  //   drag(event, players);
+  // });
 
   // Event listeners - gameBoard
 
@@ -438,7 +443,7 @@ function checkAllSunk(players, nextMoveCallback) {
 }
 
 export {
-  setupGameSetupListeners,
+  shipBlockListenersSetUp,
   targetListener,
   attackListener,
   checkDupeGridSquare,
