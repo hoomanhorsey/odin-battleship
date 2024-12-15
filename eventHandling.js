@@ -182,7 +182,7 @@ function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
   gridSquareMain.addEventListener("click", shipBlockChangeAxis);
 
   // return callback function in case you need remove the event listener
-  return onAxisChangeClick;
+  return shipBlockChangeAxis;
 }
 
 function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
@@ -255,9 +255,6 @@ function shipBlockColorAndUnColor(
   directionUncolor
 ) {
   if (gridSquareMainPrevious !== null) {
-    console.log("not null");
-    console.log(directionUncolor);
-
     gridSquaresUncolor(
       gridSquareMainPrevious,
       shipType,
@@ -265,14 +262,7 @@ function shipBlockColorAndUnColor(
       directionUncolor
     );
   }
-  if (directionColor === "right") {
-    gridSquaresColor(gridSquareMain, shipType, shipLength, "right");
-    return "right";
-  } else {
-    //down
-    gridSquaresColor(gridSquareMain, shipType, shipLength, "down");
-    return "down";
-  }
+  gridSquaresColor(gridSquareMain, shipType, shipLength, directionColor);
 }
 
 function handleShipBlockDragEvent(event, players) {
