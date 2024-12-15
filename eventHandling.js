@@ -92,7 +92,6 @@ function checkLegal(event, players) {
     ) === false
   ) {
     console.log("not legal"); // not legal
-    const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     gameBoardplayerOne.classList.remove("gameBoardLegal");
     gameBoardplayerOne.classList.add("gameBoardNotLegal");
   } else {
@@ -106,6 +105,7 @@ function dragEnd(event) {
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
   gameBoardplayerOne.classList.remove("gameBoardNotLegal");
   gameBoardplayerOne.classList.add("gameBoardLegal");
+  console.log("add axis event listener now?");
 }
 
 function allowDrop(event) {
@@ -163,7 +163,13 @@ function drop(event, players) {
   );
 
   // Listener for shipBlock change axis
-  shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength);
+  let shipBlockColorAndUncolorOnChangeAxisClickLogger;
+  shipBlockChangeAxisListener(
+    gridSquareMain,
+    shipType,
+    shipLength,
+    shipBlockColorAndUncolorOnChangeAxisClickLogger
+  );
 
   // assigns drag functionality onto new gridSquaremain/shipBlock
   gridSquareMain.addEventListener("dragstart", (event) => {
@@ -171,12 +177,18 @@ function drop(event, players) {
   });
 }
 
-function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
+function shipBlockChangeAxisListener(
+  gridSquareMain,
+  shipType,
+  shipLength,
+  shipBlockColorAndUncolorOnChangeAxisClickLogger
+) {
   gridSquareMain.addEventListener("click", () =>
     shipBlockColorAndUncolorOnChangeAxisClick(
       gridSquareMain,
       shipType,
-      shipLength
+      shipLength,
+      shipBlockColorAndUncolorOnChangeAxisClickLogger
     )
   );
 }
@@ -184,27 +196,69 @@ function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
 function shipBlockColorAndUncolorOnChangeAxisClick(
   gridSquareMain,
   shipType,
-  shipLength
+  shipLength,
+  shipBlockColorAndUncolorOnChangeAxisClickLogger
 ) {
+  console.log("axis click operating");
+  shipBlockColorAndUncolorOnChangeAxisClickLogger++;
+  console.log(shipBlockColorAndUncolorOnChangeAxisClickLogger);
+
+  // get directions of shipBlock
   let directionColor = gridSquareMain.dataset.direction;
   let directionUncolor;
 
+  console.log(
+    parseInt(gridSquareMain.dataset.row),
+    parseInt(gridSquareMain.dataset.column),
+    directionColor,
+    shipLength
+  );
+
+  // transforming directions before checkLegal processing
   if (directionColor === "right") {
-    directionUncolor = "right";
     directionColor = "down";
+    directionUncolor = "right";
+    console.log(" directionUncolor = right, directionColor = down");
   } else if (directionColor === "down") {
     directionColor = "right";
     directionUncolor = "down";
+    console.log(" directionUncolor = down, directionColor = right");
   }
+  // check move legal first, before displaying
 
-  shipBlockColorAndUnColor(
-    gridSquareMain,
-    gridSquareMain,
-    shipType,
-    shipLength,
-    directionColor,
-    directionUncolor
-  );
+  if (
+    checkMoveLegal(
+      parseInt(gridSquareMain.dataset.row),
+      parseInt(gridSquareMain.dataset.column),
+      directionColor,
+      shipLength
+    ) === false
+  ) {
+    console.log("not legal"); // not legal
+    // alert(
+    //   "sorry, this move will take the ship out of the ocean. Please choose another move"
+    // );
+    gameBoardplayerOne.classList.remove("gameBoardLegal");
+    gameBoardplayerOne.classList.add("gameBoardNotLegal");
+    setTimeout(makeLegalAgain, 250);
+    function makeLegalAgain() {
+      gameBoardplayerOne.classList.remove("gameBoardNotLegal");
+      gameBoardplayerOne.classList.add("gameBoardLegal");
+    }
+  } else {
+    console.log("legal");
+    gameBoardplayerOne.classList.remove("gameBoardNotLegal");
+    gameBoardplayerOne.classList.add("gameBoardLegal");
+    let shipBlockColorAndUncolorLogger = 0;
+    shipBlockColorAndUnColor(
+      gridSquareMain,
+      gridSquareMain,
+      shipType,
+      shipLength,
+      directionColor,
+      directionUncolor
+    );
+  }
 }
 
 function shipBlockColorAndUnColor(
@@ -216,6 +270,9 @@ function shipBlockColorAndUnColor(
   directionUncolor
 ) {
   if (gridSquareMainPrevious !== null) {
+    console.log("not null");
+    console.log(directionUncolor);
+
     gridSquaresUncolor(
       gridSquareMainPrevious,
       shipType,
