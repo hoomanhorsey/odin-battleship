@@ -1,7 +1,6 @@
 import {
   gridSquareUpdateAfterAttack,
-  gridSquaresColor,
-  gridSquaresUncolor,
+  shipBlockColorAndUnColor,
   gridSquareActiveAddHighlight,
   gridSquareNonActiveRemoveHighlight,
   shipBlockOriginalRemove,
@@ -244,25 +243,6 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
       directionUncolor
     );
   }
-}
-
-function shipBlockColorAndUnColor(
-  gridSquareMainPrevious,
-  gridSquareMain,
-  shipType,
-  shipLength,
-  directionColor,
-  directionUncolor
-) {
-  if (gridSquareMainPrevious !== null) {
-    gridSquaresUncolor(
-      gridSquareMainPrevious,
-      shipType,
-      shipLength,
-      directionUncolor
-    );
-  }
-  gridSquaresColor(gridSquareMain, shipType, shipLength, directionColor);
 }
 
 function handleShipBlockDragEvent(event, players) {

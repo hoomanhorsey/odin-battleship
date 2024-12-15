@@ -59,6 +59,24 @@ function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
     eventTarget.classList.add(interpretation.class);
   }
 }
+function shipBlockColorAndUnColor(
+  gridSquareMainPrevious,
+  gridSquareMain,
+  shipType,
+  shipLength,
+  directionColor,
+  directionUncolor
+) {
+  if (gridSquareMainPrevious !== null) {
+    gridSquaresUncolor(
+      gridSquareMainPrevious,
+      shipType,
+      shipLength,
+      directionUncolor
+    );
+  }
+  gridSquaresColor(gridSquareMain, shipType, shipLength, directionColor);
+}
 function gridSquaresUncolor(
   gridSquareMainPrevious,
   shipType,
@@ -230,6 +248,7 @@ export {
   gridSquareNonActiveRemoveHighlight,
   gridSquareActiveLocate,
   gridSquareUpdateAfterAttack,
+  shipBlockColorAndUnColor,
   gridSquaresColor,
   gridSquaresUncolor,
   gridSquareExtendedRemove,
