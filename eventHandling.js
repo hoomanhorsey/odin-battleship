@@ -176,20 +176,16 @@ function drop(event, players) {
 }
 
 function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
-  gridSquareMain.addEventListener("click", () =>
-    shipBlockColorAndUncolorOnChangeAxisClick(
-      gridSquareMain,
-      shipType,
-      shipLength
-    )
-  );
+  const shipBlockChangeAxis = function () {
+    shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength);
+  };
+  gridSquareMain.addEventListener("click", shipBlockChangeAxis);
+
+  // return callback function in case you need remove the event listener
+  return onAxisChangeClick;
 }
 
-function shipBlockColorAndUncolorOnChangeAxisClick(
-  gridSquareMain,
-  shipType,
-  shipLength
-) {
+function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
   console.log("axis click operating");
 
   // get directions of shipBlock
