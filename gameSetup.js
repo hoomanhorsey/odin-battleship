@@ -1,6 +1,9 @@
 import { Player } from "./gameObjects.js";
 import { drawGrid, gridSquarePopulateWithShip } from "./display.js";
-import { shipBlockListenersSetUp } from "./eventHandling.js";
+import {
+  shipBlockAttachEventHandlers,
+  gameBoardAttachEventHandlers,
+} from "./eventHandling.js";
 
 function gameInit() {
   const players = createPlayers();
@@ -10,11 +13,15 @@ function gameInit() {
   drawGrid(players["playerOne"], gridSquarePopulateWithShip);
   drawGrid(players["playerTwo"], gridSquarePopulateWithShip);
 
+  console.log(players["playerOne"].gameBoard);
+
   // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
   // gameSetUp_positionPreFill_BothPlayers(players);
 
   // function to allow user to selection positions
   gameSetUp_positionFill_ComputerOnly(players);
+  shipBlockAttachEventHandlers(players);
+  gameBoardAttachEventHandlers(players);
   return players;
 }
 
@@ -35,16 +42,6 @@ function gameSetUp_positionFill_ComputerOnly(players) {
   players["playerTwo"].gameBoard.placeShip(9, 9, "left", "B", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(4, 7, "left", "P", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S", "playerTwo");
-
-  shipBlockListenersSetUp(players);
-}
-
-// event listeners - remove.....
-function cleanupListeners() {
-  div.removeEventListener("dragover", allowDrop);
-  div.removeEventListener("drop", drop);
-  img.removeEventListener("dragstart", drag);
-  console.log("Listeners removed.");
 }
 
 // For Testing//

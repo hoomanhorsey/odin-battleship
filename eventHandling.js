@@ -11,7 +11,7 @@ import {
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
 
 // gameSetup handlers
-function shipBlockListenersSetUp(players) {
+function shipBlockAttachEventHandlers(players) {
   // shipBlock draggables
 
   //  *****Todo, conider finding by class, and then attaching via forEaCH
@@ -37,52 +37,55 @@ function shipBlockListenersSetUp(players) {
   // shipBlockP.addEventListener("dragstart", (event) => {
   //   drag(event, players);
   // });
-
-  // Event listeners - gameBoard
-
-  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
-  gameBoardplayerOne.addEventListener("dragenter", (event) =>
-    handleDragEnter(event, players)
-  );
-  gameBoardplayerOne.addEventListener("dragover", (event) =>
-    handleDragOver(event, players)
-  );
-  gameBoardplayerOne.addEventListener("dragleave", (event) =>
-    handleDragLeave(event, players)
-  );
-  gameBoardplayerOne.addEventListener("drop", (event) =>
-    handleDrop(event, players)
-  );
-  gameBoardplayerOne.addEventListener("dragend", (event) =>
-    handleDragEnd(event, players)
-  );
-
-  const shipBlocks = document.querySelectorAll(".shipBlock");
-  shipBlocks.forEach((block) => {
-    // block.addEventListener("dragstart", handleShipDragStart);
-    // block.addEventListener("dragend", handleShipDragEnd);
-  });
 }
 
-function handleDragEnter(event, players) {
+// Define the handlers at the top level or within a scope where they'll persist
+const handleDragEnter = (event, players) => {
   validateMove(event, players);
   gridSquareActiveAddHighlight(event.target);
-}
-function handleDragOver(event, players) {
-  allowDrop(event, players);
-}
-
-function handleDragLeave(event) {
+};
+const handleDragOver = (event, players) => allowDrop(event, players);
+const handleDragLeave = (event) =>
   gridSquareNonActiveRemoveHighlight(event.target);
+const handleDrop = (event, players) => drop(event, players);
+const handleDragEnd = (event, players) => dragEnd(event, players);
+
+// Wrapper functions that allow passing `players` and remove listeners
+function createHandleDragEnter(players) {
+  return (event) => handleDragEnter(event, players);
+}
+function createHandleDragOver(players) {
+  return (event) => handleDragOver(event, players);
+}
+function createHandleDrop(players) {
+  return (event) => handleDrop(event, players);
+}
+function createHandleDragEnd(players) {
+  return (event) => handleDragEnd(event, players);
+}
+function gameBoardAttachEventHandlers(players) {
+  // Event listeners - gameBoard
+  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+
+  gameBoardplayerOne.addEventListener(
+    "dragenter",
+    createHandleDragEnter(players)
+  );
+  gameBoardplayerOne.addEventListener(
+    "dragover",
+    createHandleDragOver(players)
+  );
+  gameBoardplayerOne.addEventListener("dragleave", handleDragLeave);
+  gameBoardplayerOne.addEventListener("drop", createHandleDrop(players));
+  gameBoardplayerOne.addEventListener("dragend", createHandleDragEnd(players));
 }
 
-function handleDrop(event, players) {
-  drop(event, players);
-}
-
-function handleDragEnd(event, players) {
-  dragEnd(event, players);
+function gameBoardDetachEventHandlers(players) {
+  gameBoard.removeEventListener("dragenter", handleDragEnter);
+  gameBoard.removeEventListener("dragover", handleDragOver);
+  gameBoard.removeEventListener("dragleave", handleDragLeave);
+  gameBoard.removeEventListener("drop", handleDrop);
+  gameBoard.removeEventListener("dragend", handleDragEnd);
 }
 
 // Functions for event listeners
@@ -100,7 +103,11 @@ function drag(event) {
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
 }
 
+let isMoveValid = false;
 function validateMove(event, players) {
+  // console.log(event);
+  // console.log(players);
+
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
   const direction = draggedElement.dataset.direction;
@@ -114,11 +121,22 @@ function validateMove(event, players) {
   // Call the helper module to check if the move is legal
   const isLegalMove = checkMoveLegal(row, column, direction, ship.length);
 
+  if (!isLegalMove) {
+    isMoveValid = false;
+    console.log("****TRYING TO REMOVE EVENT LISTENER");
+
+    const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+    console.log(gameBoardplayerOne);
+
+    gameBoardplayerOne.removeEventListener("dragover", handleDragOver);
+    console.log("isMoveValid " + isMoveValid);
+  } else {
+    isMoveValid = true;
+    console.log("isMoveValid " + isMoveValid);
+  }
   // Call the Display Module to update the visual state
   gameBoardToggleLegalState(isLegalMove);
 }
-
-///TODO NOT Sure this fuction works// ACTUALLY it does work, but only when a shipblock has already been placed on teh board
 
 function dragEnd(event) {
   console.log("drag end");
@@ -128,7 +146,11 @@ function dragEnd(event) {
 }
 
 function allowDrop(event) {
-  event.preventDefault();
+  // console.log("isMoveValid from allowDrop " + isMoveValid);
+  // prevents deafult if isMoveValid is true
+  if (isMoveValid) {
+    event.preventDefault();
+  }
 }
 
 function drop(event, players) {
@@ -339,7 +361,8 @@ function checkAllSunk(players, nextMoveCallback) {
 }
 
 export {
-  shipBlockListenersSetUp,
+  shipBlockAttachEventHandlers,
+  gameBoardAttachEventHandlers,
   targetListener,
   attackListener,
   checkDupeGridSquare,
