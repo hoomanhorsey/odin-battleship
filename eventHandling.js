@@ -80,35 +80,30 @@ function drag(event) {
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
 }
 
-function checkLegal(event, players) {
-  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
+function validateMove(event, players) {
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
   const direction = draggedElement.dataset.direction;
-  console.log(direction);
 
   const ship = players["playerOne"].gameBoard.ships[shipTypeData];
 
   // Parse dataset once at the start of the function
   const row = parseInt(event.target.dataset.row);
   const column = parseInt(event.target.dataset.column);
-  // // Check if the proposed move is valid
-  if (!checkMoveLegal(row, column, direction, ship.length)) {
-    // Indicate an illegal move temporarily
-    gameBoardToggleLegalState(false);
-  } else {
-    //   // Mark the move as legal and update the board visually
-    gameBoardToggleLegalState(true);
-  }
+
+  // Call the helper module to check if the move is legal
+  const isLegalMove = checkMoveLegal(row, column, direction, ship.length);
+
+  // Call the Display Module to update the visual state
+  gameBoardToggleLegalState(isLegalMove);
 }
 
-///TODO NOT Sure this fuction works
+///TODO NOT Sure this fuction works// ACTUALLY it does work, but only when a shipblock has already been placed on teh board
+
 function dragEnd(event) {
   console.log("drag end");
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-  gameBoardplayerOne.classList.remove("gameBoardNotLegal");
-  gameBoardplayerOne.classList.add("gameBoardLegal");
+
   console.log("add axis event listener now?");
 }
 
@@ -187,11 +182,12 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
   // Parse dataset once at the start of the function
   const row = parseInt(gridSquareMain.dataset.row);
   const column = parseInt(gridSquareMain.dataset.column);
-  // Check if the proposed move is valid
-  if (!checkMoveLegal(row, column, newDirection, shipLength)) {
-    // Indicate an illegal move temporarily
 
-    gameBoardToggleLegalState(false);
+  const isLegalMove = checkMoveLegal(row, column, newDirection, shipLength);
+
+  if (!isLegalMove) {
+    // Indicate an illegal move temporarily
+    gameBoardToggleLegalState(isLegalMove);
     setTimeout(() => gameBoardToggleLegalState(true), 250);
   } else {
     // Mark the move as legal and update the board visually
@@ -217,7 +213,7 @@ function handleShipBlockDragEvent(event, players) {
       // Handle the event based on event type
       switch (event.type) {
         case "dragenter":
-          checkLegal(event, players);
+          validateMove(event, players);
           gridSquareActiveAddHighlight(event.target); // Y
           break;
         case "dragover":
