@@ -13,8 +13,6 @@ function gameInit() {
   drawGrid(players["playerOne"], gridSquarePopulateWithShip);
   drawGrid(players["playerTwo"], gridSquarePopulateWithShip);
 
-  console.log(players["playerOne"].gameBoard);
-
   // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
   // gameSetUp_positionPreFill_BothPlayers(players);
 
