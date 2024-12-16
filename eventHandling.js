@@ -5,6 +5,7 @@ import {
   gridSquareNonActiveRemoveHighlight,
   shipBlockOriginalRemove,
   shipBlockGetDirectionData,
+  gameBoardToggleLegalState,
 } from "./display.js";
 
 import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
@@ -186,60 +187,19 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
   let currentDirection = gridSquareMain.dataset.direction;
   let newDirection = currentDirection === "right" ? "down" : "right";
 
-  // function shipBlockDetermineDirection(directionColor) {
-  //   // transforming directions before checkLegal processing
-  //   if (directionColor === "right") {
-  //     console.log(" directionUncolor = right, directionColor = down");
-  //     return { directionColor: "down", directionUncolor: "right" };
-  //   } else if (directionColor === "down") {
-  //     console.log(" directionUncolor = down, directionColor = right");
-  //     return { directionColor: "right", directionUncolor: "down" };
-  //   }
-  // }
+  // Parse dataset once at the start of the function
+  const row = parseInt(gridSquareMain.dataset.row);
+  const column = parseInt(gridSquareMain.dataset.column);
+  // Check if the proposed move is valid
+  if (!checkMoveLegal(row, column, newDirection, shipLength)) {
+    // Indicate an illegal move temporarily
 
-  // transforming directions before checkLegal processing
-  // if (directionColor === "right") {
-  //   directionColor = "down";
-  //   directionUncolor = "right";
-  //   console.log(" directionUncolor = right, directionColor = down");
-  // } else if (directionColor === "down") {
-  //   directionColor = "right";
-  //   directionUncolor = "down";
-  //   console.log(" directionUncolor = down, directionColor = right");
-  // }
-  console.log(
-    parseInt(gridSquareMain.dataset.row),
-    parseInt(gridSquareMain.dataset.column),
-    newDirection,
-    shipLength
-  );
-
-  // check move legal first, before displaying
-
-  if (
-    checkMoveLegal(
-      parseInt(gridSquareMain.dataset.row),
-      parseInt(gridSquareMain.dataset.column),
-      newDirection,
-      shipLength
-    ) === false
-  ) {
-    console.log("not legal"); // not legal
-    // alert(
-    //   "sorry, this move will take the ship out of the ocean. Please choose another move"
-    // );
-    gameBoardplayerOne.classList.remove("gameBoardLegal");
-    gameBoardplayerOne.classList.add("gameBoardNotLegal");
-    setTimeout(makeLegalAgain, 250);
-    function makeLegalAgain() {
-      gameBoardplayerOne.classList.remove("gameBoardNotLegal");
-      gameBoardplayerOne.classList.add("gameBoardLegal");
-    }
+    gameBoardToggleLegalState(false);
+    setTimeout(() => gameBoardToggleLegalState(true), 250);
   } else {
-    console.log("legal");
-    gameBoardplayerOne.classList.remove("gameBoardNotLegal");
-    gameBoardplayerOne.classList.add("gameBoardLegal");
-    let shipBlockColorAndUncolorLogger = 0;
+    // Mark the move as legal and update the board visually
+
+    gameBoardToggleLegalState(true);
     shipBlockColorAndUnColor(
       gridSquareMain,
       gridSquareMain,

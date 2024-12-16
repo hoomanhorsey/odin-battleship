@@ -241,6 +241,18 @@ function shipBlockGetDirectionData(gridSquareMainPrevious) {
   }
 }
 
+function gameBoardToggleLegalState(isLegal) {
+  if (isLegal) {
+    console.log("legal");
+    gameBoardplayerOne.classList.remove("gameBoardNotLegal");
+    gameBoardplayerOne.classList.add("gameBoardLegal");
+  } else {
+    console.log("not legal");
+    gameBoardplayerOne.classList.remove("gameBoardLegal");
+    gameBoardplayerOne.classList.add("gameBoardNotLegal");
+  }
+}
+
 export {
   drawGrid,
   gridSquarePopulateWithShip,
@@ -255,4 +267,5 @@ export {
   updateGameMoveStatus,
   shipBlockOriginalRemove,
   shipBlockGetDirectionData,
+  gameBoardToggleLegalState,
 };
