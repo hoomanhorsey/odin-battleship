@@ -90,22 +90,19 @@ function checkLegal(event, players) {
 
   const ship = players["playerOne"].gameBoard.ships[shipTypeData];
 
-  if (
-    checkMoveLegal(
-      parseInt(event.target.dataset.row),
-      parseInt(event.target.dataset.column),
-      direction,
-      ship.length
-    ) === false
-  ) {
-    console.log("not legal"); // not legal
-    gameBoardplayerOne.classList.remove("gameBoardLegal");
-    gameBoardplayerOne.classList.add("gameBoardNotLegal");
+  // Parse dataset once at the start of the function
+  const row = parseInt(event.target.dataset.row);
+  const column = parseInt(event.target.dataset.column);
+  // // Check if the proposed move is valid
+  if (!checkMoveLegal(row, column, direction, ship.length)) {
+    // Indicate an illegal move temporarily
+    gameBoardToggleLegalState(false);
   } else {
-    gameBoardplayerOne.classList.remove("gameBoardNotLegal");
-    gameBoardplayerOne.classList.add("gameBoardLegal");
+    //   // Mark the move as legal and update the board visually
+    gameBoardToggleLegalState(true);
   }
 }
+
 ///TODO NOT Sure this fuction works
 function dragEnd(event) {
   console.log("drag end");
@@ -198,7 +195,6 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
     setTimeout(() => gameBoardToggleLegalState(true), 250);
   } else {
     // Mark the move as legal and update the board visually
-
     gameBoardToggleLegalState(true);
     shipBlockColorAndUnColor(
       gridSquareMain,
