@@ -117,12 +117,7 @@ function dragEnd(event) {
 function allowDrop(event) {
   event.preventDefault();
 }
-//
-//
-//
-///
-//
-//
+
 function drop(event, players) {
   event.preventDefault();
 
@@ -180,41 +175,52 @@ function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
   };
   gridSquareMain.addEventListener("click", shipBlockChangeAxis);
 
-  // return callback function in case you need remove the event listener
+  // ***TODOreturn callback function in case you need remove the event listener
   return shipBlockChangeAxis;
 }
 
 function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
   console.log("axis click operating");
 
-  // get directions of shipBlock
-  let directionColor = gridSquareMain.dataset.direction;
-  let directionUncolor;
+  // determine new direction of shipBlock, based on existing
+  let currentDirection = gridSquareMain.dataset.direction;
+  let newDirection = currentDirection === "right" ? "down" : "right";
 
+  // function shipBlockDetermineDirection(directionColor) {
+  //   // transforming directions before checkLegal processing
+  //   if (directionColor === "right") {
+  //     console.log(" directionUncolor = right, directionColor = down");
+  //     return { directionColor: "down", directionUncolor: "right" };
+  //   } else if (directionColor === "down") {
+  //     console.log(" directionUncolor = down, directionColor = right");
+  //     return { directionColor: "right", directionUncolor: "down" };
+  //   }
+  // }
+
+  // transforming directions before checkLegal processing
+  // if (directionColor === "right") {
+  //   directionColor = "down";
+  //   directionUncolor = "right";
+  //   console.log(" directionUncolor = right, directionColor = down");
+  // } else if (directionColor === "down") {
+  //   directionColor = "right";
+  //   directionUncolor = "down";
+  //   console.log(" directionUncolor = down, directionColor = right");
+  // }
   console.log(
     parseInt(gridSquareMain.dataset.row),
     parseInt(gridSquareMain.dataset.column),
-    directionColor,
+    newDirection,
     shipLength
   );
 
-  // transforming directions before checkLegal processing
-  if (directionColor === "right") {
-    directionColor = "down";
-    directionUncolor = "right";
-    console.log(" directionUncolor = right, directionColor = down");
-  } else if (directionColor === "down") {
-    directionColor = "right";
-    directionUncolor = "down";
-    console.log(" directionUncolor = down, directionColor = right");
-  }
   // check move legal first, before displaying
 
   if (
     checkMoveLegal(
       parseInt(gridSquareMain.dataset.row),
       parseInt(gridSquareMain.dataset.column),
-      directionColor,
+      newDirection,
       shipLength
     ) === false
   ) {
@@ -239,8 +245,8 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
       gridSquareMain,
       shipType,
       shipLength,
-      directionColor,
-      directionUncolor
+      newDirection,
+      currentDirection
     );
   }
 }
