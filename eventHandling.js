@@ -43,26 +43,46 @@ function shipBlockListenersSetUp(players) {
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
   gameBoardplayerOne.addEventListener("dragenter", (event) =>
-    handleShipBlockDragEvent(event, players)
-  ); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+    handleDragEnter(event, players)
+  );
   gameBoardplayerOne.addEventListener("dragover", (event) =>
-    handleShipBlockDragEvent(event, players)
+    handleDragOver(event, players)
   );
   gameBoardplayerOne.addEventListener("dragleave", (event) =>
-    handleShipBlockDragEvent(event, players)
-  ); // NOTE TODO, these event listeners haven't been removed. May need to remove.
+    handleDragLeave(event, players)
+  );
   gameBoardplayerOne.addEventListener("drop", (event) =>
-    handleShipBlockDragEvent(event, players)
+    handleDrop(event, players)
   );
   gameBoardplayerOne.addEventListener("dragend", (event) =>
-    handleShipBlockDragEvent(event, players)
-  ); ///TODO
+    handleDragEnd(event, players)
+  );
 
   const shipBlocks = document.querySelectorAll(".shipBlock");
   shipBlocks.forEach((block) => {
     // block.addEventListener("dragstart", handleShipDragStart);
     // block.addEventListener("dragend", handleShipDragEnd);
   });
+}
+
+function handleDragEnter(event, players) {
+  validateMove(event, players);
+  gridSquareActiveAddHighlight(event.target);
+}
+function handleDragOver(event, players) {
+  allowDrop(event, players);
+}
+
+function handleDragLeave(event) {
+  gridSquareNonActiveRemoveHighlight(event.target);
+}
+
+function handleDrop(event, players) {
+  drop(event, players);
+}
+
+function handleDragEnd(event, players) {
+  dragEnd(event, players);
 }
 
 // Functions for event listeners
@@ -200,38 +220,6 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
       newDirection,
       currentDirection
     );
-  }
-}
-
-function handleShipBlockDragEvent(event, players) {
-  event.preventDefault(); // Allow drag-and-drop functionality
-
-  let target = event.target;
-  // Traverse up to find the gridSquare
-  while (target !== gameBoardplayerOne) {
-    if (target.classList.contains("gridSquare")) {
-      // Handle the event based on event type
-      switch (event.type) {
-        case "dragenter":
-          validateMove(event, players);
-          gridSquareActiveAddHighlight(event.target); // Y
-          break;
-        case "dragover":
-          allowDrop(event, players);
-          break;
-        case "dragleave":
-          gridSquareNonActiveRemoveHighlight(event.target);
-          break;
-        case "dragend":
-          dragEnd(event, players);
-          break;
-        case "drop":
-          drop(event, players);
-          break;
-      }
-      break;
-    }
-    target = target.parentElement; // Traverse up to the parent
   }
 }
 
