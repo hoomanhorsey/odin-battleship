@@ -39,54 +39,95 @@ function shipBlockAttachEventHandlers(players) {
   // });
 }
 
-// Define the handlers at the top level or within a scope where they'll persist
-const handleDragEnter = (event, players) => {
-  validateMove(event, players);
-  gridSquareActiveAddHighlight(event.target);
-};
-const handleDragOver = (event, players) => allowDrop(event, players);
-const handleDragLeave = (event) =>
-  gridSquareNonActiveRemoveHighlight(event.target);
-const handleDrop = (event, players) => drop(event, players);
-const handleDragEnd = (event, players) => dragEnd(event, players);
+// Store event handlers in an object for flexibility
+const handlers = {};
 
-// Wrapper functions that allow passing `players` and remove listeners
-function createHandleDragEnter(players) {
-  return (event) => handleDragEnter(event, players);
-}
-function createHandleDragOver(players) {
-  return (event) => handleDragOver(event, players);
-}
-function createHandleDrop(players) {
-  return (event) => handleDrop(event, players);
-}
-function createHandleDragEnd(players) {
-  return (event) => handleDragEnd(event, players);
-}
 function gameBoardAttachEventHandlers(players) {
-  // Event listeners - gameBoard
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
-  gameBoardplayerOne.addEventListener(
-    "dragenter",
-    createHandleDragEnter(players)
-  );
-  gameBoardplayerOne.addEventListener(
-    "dragover",
-    createHandleDragOver(players)
-  );
-  gameBoardplayerOne.addEventListener("dragleave", handleDragLeave);
-  gameBoardplayerOne.addEventListener("drop", createHandleDrop(players));
-  gameBoardplayerOne.addEventListener("dragend", createHandleDragEnd(players));
+  // Define and store handlers for individual access
+  handlers.dragenter = (event) => {
+    validateMove(event, players);
+    gridSquareActiveAddHighlight(event.target);
+  };
+  handlers.dragover = (event) => allowDrop(event, players);
+  handlers.dragleave = (event) =>
+    gridSquareNonActiveRemoveHighlight(event.target);
+  handlers.drop = (event) => drop(event, players);
+  handlers.dragend = (event) => dragEnd(event, players); // TODO, query whether you need dragend
+
+  // Attach Each handler
+  gameBoardplayerOne.addEventListener("dragenter", handlers.dragenter);
+  gameBoardplayerOne.addEventListener("dragover", handlers.dragover);
+  gameBoardplayerOne.addEventListener("dragleave", handlers.dragleave);
+  gameBoardplayerOne.addEventListener("drop", handlers.drop);
+  gameBoardplayerOne.addEventListener("dragend", handlers.dragend);
 }
 
-function gameBoardDetachEventHandlers(players) {
-  gameBoard.removeEventListener("dragenter", handleDragEnter);
-  gameBoard.removeEventListener("dragover", handleDragOver);
-  gameBoard.removeEventListener("dragleave", handleDragLeave);
-  gameBoard.removeEventListener("drop", handleDrop);
-  gameBoard.removeEventListener("dragend", handleDragEnd);
+/**
+ * Detach all handlers or a specific handler by event type
+ */
+function gameBoardDetachEventHandlers(eventType) {
+  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+
+  if (eventType) {
+    // Remove a specific event handler
+    if (handlers[eventType]) {
+      gameBoardplayerOne.removeEventListener(eventType, handlers[eventType]);
+      delete handlers[eventType]; // Optional: remove reference
+    }
+  } else {
+    // Remove all event handlers
+    for (const [event, handler] of Object.entries(handlers)) {
+      gameBoardplayerOne.removeEventListener(event, handler);
+    }
+    // Clear all references
+    Object.keys(handlers).forEach((key) => delete handlers[key]);
+  }
 }
+// // Define the handlers at the top level or within a scope where they'll persist
+// const handleDragEnter = (event, players) => {
+//   validateMove(event, players);
+//   gridSquareActiveAddHighlight(event.target);
+// };
+// const handleDragOver = (event, players) => allowDrop(event, players);
+// const handleDragLeave = (event) =>
+//   gridSquareNonActiveRemoveHighlight(event.target);
+// const handleDrop = (event, players) => drop(event, players);
+// const handleDragEnd = (event, players) => dragEnd(event, players);
+
+// // Wrapper functions that allow passing `players` and remove listeners
+// function createHandleDragEnter(players) {
+//   return (event) => handleDragEnter(event, players);
+// }
+// function createHandleDragOver(players) {
+//   return (event) => handleDragOver(event, players);
+// }
+// function createHandleDragLeave() {
+//   return () => handleDragLeave();
+// }
+// function createHandleDrop(players) {
+//   return (event) => handleDrop(event, players);
+// }
+// function createHandleDragEnd(players) {
+//   return (event) => handleDragEnd(event, players);
+// }
+// function gameBoardAttachEventHandlers(players) {
+//   // Event listeners - gameBoard
+//   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+
+//   gameBoardplayerOne.addEventListener(
+//     "dragenter",
+//     createHandleDragEnter(players)
+//   );
+//   gameBoardplayerOne.addEventListener(
+//     "dragover",
+//     createHandleDragOver(players)
+//   );
+//   gameBoardplayerOne.addEventListener("dragleave", createHandleDragLeave);
+//   gameBoardplayerOne.addEventListener("drop", createHandleDrop(players));
+//   gameBoardplayerOne.addEventListener("dragend", createHandleDragEnd(players));
+// }
 
 // Functions for event listeners
 function drag(event) {
@@ -128,7 +169,9 @@ function validateMove(event, players) {
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     console.log(gameBoardplayerOne);
 
-    gameBoardplayerOne.removeEventListener("dragover", handleDragOver);
+    // THis remove event listener is redundant now that prevent default is now implemented
+    // gameBoardplayerOne.removeEventListener("dragover", handleDragOver);
+    // gameBoardplayerOne.removeEventListener("dragover", handlers.dragover);
     console.log("isMoveValid " + isMoveValid);
   } else {
     isMoveValid = true;
@@ -386,3 +429,57 @@ export {
 //   shipBlockId[9],
 //   players["playerOne"]
 // );
+
+// OBSEOLETE HANDLERS
+
+// // Define the handlers at the top level or within a scope where they'll persist
+// const handleDragEnter = (event, players) => {
+//   validateMove(event, players);
+//   gridSquareActiveAddHighlight(event.target);
+// };
+// const handleDragOver = (event, players) => allowDrop(event, players);
+// const handleDragLeave = (event) =>
+//   gridSquareNonActiveRemoveHighlight(event.target);
+// const handleDrop = (event, players) => drop(event, players);
+// const handleDragEnd = (event, players) => dragEnd(event, players);
+
+// // Wrapper functions that allow passing `players` and remove listeners
+// function createHandleDragEnter(players) {
+//   return (event) => handleDragEnter(event, players);
+// }
+// function createHandleDragOver(players) {
+//   return (event) => handleDragOver(event, players);
+// }
+// function createHandleDragLeave() {
+//   return () => handleDragLeave();
+// }
+// function createHandleDrop(players) {
+//   return (event) => handleDrop(event, players);
+// }
+// function createHandleDragEnd(players) {
+//   return (event) => handleDragEnd(event, players);
+// }
+// function gameBoardAttachEventHandlers(players) {
+//   // Event listeners - gameBoard
+//   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+
+//   gameBoardplayerOne.addEventListener(
+//     "dragenter",
+//     createHandleDragEnter(players)
+//   );
+//   gameBoardplayerOne.addEventListener(
+//     "dragover",
+//     createHandleDragOver(players)
+//   );
+//   gameBoardplayerOne.addEventListener("dragleave", createHandleDragLeave);
+//   gameBoardplayerOne.addEventListener("drop", createHandleDrop(players));
+//   gameBoardplayerOne.addEventListener("dragend", createHandleDragEnd(players));
+// }
+
+// function gameBoardDetachEventHandlers(players) {
+//   gameBoard.removeEventListener("dragenter", handleDragEnter);
+//   gameBoard.removeEventListener("dragover", handleDragOver);
+//   gameBoard.removeEventListener("dragleave", handleDragLeave);
+//   gameBoard.removeEventListener("drop", handleDrop);
+//   gameBoard.removeEventListener("dragend", handleDragEnd);
+// }
