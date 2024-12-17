@@ -38,16 +38,33 @@ function gridSquareActiveLocate(row, column) {
 // gridSquare highlighting and unhighlighting
 function gridSquareActiveAddHighlight(eventTarget) {
   console.log("gridSquareActiveHighligh");
+  console.log(eventTarget);
+  // eventTarget.classList.add("gridSquareActive");
 
   if (eventTarget.classList.contains("gridSquare")) {
+    console.log("contains gridSquare");
     eventTarget.classList.add("gridSquareActive");
+    console.log(eventTarget.classList);
+
+    // Delay and check DOM state after 1 second
+    setTimeout(() => {
+      console.log(eventTarget.classList);
+    }, 1000);
   }
 }
 
-function gridSquareNonActiveRemoveHighlight() {
+function gridSquareNonActiveRemoveHighlight(eventTarget) {
   const gridSquareActive = document.querySelector(".gridSquareActive");
+  console.log("gridSquareNonActiveRemoveHighlight called");
+
+  console.log(eventTarget);
+
   if (gridSquareActive) {
-    gridSquareActive.classList.remove("gridSquareActive");
+    console.log("**************highllight removed");
+
+    console.log("Removing highlight from:", eventTarget);
+
+    eventTarget.classList.remove("gridSquareActive");
   }
 }
 

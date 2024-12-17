@@ -39,6 +39,10 @@ function checkMoveLegal(row, column, direction, shipLength) {
       }
     case "right":
       if (column + shipLength > 10) {
+        console.log(column);
+        if (!column) {
+          console.log("no column");
+        }
         return false;
       } else {
         return true;

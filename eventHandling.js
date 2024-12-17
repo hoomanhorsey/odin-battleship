@@ -15,16 +15,32 @@ function shipBlockAttachEventHandlers(players) {
   // shipBlock draggables
 
   //  *****Todo, conider finding by class, and then attaching via forEaCH
+  // const shipBlockC = document.getElementById("shipBlockC");
+
+  // if (!document.querySelector(`[data-ship-type="${shipType}"]`)) {
+  //   console.log("is null");
+  // }
   const shipBlockC = document.getElementById("shipBlockC");
-  // const shipBlockB = document.getElementById("shipBlockB");
-  // const shipBlockD = document.getElementById("shipBlockD");
-  // const shipBlockS = document.getElementById("shipBlockS");
-  // const shipBlockP = document.getElementById("shipBlockP");
+
+  // const shipBlockC = document.querySelector(`[data-ship-type="${shipType}"]`);
+
+  const shipBlockB = document.getElementById("shipBlockB");
+  const shipBlockD = document.getElementById("shipBlockD");
+  const shipBlockS = document.getElementById("shipBlockS");
+  const shipBlockP = document.getElementById("shipBlockP");
+
+  // const handlerDrag = (event) => drag(event);
+
+  shipBlockC.addEventListener("dragstart", drag);
+  shipBlockB.addEventListener("dragstart", drag);
+  shipBlockD.addEventListener("dragstart", drag);
+  shipBlockS.addEventListener("dragstart", drag);
+  shipBlockP.addEventListener("dragstart", drag);
 
   // add Eventlisteners to
-  shipBlockC.addEventListener("dragstart", (event) => {
-    drag(event, players);
-  });
+  // shipBlockC.addEventListener("dragstart", (event) => {
+  //   drag(event, players);
+  // });
   // shipBlockB.addEventListener("dragstart", (event) => {
   //   drag(event, players);
   // });
@@ -37,7 +53,13 @@ function shipBlockAttachEventHandlers(players) {
   // shipBlockP.addEventListener("dragstart", (event) => {
   //   drag(event, players);
   // });
+
+  // return handlerDrag;
 }
+
+/*
+ *shipBLock placment - setting up event handlers
+ */
 
 // Store event handlers in an object for flexibility
 const handlers = {};
@@ -47,13 +69,17 @@ function gameBoardAttachEventHandlers(players) {
 
   // Define and store handlers for individual access
   handlers.dragenter = (event) => {
-    validateMove(event, players);
+    event.preventDefault(); // Allow the drag event
+
     gridSquareActiveAddHighlight(event.target);
+    validateMove(event, players);
   };
   handlers.dragover = (event) => allowDrop(event, players);
   handlers.dragleave = (event) =>
     gridSquareNonActiveRemoveHighlight(event.target);
   handlers.drop = (event) => drop(event, players);
+
+  // Not even sure if this event listener is necessary....or the function..
   handlers.dragend = (event) => dragEnd(event, players); // TODO, query whether you need dragend
 
   // Attach Each handler
@@ -64,7 +90,7 @@ function gameBoardAttachEventHandlers(players) {
   gameBoardplayerOne.addEventListener("dragend", handlers.dragend);
 }
 
-/**
+/*
  * Detach all handlers or a specific handler by event type
  */
 function gameBoardDetachEventHandlers(eventType) {
@@ -85,51 +111,10 @@ function gameBoardDetachEventHandlers(eventType) {
     Object.keys(handlers).forEach((key) => delete handlers[key]);
   }
 }
-// // Define the handlers at the top level or within a scope where they'll persist
-// const handleDragEnter = (event, players) => {
-//   validateMove(event, players);
-//   gridSquareActiveAddHighlight(event.target);
-// };
-// const handleDragOver = (event, players) => allowDrop(event, players);
-// const handleDragLeave = (event) =>
-//   gridSquareNonActiveRemoveHighlight(event.target);
-// const handleDrop = (event, players) => drop(event, players);
-// const handleDragEnd = (event, players) => dragEnd(event, players);
 
-// // Wrapper functions that allow passing `players` and remove listeners
-// function createHandleDragEnter(players) {
-//   return (event) => handleDragEnter(event, players);
-// }
-// function createHandleDragOver(players) {
-//   return (event) => handleDragOver(event, players);
-// }
-// function createHandleDragLeave() {
-//   return () => handleDragLeave();
-// }
-// function createHandleDrop(players) {
-//   return (event) => handleDrop(event, players);
-// }
-// function createHandleDragEnd(players) {
-//   return (event) => handleDragEnd(event, players);
-// }
-// function gameBoardAttachEventHandlers(players) {
-//   // Event listeners - gameBoard
-//   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
-//   gameBoardplayerOne.addEventListener(
-//     "dragenter",
-//     createHandleDragEnter(players)
-//   );
-//   gameBoardplayerOne.addEventListener(
-//     "dragover",
-//     createHandleDragOver(players)
-//   );
-//   gameBoardplayerOne.addEventListener("dragleave", createHandleDragLeave);
-//   gameBoardplayerOne.addEventListener("drop", createHandleDrop(players));
-//   gameBoardplayerOne.addEventListener("dragend", createHandleDragEnd(players));
-// }
-
-// Functions for event listeners
+/*
+ * Functions for shipBlock event handlers
+ */
 function drag(event) {
   // get shipBlock by dataset shipType to set class
   const shipBlock = document.querySelector(
@@ -144,11 +129,9 @@ function drag(event) {
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
 }
 
+// isMoveValid value toggles droppability of shipBlock onto gridSquare
 let isMoveValid = false;
 function validateMove(event, players) {
-  // console.log(event);
-  // console.log(players);
-
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
   const direction = draggedElement.dataset.direction;
@@ -164,14 +147,7 @@ function validateMove(event, players) {
 
   if (!isLegalMove) {
     isMoveValid = false;
-    console.log("****TRYING TO REMOVE EVENT LISTENER");
-
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-    console.log(gameBoardplayerOne);
-
-    // THis remove event listener is redundant now that prevent default is now implemented
-    // gameBoardplayerOne.removeEventListener("dragover", handleDragOver);
-    // gameBoardplayerOne.removeEventListener("dragover", handlers.dragover);
     console.log("isMoveValid " + isMoveValid);
   } else {
     isMoveValid = true;
@@ -181,16 +157,15 @@ function validateMove(event, players) {
   gameBoardToggleLegalState(isLegalMove);
 }
 
+// Not even sure if this funtion is necessary....or the event listener....
 function dragEnd(event) {
-  console.log("drag end");
-  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
-  console.log("add axis event listener now?");
+  // console.log("drag end");
+  // const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+  // console.log("add axis event listener now?");
 }
 
 function allowDrop(event) {
-  // console.log("isMoveValid from allowDrop " + isMoveValid);
-  // prevents deafult if isMoveValid is true
+  // prevents default (which allows a drop) only if isMoveValid is true
   if (isMoveValid) {
     event.preventDefault();
   }
@@ -200,7 +175,7 @@ function drop(event, players) {
   event.preventDefault();
 
   // removes targeting highlight
-  gridSquareNonActiveRemoveHighlight();
+  gridSquareNonActiveRemoveHighlight(event.target);
 
   // get shipType from event.target data
   const shipTypeFromShipBlockData = event.dataTransfer.getData("text");
@@ -241,9 +216,17 @@ function drop(event, players) {
     shipLength
   );
 
-  // assigns drag functionality onto new gridSquaremain/shipBlock
+  // assigns drag functionality onto new gridSquagit remain/shipBlock
+
+  // const handlerDrag = shipBlockAttachEventHandlers(
+  //   players,
+  //   shipTypeFromShipBlockData
+  // );
+  // gridSquareMain.addEventListener("dragstart", () =>
+  //   handlerDrag(event, shipTypeFromShipBlockData)
+  // );
   gridSquareMain.addEventListener("dragstart", (event) => {
-    drag(event, players);
+    drag(event);
   });
 }
 
