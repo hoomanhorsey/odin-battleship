@@ -8,7 +8,11 @@ import {
   gameBoardToggleLegalState,
 } from "./display.js";
 
-import { checkMoveLegal, checkDupeGridSquare } from "./helpers.js";
+import {
+  checkCollisions,
+  checkMoveLegal,
+  checkDupeGridSquare,
+} from "./helpers.js";
 
 // gameSetup handlers
 function shipBlockAttachEventHandlers(players) {
@@ -142,10 +146,48 @@ function validateMove(event, players) {
   const row = parseInt(event.target.dataset.row);
   const column = parseInt(event.target.dataset.column);
 
+  console.log(row, column);
+
   // Call the helper module to check if the move is legal
   const isLegalMove = checkMoveLegal(row, column, direction, ship.length);
+  console.log(
+    players["playerOne"].gameBoard.boardArray,
+    row,
+    column,
+    direction,
+    ship
+  );
 
-  if (!isLegalMove) {
+  if (
+    !checkCollisions(
+      players["playerOne"].gameBoard.boardArray,
+      row,
+      column,
+      direction,
+      ship
+    )
+  ) {
+    console.log("!!!!!!!!!!!!!!!1collision");
+    console.log(
+      checkCollisions(
+        players["playerOne"].gameBoard.boardArray,
+        row,
+        column,
+        direction,
+        ship
+      )
+    );
+  }
+
+  let isClearOfCollisions = checkCollisions(
+    players["playerOne"].gameBoard.boardArray,
+    row,
+    column,
+    direction,
+    ship
+  );
+
+  if (!isLegalMove || !isClearOfCollisions) {
     isMoveValid = false;
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     console.log("isMoveValid " + isMoveValid);
@@ -154,7 +196,8 @@ function validateMove(event, players) {
     console.log("isMoveValid " + isMoveValid);
   }
   // Call the Display Module to update the visual state
-  gameBoardToggleLegalState(isLegalMove);
+  // gameBoardToggleLegalState(isLegalMove);
+  gameBoardToggleLegalState(isMoveValid);
 }
 
 // Not even sure if this funtion is necessary....or the event listener....
@@ -228,6 +271,18 @@ function drop(event, players) {
   gridSquareMain.addEventListener("dragstart", (event) => {
     drag(event);
   });
+
+  // Parse dataset once at the start of the function
+  const row = parseInt(event.target.dataset.row);
+  const column = parseInt(event.target.dataset.column);
+
+  players["playerOne"].gameBoard.placeShip(
+    row,
+    column,
+    directionColor,
+    shipTypeFromShipBlockData,
+    players["playerOne"]
+  );
 }
 
 function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {

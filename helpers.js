@@ -13,15 +13,17 @@ function makeGrid() {
 // creates an array of a proposed position for checking, called by placeShip()
 function positionCheckArray(boardArray, row, column, direction, ship) {
   switch (direction) {
-    case "up":
-      return boardArray
-        .slice(row - ship.length + 1, row + 1)
-        .map((row) => row[column]);
+    // case "up":
+    //   return boardArray
+    //     .slice(row - ship.length + 1, row + 1)
+    //     .map((row) => row[column]);
     case "down":
       return boardArray.slice(row, row + ship.length).map((row) => row[column]);
-    case "left":
-      return boardArray[row].slice(column - ship.length + 1, column + 1);
+    // case "left":
+    //   return boardArray[row].slice(column - ship.length + 1, column + 1);
     case "right":
+      console.log(boardArray[row].slice(column, column + ship.length));
+
       return boardArray[row].slice(column, column + ship.length);
     default:
       return error;
@@ -53,7 +55,13 @@ function checkMoveLegal(row, column, direction, shipLength) {
 }
 
 // checks if there are any collisions,  called by placeShip()
-function checkClear(array) {
+function checkCollisions(boardArray, row, column, direction, ship) {
+  const array = positionCheckArray(boardArray, row, column, direction, ship);
+  return array.every((value) => value.ship === null);
+}
+
+// checks if there are any collisions,  called by placeShip()
+function acheckCollisions(array) {
   return array.every((value) => value.ship === null);
 }
 
@@ -103,9 +111,9 @@ function checkDupeGridSquare(player, row, column) {
 }
 export {
   makeGrid,
+  checkCollisions,
   positionCheckArray,
   checkMoveLegal,
-  checkClear,
   placeShipOnBoard,
   checkDupeGridSquare,
 };

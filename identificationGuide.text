@@ -43,7 +43,7 @@ playerObject
 
 - checkMoveLegal(row, column, direction, shipLength)
 
-- checkClear(array)
+- checkCollisions(array)
 
 - placeShipOnBoard(boardArray, row, column, direction, ship)
 

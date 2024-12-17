@@ -2,7 +2,7 @@ import {
   makeGrid,
   positionCheckArray,
   checkMoveLegal,
-  checkClear,
+  checkCollisions,
   placeShipOnBoard,
 } from "./helpers.js";
 
@@ -56,14 +56,15 @@ class Gameboard {
     column = parseInt(column);
     let ship = this.ships[shipType];
 
-    // create array of proposed position for testing
-    const proposedPosition = positionCheckArray(
-      this.boardArray,
-      row,
-      column,
-      direction,
-      ship
-    );
+    // this is now contained within the checkCollisions function
+    // // create array of proposed position for testing
+    // const proposedPosition = positionCheckArray(
+    //   this.boardArray,
+    //   row,
+    //   column,
+    //   direction,
+    //   ship
+    // );
     // check boundaries + collisons with other ships
 
     if (checkMoveLegal(row, column, direction, ship)) {
@@ -72,11 +73,16 @@ class Gameboard {
       console.log("position is not legal ");
       return;
     }
-    if (checkClear(proposedPosition)) {
+    if (checkCollisions(this.boardArray, row, column, direction, ship)) {
     } else {
       console.log("position is has collisions");
       return;
     }
+    // if (checkCollisions(proposedPosition)) {
+    // } else {
+    //   console.log("position is has collisions");
+    //   return;
+    // }
 
     if (player.name === "playerOne") {
       if (prompt("Are you happy with position? Y or N") === "Y") {
@@ -97,7 +103,7 @@ class Gameboard {
   // // check boundaries + collisons with other ships
   // if (
   //   checkMoveLegal(row, column, direction, ship) &&
-  //   checkClear(proposedPosition)
+  //   checkCollisions(proposedPosition)
   // ) {
   //   // place ship
   //   console.log(this.boardArray);
@@ -115,8 +121,8 @@ class Gameboard {
   //   return;
   // }
   //   if (
-  //   checkClear(proposedPosition)) {
-  //     console.log('checkClear is true');
+  //   checkCollisions(proposedPosition)) {
+  //     console.log('checkCollisions is true');
 
   //   } else {
   //     console.log("position is has collisions");
