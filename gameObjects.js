@@ -3,7 +3,7 @@ import {
   positionCheckArray,
   checkMoveLegal,
   checkCollisions,
-  placeShipOnBoard,
+  shipBlockUpdateBoardArray,
 } from "./helpers.js";
 
 class Ship {
@@ -84,19 +84,24 @@ class Gameboard {
     //   return;
     // }
 
-    if (player.name === "playerOne") {
-      if (prompt("Are you happy with position? Y or N") === "Y") {
-        placeShipOnBoard(this.boardArray, row, column, direction, ship);
-      } else {
-        return;
-      }
-    } else {
-      placeShipOnBoard(this.boardArray, row, column, direction, ship);
-    }
-    // if (prompt("Are you happy with position? Y or N") === "Y") {
-    //   // place ship
-    //   console.log(this.boardArray);
-    //   placeShipOnBoard(this.boardArray, row, column, direction, ship);
+    shipBlockUpdateBoardArray(
+      this.boardArray,
+      row,
+      column,
+      direction,
+      ship,
+      "save"
+    );
+
+    // TODO - this prompt may be useful for when you want to confirm final position?
+    // if (player.name === "playerOne") {
+    //   if (prompt("Are you happy with position? Y or N") === "Y") {
+    //     shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
+    //   } else {
+    //     return;
+    //   }
+    // } else {
+    //   shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
     // }
   }
 
@@ -107,7 +112,7 @@ class Gameboard {
   // ) {
   //   // place ship
   //   console.log(this.boardArray);
-  //   placeShipOnBoard(this.boardArray, row, column, direction, ship);
+  //   shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
   // } else {
   //   console.log("position is not legal or collisions");
   //   return;
@@ -131,7 +136,7 @@ class Gameboard {
 
   //   // place ship
   //   console.log(this.boardArray);
-  //   placeShipOnBoard(this.boardArray, row, column, direction, ship);
+  //   shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
   // } else {
   //   console.log("position is not legal or collisions");
   //   return;

@@ -276,12 +276,27 @@ function drop(event, players) {
   const row = parseInt(event.target.dataset.row);
   const column = parseInt(event.target.dataset.column);
 
+  // Where the shipBlock is not the original, delete the previous one saved onto boardArray
+
+  if (!gridSquareMainPrevious) {
+    players["playerOne"].gameBoard.placeShip(
+      gridSquareMainPreviou.data.row,
+      gridSquareMainPreviou.data.column,
+      directionColor,
+      shipTypeFromShipBlockData,
+      players["playerOne"],
+      "delete"
+    );
+  }
+
+  // save the shipBlock to the boardArray
   players["playerOne"].gameBoard.placeShip(
     row,
     column,
     directionColor,
     shipTypeFromShipBlockData,
-    players["playerOne"]
+    players["playerOne"],
+    "save"
   );
 }
 

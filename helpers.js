@@ -11,19 +11,13 @@ function makeGrid() {
 }
 
 // creates an array of a proposed position for checking, called by placeShip()
+// this currently calls an error until it's dropped. It's okay for now
 function positionCheckArray(boardArray, row, column, direction, ship) {
   switch (direction) {
-    // case "up":
-    //   return boardArray
-    //     .slice(row - ship.length + 1, row + 1)
-    //     .map((row) => row[column]);
     case "down":
       return boardArray.slice(row, row + ship.length).map((row) => row[column]);
-    // case "left":
-    //   return boardArray[row].slice(column - ship.length + 1, column + 1);
     case "right":
       console.log(boardArray[row].slice(column, column + ship.length));
-
       return boardArray[row].slice(column, column + ship.length);
     default:
       return error;
@@ -65,30 +59,30 @@ function acheckCollisions(array) {
   return array.every((value) => value.ship === null);
 }
 
-function placeShipOnBoard(boardArray, row, column, direction, ship) {
+function shipBlockUpdateBoardArray(
+  boardArray,
+  row,
+  column,
+  direction,
+  ship,
+  mode
+) {
+  const value = mode === "save" ? ship.type : null;
+
   switch (direction) {
-    case "up":
-      for (let i = row; i > row - ship.length; i--) {
-        boardArray[i][column].ship = ship.type;
-      }
-      break;
     case "down":
       for (let i = row; i < row + ship.length; i++) {
-        boardArray[i][column].ship = ship.type;
+        boardArray[i][column].ship = value;
       }
       break;
-    case "left":
-      for (let i = column; i > column - ship.length; i--) {
-        boardArray[row][i].ship = ship.type;
-      }
-      break;
+
     case "right":
       for (let i = column; i < column + ship.length; i++) {
-        boardArray[row][i].ship = ship.type;
+        boardArray[row][i].ship = value;
       }
       break;
     default:
-      return "Invalid diirection provided";
+      throw new Error("Invalid direction provided");
   }
 }
 
@@ -114,6 +108,6 @@ export {
   checkCollisions,
   positionCheckArray,
   checkMoveLegal,
-  placeShipOnBoard,
+  shipBlockUpdateBoardArray,
   checkDupeGridSquare,
 };
