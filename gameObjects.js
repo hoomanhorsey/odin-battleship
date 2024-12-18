@@ -67,15 +67,17 @@ class Gameboard {
     // );
     // check boundaries + collisons with other ships
 
+    ///TODO - do I need check move legal at this point? Isn't it checked before placeship?
     if (checkMoveLegal(row, column, direction, ship)) {
       ("checkMoveLegal is true");
     } else {
       console.log("position is not legal ");
       return;
     }
+
     if (checkCollisions(this.boardArray, row, column, direction, ship)) {
     } else {
-      console.log("position is has collisions");
+      console.log("position has collisions");
       return;
     }
     // if (checkCollisions(proposedPosition)) {
@@ -144,7 +146,6 @@ class Gameboard {
 
   receiveAttack(row, column) {
     // updates gameBoard with a miss
-
     console.log("receiveAttack called");
 
     if (this.boardArray[row][column].ship === null) {

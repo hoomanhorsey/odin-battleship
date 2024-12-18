@@ -37,33 +37,14 @@ function gridSquareActiveLocate(row, column) {
 
 // gridSquare highlighting and unhighlighting
 function gridSquareActiveAddHighlight(eventTarget) {
-  console.log("gridSquareActiveHighligh");
-  console.log(eventTarget);
-  // eventTarget.classList.add("gridSquareActive");
-
   if (eventTarget.classList.contains("gridSquare")) {
-    console.log("contains gridSquare");
     eventTarget.classList.add("gridSquareActive");
-    console.log(eventTarget.classList);
-
-    // Delay and check DOM state after 1 second
-    setTimeout(() => {
-      console.log(eventTarget.classList);
-    }, 1000);
   }
 }
 
 function gridSquareNonActiveRemoveHighlight(eventTarget) {
   const gridSquareActive = document.querySelector(".gridSquareActive");
-  console.log("gridSquareNonActiveRemoveHighlight called");
-
-  console.log(eventTarget);
-
   if (gridSquareActive) {
-    console.log("**************highllight removed");
-
-    console.log("Removing highlight from:", eventTarget);
-
     eventTarget.classList.remove("gridSquareActive");
   }
 }
@@ -138,12 +119,9 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
 
   switch (direction) {
     case "right":
-      console.log("gridSquaresColor right");
-
       let startColumn = parseInt(gridSquareMain.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
-
         const gridSquareExtended = document.querySelector(
           `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
         );
@@ -152,8 +130,6 @@ function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
       break;
 
     case "down":
-      console.log("gridSquaresColor down");
-
       let startRow = parseInt(gridSquareMain.dataset.row);
       for (let i = 0; i < shipLength; i++) {
         let newRow = startRow + i;
@@ -237,9 +213,6 @@ function shipBlockOriginalRemove(shipTypeFromShipBlockData) {
   let shipBlockOriginal = document.querySelector(
     `[data-ship-type="${shipTypeFromShipBlockData}"]`
   );
-
-  console.log(shipBlockOriginal);
-
   // removes the original shipBlock only, which has an ID.  Later grid squares will share the shipType
   if (shipBlockOriginal.id === `shipBlock${shipTypeFromShipBlockData}`) {
     shipBlockOriginal.remove();

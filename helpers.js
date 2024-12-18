@@ -13,14 +13,24 @@ function makeGrid() {
 // creates an array of a proposed position for checking, called by placeShip()
 // this currently calls an error until it's dropped. It's okay for now
 function positionCheckArray(boardArray, row, column, direction, ship) {
-  switch (direction) {
-    case "down":
-      return boardArray.slice(row, row + ship.length).map((row) => row[column]);
-    case "right":
-      console.log(boardArray[row].slice(column, column + ship.length));
-      return boardArray[row].slice(column, column + ship.length);
-    default:
-      return error;
+  console.log(boardArray, row, column, direction, ship);
+
+  if (isNaN(row)) {
+    console.log("row is NaN");
+    console.log(row);
+
+    return null;
+  } else {
+    switch (direction) {
+      case "down":
+        return boardArray
+          .slice(row, row + ship.length)
+          .map((row) => row[column]);
+      case "right":
+        return boardArray[row].slice(column, column + ship.length);
+      default:
+        throw new Error("positionCheckArray error");
+    }
   }
 }
 
@@ -75,7 +85,6 @@ function shipBlockUpdateBoardArray(
         boardArray[i][column].ship = value;
       }
       break;
-
     case "right":
       for (let i = column; i < column + ship.length; i++) {
         boardArray[row][i].ship = value;
@@ -88,7 +97,6 @@ function shipBlockUpdateBoardArray(
 
 function checkDupeGridSquare(player, row, column) {
   console.log(player);
-
   console.log("dupe checked" + row + column);
 
   let shipObject = player.gameBoard.boardArray[row][column];
@@ -98,11 +106,10 @@ function checkDupeGridSquare(player, row, column) {
     return true;
   } else {
     console.log("returning false");
-
     return false;
   }
-  // console.log(players["playerOne"].gameBoard.boardArray);
 }
+
 export {
   makeGrid,
   checkCollisions,

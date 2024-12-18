@@ -45,7 +45,7 @@ playerObject
 
 - checkCollisions(array)
 
-- placeShipOnBoard(boardArray, row, column, direction, ship)
+- shipBlockUpdateBoardArray(boardArray, row, column, direction, ship)
 
 - checkDupeGridSquare(player, row, column)
 

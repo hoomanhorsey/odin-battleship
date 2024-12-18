@@ -17,7 +17,10 @@ function gameInit() {
   // gameSetUp_positionPreFill_BothPlayers(players);
 
   // function to allow user to selection positions
-  gameSetUp_positionFill_ComputerOnly(players);
+  // gameSetUp_positionFill_ComputerOnly(players);
+
+  // function to set up on postions for computer, simply for testing.
+  gameSetup_Noprefill();
   shipBlockAttachEventHandlers(players);
   gameBoardAttachEventHandlers(players);
   return players;
@@ -33,6 +36,9 @@ function createPlayers(
   };
 }
 
+function gameSetup_Noprefill() {
+  // No positions prefilled on computer gameboard. This function is simply here as a reminder to reset prefills or delete entirely once into production
+}
 // TESTING ONLY prefill computer player positions
 function gameSetUp_positionFill_ComputerOnly(players) {
   players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C", "playerTwo");

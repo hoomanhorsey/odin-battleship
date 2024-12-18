@@ -135,6 +135,7 @@ function drag(event) {
 
 // isMoveValid value toggles droppability of shipBlock onto gridSquare
 let isMoveValid = false;
+
 function validateMove(event, players) {
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
@@ -146,38 +147,8 @@ function validateMove(event, players) {
   const row = parseInt(event.target.dataset.row);
   const column = parseInt(event.target.dataset.column);
 
-  console.log(row, column);
-
   // Call the helper module to check if the move is legal
   const isLegalMove = checkMoveLegal(row, column, direction, ship.length);
-  console.log(
-    players["playerOne"].gameBoard.boardArray,
-    row,
-    column,
-    direction,
-    ship
-  );
-
-  if (
-    !checkCollisions(
-      players["playerOne"].gameBoard.boardArray,
-      row,
-      column,
-      direction,
-      ship
-    )
-  ) {
-    console.log("!!!!!!!!!!!!!!!1collision");
-    console.log(
-      checkCollisions(
-        players["playerOne"].gameBoard.boardArray,
-        row,
-        column,
-        direction,
-        ship
-      )
-    );
-  }
 
   let isClearOfCollisions = checkCollisions(
     players["playerOne"].gameBoard.boardArray,
@@ -287,6 +258,8 @@ function drop(event, players) {
       players["playerOne"],
       "delete"
     );
+  } else {
+    console.log("gridSquareMainPrevious is null, so its the first shipBlock");
   }
 
   // save the shipBlock to the boardArray
