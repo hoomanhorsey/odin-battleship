@@ -156,8 +156,8 @@ function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
   }
 
   squareExtended.classList.add(
-    "squareContainShip",
-    "squareContainShipC",
+    // "squareContainShip",
+    // "squareContainShipC",
     "shipColorC"
   );
 

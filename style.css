@@ -30,12 +30,8 @@
   font-size: 40px;
 }
 .shipBlockDragging {
-  border-style: dotted;
-  border-color: red;
-}
-
-.shipBlockrotate90 {
-  transform: rotate(90deg);
+  /* border-style: dotted;
+  border-color: red; */
 }
 
 .squareContainShip {
@@ -44,8 +40,18 @@
   border-color: black; */
 }
 
-.squareContainShipC,
-.shipBlockSubC,
+.shipBlockUnplaced {
+  display: grid;
+  background-color: pink;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.shipBlockUnplacedSubSquares {
+  display: grid;
+}
+
+/* .squareContainShipC, */
+/* .shipBlockSubC, */
 .shipColorC {
   display: grid;
   background-color: pink;
@@ -157,11 +163,12 @@
   display: grid;
   justify-content: center;
   align-items: center;
+  /* background-color: lightblue; */
+
   border-width: 5px;
   border-style: solid;
-  border-color: lightblue;
+  /* border-color: lightblue; */
   border-radius: 50%;
-  background-color: lightblue;
   font-size: 25px;
 
   height: 70px;

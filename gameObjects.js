@@ -1,6 +1,5 @@
 import {
   makeGrid,
-  positionCheckArray,
   checkMoveLegal,
   checkCollisions,
   shipBlockUpdateBoardArray,
