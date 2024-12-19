@@ -34,12 +34,6 @@
   border-color: red; */
 }
 
-.squareContainShip {
-  /* border-width: 5px;
-  border-style: solid;
-  border-color: black; */
-}
-
 .shipBlockUnplaced {
   display: grid;
   background-color: pink;
@@ -50,7 +44,6 @@
   display: grid;
 }
 
-/* .squareContainShipC, */
 /* .shipBlockSubC, */
 .shipColorC {
   display: grid;

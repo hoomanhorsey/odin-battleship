@@ -155,11 +155,7 @@ function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
     // squareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
   }
 
-  squareExtended.classList.add(
-    // "squareContainShip",
-    // "squareContainShipC",
-    "shipColorC"
-  );
+  squareExtended.classList.add("shipColorC");
 
   squareExtended.textContent = shipType;
 }
@@ -172,16 +168,7 @@ function squareExtendedRemove(squareExtended, i) {
     squareExtended.removeAttribute("data-orientation");
   }
   squareExtended.classList.add("square");
-
-  squareExtended.classList.remove(
-    "squareContainShip",
-    "squareContainShipC",
-    "shipBlock", // these are no longer in the thing anymore
-    "shipBlockC", // these are no longer in the thing anymore
-    "shipBlockDragging",
-    "shipColorC"
-  );
-  squareExtended.classList.add("square");
+  squareExtended.classList.remove("shipBlockDragging", "shipColorC");
 
   squareExtended.textContent = "";
 }
