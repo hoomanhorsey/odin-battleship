@@ -156,7 +156,6 @@ function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
   }
 
   squareExtended.classList.add("shipColorC");
-
   squareExtended.textContent = shipType;
 }
 
@@ -169,7 +168,6 @@ function squareExtendedRemove(squareExtended, i) {
   }
   squareExtended.classList.add("square");
   squareExtended.classList.remove("shipBlockDragging", "shipColorC");
-
   squareExtended.textContent = "";
 }
 
@@ -200,23 +198,26 @@ function shipBlockOriginalRemove(shipTypeFromShipBlockData) {
   let shipBlockOriginal = document.querySelector(
     `[data-ship-type="${shipTypeFromShipBlockData}"]`
   );
+
+  console.log(shipBlockOriginal);
+
   // removes the original shipBlock only, which has an ID.  Later grid squares will share the shipType
   if (shipBlockOriginal.id === `shipBlock${shipTypeFromShipBlockData}`) {
     shipBlockOriginal.remove();
   }
 }
 
-function shipBlockGetDirectionData(squareMainPrevious) {
+function shipBlockGetOrientationData(squareMainPrevious) {
   console.log(
     "squareMainPrevious -if null, means no shipBlock has been placed yet"
   );
-  if (squareMainPrevious !== null) {
+  if (squareMainPrevious === null) {
+    return { orientationColor: "horizontal", orientationUncolor: "horizontal" };
+  } else {
     return {
       orientationColor: squareMainPrevious.dataset.orientation,
       orientationUncolor: squareMainPrevious.dataset.orientation,
     };
-  } else {
-    return { orientationColor: "horizontal", orientationUncolor: "horizontal" };
   }
 }
 
@@ -232,6 +233,20 @@ function gameBoardToggleLegalState(isLegal) {
   }
 }
 
+function squareMainPreviousRemove(shipTypeFromShipBlockData) {
+  let squareMainPrevious = document.querySelector(
+    `[data-ship-type="${shipTypeFromShipBlockData}"]`
+  );
+
+  if (squareMainPrevious.classList.contains("originalShipBlock")) {
+    // removes shipBlock if it's the original
+    squareMainPrevious.remove();
+    return null;
+  } else {
+    return squareMainPrevious;
+  }
+}
+
 export {
   drawGrid,
   squarePopulateWithShip,
@@ -240,11 +255,12 @@ export {
   squareActiveLocate,
   squareUpdateAfterAttack,
   shipBlockColorAndUnColor,
+  squareMainPreviousRemove,
   squaresColor,
   squaresUncolor,
   squareExtendedRemove,
   updateGameMoveStatus,
   shipBlockOriginalRemove,
-  shipBlockGetDirectionData,
+  shipBlockGetOrientationData,
   gameBoardToggleLegalState,
 };

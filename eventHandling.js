@@ -3,8 +3,8 @@ import {
   shipBlockColorAndUnColor,
   squareActiveAddHighlight,
   squareNonActiveRemoveHighlight,
-  shipBlockOriginalRemove,
-  shipBlockGetDirectionData,
+  squareMainPreviousRemove,
+  shipBlockGetOrientationData,
   gameBoardToggleLegalState,
 } from "./display.js";
 
@@ -193,17 +193,14 @@ function drop(event, players) {
   // get shipType from event.target data
   const shipTypeFromShipBlockData = event.dataTransfer.getData("text");
 
-  // removes shipBlock original, using data attribute.
-  shipBlockOriginalRemove(shipTypeFromShipBlockData);
-
-  // gets squareMainPrevious (unless drop() is called on the first shipBlock, in which case the squareMainPrevious will be null)
-  let squareMainPrevious = document.querySelector(
-    `[data-ship-type="${shipTypeFromShipBlockData}"]`
+  // removes previous squareMain, removes if it was original shipBlock, or returns element for processing if it is a previously placed shipBlock
+  const squareMainPrevious = squareMainPreviousRemove(
+    shipTypeFromShipBlockData
   );
 
   // gets orientation data of the placed shipBlock
   const { orientationColor, orientationUncolor } =
-    shipBlockGetDirectionData(squareMainPrevious);
+    shipBlockGetOrientationData(squareMainPrevious);
 
   // gets squareMain, the square being targeted
   const squareMain = event.target;
@@ -211,7 +208,7 @@ function drop(event, players) {
   const shipLength =
     players["playerOne"].gameBoard.ships[shipTypeFromShipBlockData].length;
 
-  // Initial colouring of gameBoard for shipBlock
+  // removal of previously placed shipBlock, placement of new shipBlock on gameBoard
   shipBlockColorAndUnColor(
     squareMainPrevious,
     squareMain,
@@ -247,17 +244,21 @@ function drop(event, players) {
 
   // Where the shipBlock is not the original, delete the previous one saved onto boardArray
 
-  if (!squareMainPrevious) {
+  if (squareMainPrevious === null) {
+    console.log("squareMainPrevious is null, so its the first shipBlock");
+  } else {
+    console.log("%%%%%trying to delete");
+
+    console.log(squareMainPrevious);
+    console.log(squareMainPrevious.dataset.row);
     players["playerOne"].gameBoard.placeShip(
-      squareMainPreviou.data.row,
-      squareMainPreviou.data.column,
+      parseInt(squareMainPrevious.dataset.row),
+      parseInt(squareMainPrevious.dataset.column),
       orientationColor,
       shipTypeFromShipBlockData,
       players["playerOne"],
       "delete"
     );
-  } else {
-    console.log("squareMainPrevious is null, so its the first shipBlock");
   }
 
   // save the shipBlock to the boardArray

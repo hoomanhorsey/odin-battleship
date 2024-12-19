@@ -50,7 +50,7 @@ class Gameboard {
     { P: false },
   ];
 
-  placeShip(row, column, orientation, shipType, player) {
+  placeShip(row, column, orientation, shipType, player, mode) {
     row = parseInt(row);
     column = parseInt(column);
     let ship = this.ships[shipType];
@@ -67,18 +67,18 @@ class Gameboard {
     // check boundaries + collisons with other ships
 
     ///TODO - do I need check move legal at this point? Isn't it checked before placeship?
-    if (checkMoveLegal(row, column, orientation, ship)) {
-      ("checkMoveLegal is true");
-    } else {
-      console.log("position is not legal ");
-      return;
-    }
+    // if (checkMoveLegal(row, column, orientation, ship)) {
+    //   ("checkMoveLegal is true");
+    // } else {
+    //   console.log("position is not legal ");
+    //   return;
+    // }
 
-    if (checkCollisions(this.boardArray, row, column, orientation, ship)) {
-    } else {
-      console.log("position has collisions");
-      return;
-    }
+    // if (checkCollisions(this.boardArray, row, column, orientation, ship)) {
+    // } else {
+    //   console.log("position has collisions");
+    //   return;
+    // }
     // if (checkCollisions(proposedPosition)) {
     // } else {
     //   console.log("position is has collisions");
@@ -91,7 +91,7 @@ class Gameboard {
       column,
       orientation,
       ship,
-      "save"
+      mode
     );
 
     // TODO - this prompt may be useful for when you want to confirm final position?

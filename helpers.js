@@ -13,12 +13,8 @@ function makeGrid() {
 // creates an array of a proposed position for checking, called by placeShip()
 // this currently calls an error until it's dropped. It's okay for now
 function positionCheckArray(boardArray, row, column, orientation, ship) {
-  console.log(boardArray, row, column, orientation, ship);
-
   if (isNaN(row)) {
     console.log("row is NaN");
-    console.log(row);
-
     return null;
   } else {
     switch (orientation) {
@@ -77,8 +73,9 @@ function shipBlockUpdateBoardArray(
   ship,
   mode
 ) {
-  const value = mode === "save" ? ship.type : null;
+  console.log(row, column, orientation, ship, mode);
 
+  const value = mode === "save" ? ship.type : null;
   switch (orientation) {
     case "vertical":
       for (let i = row; i < row + ship.length; i++) {
