@@ -1,5 +1,5 @@
 import { Player } from "./gameObjects.js";
-import { drawGrid, gridSquarePopulateWithShip } from "./display.js";
+import { drawGrid, squarePopulateWithShip } from "./display.js";
 import {
   shipBlockAttachEventHandlers,
   gameBoardAttachEventHandlers,
@@ -10,8 +10,8 @@ function gameInit() {
   // prefill positions
 
   // draw gameBoard grid
-  drawGrid(players["playerOne"], gridSquarePopulateWithShip);
-  drawGrid(players["playerTwo"], gridSquarePopulateWithShip);
+  drawGrid(players["playerOne"], squarePopulateWithShip);
+  drawGrid(players["playerTwo"], squarePopulateWithShip);
 
   // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
   // gameSetUp_positionPreFill_BothPlayers(players);

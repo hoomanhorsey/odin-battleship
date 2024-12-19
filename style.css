@@ -38,13 +38,13 @@
   transform: rotate(90deg);
 }
 
-.gridSquareContainShip {
+.squareContainShip {
   /* border-width: 5px;
   border-style: solid;
   border-color: black; */
 }
 
-.gridSquareContainShipC,
+.squareContainShipC,
 .shipBlockSubC,
 .shipColorC {
   display: grid;
@@ -93,7 +93,7 @@
   height: 100px;
 }
 
-.gridSquareDraggedOver {
+.squareDraggedOver {
   background-color: lightgrey;
 }
 
@@ -153,7 +153,7 @@
   grid-template-columns: repeat(10, 1fr);
 }
 
-.gridSquare {
+.square {
   display: grid;
   justify-content: center;
   align-items: center;
@@ -168,17 +168,17 @@
   width: 70px;
 }
 
-.gridSquareActive {
+.squareActive {
   border-style: solid;
   border-color: darkblue;
   border-width: 5px;
 }
 
-.gridSquareMiss {
+.squareMiss {
   border-color: blue;
   border-width: 5px;
 }
-.gridSquareHit {
+.squareHit {
   border-color: orange;
   border-width: 5px;
 }

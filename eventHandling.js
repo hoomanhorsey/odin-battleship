@@ -1,8 +1,8 @@
 import {
-  gridSquareUpdateAfterAttack,
+  squareUpdateAfterAttack,
   shipBlockColorAndUnColor,
-  gridSquareActiveAddHighlight,
-  gridSquareNonActiveRemoveHighlight,
+  squareActiveAddHighlight,
+  squareNonActiveRemoveHighlight,
   shipBlockOriginalRemove,
   shipBlockGetDirectionData,
   gameBoardToggleLegalState,
@@ -75,12 +75,11 @@ function gameBoardAttachEventHandlers(players) {
   handlers.dragenter = (event) => {
     event.preventDefault(); // Allow the drag event
 
-    gridSquareActiveAddHighlight(event.target);
+    squareActiveAddHighlight(event.target);
     validateMove(event, players);
   };
   handlers.dragover = (event) => allowDrop(event, players);
-  handlers.dragleave = (event) =>
-    gridSquareNonActiveRemoveHighlight(event.target);
+  handlers.dragleave = (event) => squareNonActiveRemoveHighlight(event.target);
   handlers.drop = (event) => drop(event, players);
 
   // Not even sure if this event listener is necessary....or the function..
@@ -133,7 +132,7 @@ function drag(event) {
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
 }
 
-// isMoveValid value toggles droppability of shipBlock onto gridSquare
+// isMoveValid value toggles droppability of shipBlock onto square
 let isMoveValid = false;
 
 function validateMove(event, players) {
@@ -189,7 +188,7 @@ function drop(event, players) {
   event.preventDefault();
 
   // removes targeting highlight
-  gridSquareNonActiveRemoveHighlight(event.target);
+  squareNonActiveRemoveHighlight(event.target);
 
   // get shipType from event.target data
   const shipTypeFromShipBlockData = event.dataTransfer.getData("text");
@@ -197,26 +196,25 @@ function drop(event, players) {
   // removes shipBlock original, using data attribute.
   shipBlockOriginalRemove(shipTypeFromShipBlockData);
 
-  // gets gridSquareMainPrevious (unless drop() is called on the first shipBlock, in which case the gridSquareMainPrevious will be null)
-  let gridSquareMainPrevious = document.querySelector(
+  // gets squareMainPrevious (unless drop() is called on the first shipBlock, in which case the squareMainPrevious will be null)
+  let squareMainPrevious = document.querySelector(
     `[data-ship-type="${shipTypeFromShipBlockData}"]`
   );
 
   // gets direction data of the placed shipBlock
-  const { directionColor, directionUncolor } = shipBlockGetDirectionData(
-    gridSquareMainPrevious
-  );
+  const { directionColor, directionUncolor } =
+    shipBlockGetDirectionData(squareMainPrevious);
 
-  // gets gridSquareMain, the gridSquare being targeted
-  const gridSquareMain = event.target;
+  // gets squareMain, the square being targeted
+  const squareMain = event.target;
   // gets shipLength
   const shipLength =
     players["playerOne"].gameBoard.ships[shipTypeFromShipBlockData].length;
 
   // Initial colouring of gameBoard for shipBlock
   shipBlockColorAndUnColor(
-    gridSquareMainPrevious,
-    gridSquareMain,
+    squareMainPrevious,
+    squareMain,
     shipTypeFromShipBlockData,
     shipLength,
     directionColor,
@@ -225,7 +223,7 @@ function drop(event, players) {
 
   // Listener for shipBlock change axis
   shipBlockChangeAxisListener(
-    gridSquareMain,
+    squareMain,
     shipTypeFromShipBlockData,
     shipLength
   );
@@ -236,10 +234,10 @@ function drop(event, players) {
   //   players,
   //   shipTypeFromShipBlockData
   // );
-  // gridSquareMain.addEventListener("dragstart", () =>
+  // squareMain.addEventListener("dragstart", () =>
   //   handlerDrag(event, shipTypeFromShipBlockData)
   // );
-  gridSquareMain.addEventListener("dragstart", (event) => {
+  squareMain.addEventListener("dragstart", (event) => {
     drag(event);
   });
 
@@ -249,17 +247,17 @@ function drop(event, players) {
 
   // Where the shipBlock is not the original, delete the previous one saved onto boardArray
 
-  if (!gridSquareMainPrevious) {
+  if (!squareMainPrevious) {
     players["playerOne"].gameBoard.placeShip(
-      gridSquareMainPreviou.data.row,
-      gridSquareMainPreviou.data.column,
+      squareMainPreviou.data.row,
+      squareMainPreviou.data.column,
       directionColor,
       shipTypeFromShipBlockData,
       players["playerOne"],
       "delete"
     );
   } else {
-    console.log("gridSquareMainPrevious is null, so its the first shipBlock");
+    console.log("squareMainPrevious is null, so its the first shipBlock");
   }
 
   // save the shipBlock to the boardArray
@@ -273,26 +271,26 @@ function drop(event, players) {
   );
 }
 
-function shipBlockChangeAxisListener(gridSquareMain, shipType, shipLength) {
+function shipBlockChangeAxisListener(squareMain, shipType, shipLength) {
   const shipBlockChangeAxis = function () {
-    shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength);
+    shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength);
   };
-  gridSquareMain.addEventListener("click", shipBlockChangeAxis);
+  squareMain.addEventListener("click", shipBlockChangeAxis);
 
   // ***TODOreturn callback function in case you need remove the event listener
   return shipBlockChangeAxis;
 }
 
-function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
+function shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength) {
   console.log("axis click operating");
 
   // determine new direction of shipBlock, based on existing
-  let currentDirection = gridSquareMain.dataset.direction;
+  let currentDirection = squareMain.dataset.direction;
   let newDirection = currentDirection === "right" ? "down" : "right";
 
   // Parse dataset once at the start of the function
-  const row = parseInt(gridSquareMain.dataset.row);
-  const column = parseInt(gridSquareMain.dataset.column);
+  const row = parseInt(squareMain.dataset.row);
+  const column = parseInt(squareMain.dataset.column);
 
   const isLegalMove = checkMoveLegal(row, column, newDirection, shipLength);
 
@@ -304,8 +302,8 @@ function shipBlockHandleChangeAxisClick(gridSquareMain, shipType, shipLength) {
     // Mark the move as legal and update the board visually
     gameBoardToggleLegalState(true);
     shipBlockColorAndUnColor(
-      gridSquareMain,
-      gridSquareMain,
+      squareMain,
+      squareMain,
       shipType,
       shipLength,
       newDirection,
@@ -318,12 +316,12 @@ function targetListener() {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
   // attach Listener
-  addGridSquareTargetListener(gameBoardplayerTwo, gridSquareTarget);
+  addGridSquareTargetListener(gameBoardplayerTwo, squareTarget);
 
   // return function to remove listeners
   function removeTargetListener() {
     console.log("remove target listener called");
-    removeGridSquareTargetListener(gameBoardplayerTwo, gridSquareTarget);
+    removeGridSquareTargetListener(gameBoardplayerTwo, squareTarget);
   }
   return removeTargetListener;
 }
@@ -341,15 +339,15 @@ function removeGridSquareTargetListener(element, handler) {
 }
 
 // targeting square highlighting
-function gridSquareTarget(event) {
+function squareTarget(event) {
   const target = event.target;
 
   if (event.type === "mouseover") {
     // Adding highlight on mouse enter
-    gridSquareActiveAddHighlight(target);
+    squareActiveAddHighlight(target);
   } else if (event.type === "mouseout") {
     // Removing highlight on mouse leave
-    gridSquareNonActiveRemoveHighlight(target);
+    squareNonActiveRemoveHighlight(target);
   }
 }
 
@@ -359,10 +357,10 @@ function attackListener(players, removeTargetListener, computerMove) {
 
   // gridAttackHandler that actually handles the attack.
   function gridAttackHandler(event, players) {
-    if (event.target.classList.contains("gridSquare")) {
+    if (event.target.classList.contains("square")) {
       console.log(players);
 
-      // checks if the gridSquare has already been hit (dupe)
+      // checks if the square has already been hit (dupe)
       if (
         checkDupeGridSquare(
           players["playerTwo"],
@@ -383,7 +381,7 @@ function attackListener(players, removeTargetListener, computerMove) {
           event.target.dataset.row,
           event.target.dataset.column
         );
-        gridSquareUpdateAfterAttack(attackResult, event.target);
+        squareUpdateAfterAttack(attackResult, event.target);
 
         checkAllSunk(players, () =>
           computerMove(removeTargetListener, removeAttackListener)
@@ -461,11 +459,11 @@ export {
 // // Define the handlers at the top level or within a scope where they'll persist
 // const handleDragEnter = (event, players) => {
 //   validateMove(event, players);
-//   gridSquareActiveAddHighlight(event.target);
+//   squareActiveAddHighlight(event.target);
 // };
 // const handleDragOver = (event, players) => allowDrop(event, players);
 // const handleDragLeave = (event) =>
-//   gridSquareNonActiveRemoveHighlight(event.target);
+//   squareNonActiveRemoveHighlight(event.target);
 // const handleDrop = (event, players) => drop(event, players);
 // const handleDragEnd = (event, players) => dragEnd(event, players);
 

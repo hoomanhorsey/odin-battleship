@@ -8,48 +8,48 @@ function drawGrid(player, populateGridSquare) {
 
     gridDiv.append(gridRow);
     for (let column = 0; column < 10; column++) {
-      let gridSquare = document.createElement("div");
-      gridSquare.classList.add("gridSquare");
-      gridSquare.dataset.playerName = player.name;
-      gridSquare.dataset.row = row;
-      gridSquare.dataset.column = column;
+      let square = document.createElement("div");
+      square.classList.add("square");
+      square.dataset.playerName = player.name;
+      square.dataset.row = row;
+      square.dataset.column = column;
 
       // ***TO DO, FOR PREFILL TESTING ONLY - I think this function is only used when playerONe is prechosen. As it reveals the position of ships.  The computer's ships will never be revealed at the outset.  So it and the populateShipOnGridSquare() as well as the arguments in drawGrid can probably be deleted.
       if (populateGridSquare) {
-        gridSquarePopulateWithShip(gridSquare, row, column, player);
+        squarePopulateWithShip(square, row, column, player);
       }
-      gridRow.append(gridSquare);
+      gridRow.append(square);
     }
   }
 }
 
-function gridSquarePopulateWithShip(gridSquare, row, column, player) {
-  gridSquare.textContent = player.gameBoard.boardArray[row][column].ship;
+function squarePopulateWithShip(square, row, column, player) {
+  square.textContent = player.gameBoard.boardArray[row][column].ship;
 }
 
-// gridSquare highlighting and unhighlighting
-function gridSquareActiveLocate(row, column) {
-  const gridSquareActive = document.querySelector(
+// square highlighting and unhighlighting
+function squareActiveLocate(row, column) {
+  const squareActive = document.querySelector(
     `[data-row="${row}"][data-column="${column}"]`
   );
-  gridSquareActiveAddHighlight(gridSquareActive);
+  squareActiveAddHighlight(squareActive);
 }
 
-// gridSquare highlighting and unhighlighting
-function gridSquareActiveAddHighlight(eventTarget) {
-  if (eventTarget.classList.contains("gridSquare")) {
-    eventTarget.classList.add("gridSquareActive");
+// square highlighting and unhighlighting
+function squareActiveAddHighlight(eventTarget) {
+  if (eventTarget.classList.contains("square")) {
+    eventTarget.classList.add("squareActive");
   }
 }
 
-function gridSquareNonActiveRemoveHighlight(eventTarget) {
-  const gridSquareActive = document.querySelector(".gridSquareActive");
-  if (gridSquareActive) {
-    eventTarget.classList.remove("gridSquareActive");
+function squareNonActiveRemoveHighlight(eventTarget) {
+  const squareActive = document.querySelector(".squareActive");
+  if (squareActive) {
+    eventTarget.classList.remove("squareActive");
   }
 }
 
-function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
+function squareUpdateAfterAttack(attackResult, eventTarget) {
   const interpretation = interpretAttackResult(attackResult);
 
   console.log(interpretation.text);
@@ -60,25 +60,20 @@ function gridSquareUpdateAfterAttack(attackResult, eventTarget) {
   }
 }
 function shipBlockColorAndUnColor(
-  gridSquareMainPrevious,
-  gridSquareMain,
+  squareMainPrevious,
+  squareMain,
   shipType,
   shipLength,
   directionColor,
   directionUncolor
 ) {
-  if (gridSquareMainPrevious !== null) {
-    gridSquaresUncolor(
-      gridSquareMainPrevious,
-      shipType,
-      shipLength,
-      directionUncolor
-    );
+  if (squareMainPrevious !== null) {
+    squaresUncolor(squareMainPrevious, shipType, shipLength, directionUncolor);
   }
-  gridSquaresColor(gridSquareMain, shipType, shipLength, directionColor);
+  squaresColor(squareMain, shipType, shipLength, directionColor);
 }
-function gridSquaresUncolor(
-  gridSquareMainPrevious,
+function squaresUncolor(
+  squareMainPrevious,
   shipType,
   shipLength,
   directionUncolor
@@ -92,98 +87,98 @@ function gridSquaresUncolor(
   if (directionUncolor === "right") {
     console.log("uncolor right");
 
-    let startColumn = parseInt(gridSquareMainPrevious.dataset.column);
+    let startColumn = parseInt(squareMainPrevious.dataset.column);
     for (let i = 0; i < 5; i++) {
       let newColumn = startColumn + i;
-      gridSquareExtendedRemove(
+      squareExtendedRemove(
         document.querySelector(
-          `[data-row="${gridSquareMainPrevious.dataset.row}"][data-column="${newColumn}"]`
+          `[data-row="${squareMainPrevious.dataset.row}"][data-column="${newColumn}"]`
         ),
         i
       );
     }
   } else {
     console.log("uncolor down");
-    let startRow = parseInt(gridSquareMainPrevious.dataset.row);
+    let startRow = parseInt(squareMainPrevious.dataset.row);
     for (let i = 0; i < 5; i++) {
       let newRow = startRow + i;
-      const gridSquareExtended = document.querySelector(
-        `[data-row="${newRow}"][data-column="${gridSquareMainPrevious.dataset.column}"]`
+      const squareExtended = document.querySelector(
+        `[data-row="${newRow}"][data-column="${squareMainPrevious.dataset.column}"]`
       );
-      gridSquareExtendedRemove(gridSquareExtended, i);
+      squareExtendedRemove(squareExtended, i);
     }
   }
 }
-function gridSquaresColor(gridSquareMain, shipType, shipLength, direction) {
+function squaresColor(squareMain, shipType, shipLength, direction) {
   // FILLING IN GRIDS - at direction specified in parameters
 
   switch (direction) {
     case "right":
-      let startColumn = parseInt(gridSquareMain.dataset.column);
+      let startColumn = parseInt(squareMain.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
-        const gridSquareExtended = document.querySelector(
-          `[data-row="${gridSquareMain.dataset.row}"][data-column="${newColumn}"]`
+        const squareExtended = document.querySelector(
+          `[data-row="${squareMain.dataset.row}"][data-column="${newColumn}"]`
         );
-        gridSquareExtendedUpdate(gridSquareExtended, shipType, i, "right");
+        squareExtendedUpdate(squareExtended, shipType, i, "right");
       }
       break;
 
     case "down":
-      let startRow = parseInt(gridSquareMain.dataset.row);
+      let startRow = parseInt(squareMain.dataset.row);
       for (let i = 0; i < shipLength; i++) {
         let newRow = startRow + i;
 
-        const gridSquareExtended = document.querySelector(
-          `[data-row="${newRow}"][data-column="${gridSquareMain.dataset.column}"]`
+        const squareExtended = document.querySelector(
+          `[data-row="${newRow}"][data-column="${squareMain.dataset.column}"]`
         );
-        gridSquareExtendedUpdate(gridSquareExtended, shipType, i, "down");
+        squareExtendedUpdate(squareExtended, shipType, i, "down");
       }
       break;
   }
 }
 
-function gridSquareExtendedUpdate(gridSquareExtended, shipType, i, direction) {
+function squareExtendedUpdate(squareExtended, shipType, i, direction) {
   if (i === 0) {
-    gridSquareExtended.setAttribute("draggable", true);
-    gridSquareExtended.setAttribute("data-direction", direction);
+    squareExtended.setAttribute("draggable", true);
+    squareExtended.setAttribute("data-direction", direction);
 
-    gridSquareExtended.setAttribute("data-ship-type", shipType);
+    squareExtended.setAttribute("data-ship-type", shipType);
     // Following hard codes, prob should be deleted.
-    // gridSquareMain.setAttribute("data-direction", "right");
+    // squareMain.setAttribute("data-direction", "right");
     // Following adds shipBlock classes. as it's a grid square, not quite the same as a shipblock so that may not be needed.
-    // gridSquareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
+    // squareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
   }
 
-  gridSquareExtended.classList.add(
-    "gridSquareContainShip",
-    "gridSquareContainShipC",
+  squareExtended.classList.add(
+    "squareContainShip",
+    "squareContainShipC",
     "shipColorC"
   );
 
-  gridSquareExtended.textContent = shipType;
+  squareExtended.textContent = shipType;
 }
 
-function gridSquareExtendedRemove(gridSquareExtended, i) {
+function squareExtendedRemove(squareExtended, i) {
   if (i === 0) {
     //remove axis listener
-    gridSquareExtended.removeAttribute("draggable");
-    gridSquareExtended.removeAttribute("data-ship-type");
-    gridSquareExtended.removeAttribute("data-direction");
+    squareExtended.removeAttribute("draggable");
+    squareExtended.removeAttribute("data-ship-type");
+    squareExtended.removeAttribute("data-direction");
   }
-  gridSquareExtended.classList.add("gridSquare");
+  squareExtended.classList.add("square");
 
-  gridSquareExtended.classList.remove(
-    "gridSquareContainShip",
-    "gridSquareContainShipC",
+  squareExtended.classList.remove(
+    "squareContainShip",
+    "squareContainShipC",
     "shipBlock", // these are no longer in the thing anymore
     "shipBlockC", // these are no longer in the thing anymore
     "shipBlockDragging",
     "shipColorC"
   );
-  gridSquareExtended.classList.add("gridSquare");
+  squareExtended.classList.add("square");
 
-  gridSquareExtended.textContent = "";
+  squareExtended.textContent = "";
 }
 
 function updateGameMoveStatus(status) {
@@ -219,14 +214,14 @@ function shipBlockOriginalRemove(shipTypeFromShipBlockData) {
   }
 }
 
-function shipBlockGetDirectionData(gridSquareMainPrevious) {
+function shipBlockGetDirectionData(squareMainPrevious) {
   console.log(
-    "gridSquareMainPrevious -if null, means no shipBlock has been placed yet"
+    "squareMainPrevious -if null, means no shipBlock has been placed yet"
   );
-  if (gridSquareMainPrevious !== null) {
+  if (squareMainPrevious !== null) {
     return {
-      directionColor: gridSquareMainPrevious.dataset.direction,
-      directionUncolor: gridSquareMainPrevious.dataset.direction,
+      directionColor: squareMainPrevious.dataset.direction,
+      directionUncolor: squareMainPrevious.dataset.direction,
     };
   } else {
     return { directionColor: "right", directionUncolor: "right" };
@@ -247,15 +242,15 @@ function gameBoardToggleLegalState(isLegal) {
 
 export {
   drawGrid,
-  gridSquarePopulateWithShip,
-  gridSquareActiveAddHighlight,
-  gridSquareNonActiveRemoveHighlight,
-  gridSquareActiveLocate,
-  gridSquareUpdateAfterAttack,
+  squarePopulateWithShip,
+  squareActiveAddHighlight,
+  squareNonActiveRemoveHighlight,
+  squareActiveLocate,
+  squareUpdateAfterAttack,
   shipBlockColorAndUnColor,
-  gridSquaresColor,
-  gridSquaresUncolor,
-  gridSquareExtendedRemove,
+  squaresColor,
+  squaresUncolor,
+  squareExtendedRemove,
   updateGameMoveStatus,
   shipBlockOriginalRemove,
   shipBlockGetDirectionData,

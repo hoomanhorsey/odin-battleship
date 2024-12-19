@@ -1,8 +1,8 @@
 import { checkDupeGridSquare } from "./eventHandling.js";
 import {
-  gridSquareActiveLocate,
-  gridSquareNonActiveRemoveHighlight,
-  gridSquareUpdateAfterAttack,
+  squareActiveLocate,
+  squareNonActiveRemoveHighlight,
+  squareUpdateAfterAttack,
   updateGameMoveStatus,
 } from "./display.js";
 
@@ -44,11 +44,11 @@ function chooseRandomGridCoords(players) {
 }
 
 function updateComputerTargetUI(row, column) {
-  // The eleemnt being selected is the one that currently has the 'gridSquareActive' class, which is the previous element to the one being targeted by the computer
-  const eventTarget = document.querySelector(".gridSquareActive");
+  // The eleemnt being selected is the one that currently has the 'squareActive' class, which is the previous element to the one being targeted by the computer
+  const eventTarget = document.querySelector(".squareActive");
 
-  gridSquareNonActiveRemoveHighlight(eventTarget);
-  gridSquareActiveLocate(row, column);
+  squareNonActiveRemoveHighlight(eventTarget);
+  squareActiveLocate(row, column);
 }
 
 // function chooseRandomGridCoords(players) {
@@ -64,15 +64,15 @@ function updateComputerTargetUI(row, column) {
 function computerAttack(players) {
   updateGameMoveStatus("computerAttack");
 
-  const gridSquareActive = document.querySelector(".gridSquareActive");
-  console.log(gridSquareActive);
+  const squareActive = document.querySelector(".squareActive");
+  console.log(squareActive);
   const attackResult = players["playerOne"].gameBoard.receiveAttack(
-    gridSquareActive.dataset.row,
-    gridSquareActive.dataset.column
+    squareActive.dataset.row,
+    squareActive.dataset.column
   );
 
   console.log(attackResult);
-  gridSquareUpdateAfterAttack(attackResult, gridSquareActive);
+  squareUpdateAfterAttack(attackResult, squareActive);
 
   updateGameMoveStatus("userMove");
 }
