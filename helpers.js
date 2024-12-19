@@ -12,8 +12,8 @@ function makeGrid() {
 
 // creates an array of a proposed position for checking, called by placeShip()
 // this currently calls an error until it's dropped. It's okay for now
-function positionCheckArray(boardArray, row, column, direction, ship) {
-  console.log(boardArray, row, column, direction, ship);
+function positionCheckArray(boardArray, row, column, orientation, ship) {
+  console.log(boardArray, row, column, orientation, ship);
 
   if (isNaN(row)) {
     console.log("row is NaN");
@@ -21,12 +21,12 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 
     return null;
   } else {
-    switch (direction) {
-      case "down":
+    switch (orientation) {
+      case "vertical":
         return boardArray
           .slice(row, row + ship.length)
           .map((row) => row[column]);
-      case "right":
+      case "horizontal":
         return boardArray[row].slice(column, column + ship.length);
       default:
         throw new Error("positionCheckArray error");
@@ -35,15 +35,15 @@ function positionCheckArray(boardArray, row, column, direction, ship) {
 }
 
 // checks if moves are legal and within board bounds, called by placeShip()
-function checkMoveLegal(row, column, direction, shipLength) {
-  switch (direction) {
-    case "down":
+function checkMoveLegal(row, column, orientation, shipLength) {
+  switch (orientation) {
+    case "vertical":
       if (row + shipLength > 10) {
         return false;
       } else {
         return true;
       }
-    case "right":
+    case "horizontal":
       if (column + shipLength > 10) {
         console.log(column);
         if (!column) {
@@ -59,8 +59,8 @@ function checkMoveLegal(row, column, direction, shipLength) {
 }
 
 // checks if there are any collisions,  called by placeShip()
-function checkCollisions(boardArray, row, column, direction, ship) {
-  const array = positionCheckArray(boardArray, row, column, direction, ship);
+function checkCollisions(boardArray, row, column, orientation, ship) {
+  const array = positionCheckArray(boardArray, row, column, orientation, ship);
   return array.every((value) => value.ship === null);
 }
 
@@ -73,25 +73,25 @@ function shipBlockUpdateBoardArray(
   boardArray,
   row,
   column,
-  direction,
+  orientation,
   ship,
   mode
 ) {
   const value = mode === "save" ? ship.type : null;
 
-  switch (direction) {
-    case "down":
+  switch (orientation) {
+    case "vertical":
       for (let i = row; i < row + ship.length; i++) {
         boardArray[i][column].ship = value;
       }
       break;
-    case "right":
+    case "horizontal":
       for (let i = column; i < column + ship.length; i++) {
         boardArray[row][i].ship = value;
       }
       break;
     default:
-      throw new Error("Invalid direction provided");
+      throw new Error("Invalid orientation provided");
   }
 }
 

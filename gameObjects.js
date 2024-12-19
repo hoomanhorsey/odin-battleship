@@ -51,7 +51,7 @@ class Gameboard {
     { P: false },
   ];
 
-  placeShip(row, column, direction, shipType, player) {
+  placeShip(row, column, orientation, shipType, player) {
     row = parseInt(row);
     column = parseInt(column);
     let ship = this.ships[shipType];
@@ -62,20 +62,20 @@ class Gameboard {
     //   this.boardArray,
     //   row,
     //   column,
-    //   direction,
+    //   orientation,
     //   ship
     // );
     // check boundaries + collisons with other ships
 
     ///TODO - do I need check move legal at this point? Isn't it checked before placeship?
-    if (checkMoveLegal(row, column, direction, ship)) {
+    if (checkMoveLegal(row, column, orientation, ship)) {
       ("checkMoveLegal is true");
     } else {
       console.log("position is not legal ");
       return;
     }
 
-    if (checkCollisions(this.boardArray, row, column, direction, ship)) {
+    if (checkCollisions(this.boardArray, row, column, orientation, ship)) {
     } else {
       console.log("position has collisions");
       return;
@@ -90,7 +90,7 @@ class Gameboard {
       this.boardArray,
       row,
       column,
-      direction,
+      orientation,
       ship,
       "save"
     );
@@ -98,23 +98,23 @@ class Gameboard {
     // TODO - this prompt may be useful for when you want to confirm final position?
     // if (player.name === "playerOne") {
     //   if (prompt("Are you happy with position? Y or N") === "Y") {
-    //     shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
+    //     shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
     //   } else {
     //     return;
     //   }
     // } else {
-    //   shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
+    //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
     // }
   }
 
   // // check boundaries + collisons with other ships
   // if (
-  //   checkMoveLegal(row, column, direction, ship) &&
+  //   checkMoveLegal(row, column, orientation, ship) &&
   //   checkCollisions(proposedPosition)
   // ) {
   //   // place ship
   //   console.log(this.boardArray);
-  //   shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
+  //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
   // } else {
   //   console.log("position is not legal or collisions");
   //   return;
@@ -122,7 +122,7 @@ class Gameboard {
 
   // // check boundaries + collisons with other ships
   // if (
-  //   checkMoveLegal(row, column, direction, ship)
+  //   checkMoveLegal(row, column, orientation, ship)
   // ) {'checkMoveLegal is true'}  else {
   //   console.log("position is not legal ");
   //   return;
@@ -138,7 +138,7 @@ class Gameboard {
 
   //   // place ship
   //   console.log(this.boardArray);
-  //   shipBlockUpdateBoardArray(this.boardArray, row, column, direction, ship);
+  //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
   // } else {
   //   console.log("position is not legal or collisions");
   //   return;

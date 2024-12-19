@@ -138,7 +138,7 @@ let isMoveValid = false;
 function validateMove(event, players) {
   const draggedElement = document.querySelector(".shipBlockDragging");
   const shipTypeData = draggedElement?.getAttribute("data-ship-type");
-  const direction = draggedElement.dataset.direction;
+  const orientation = draggedElement.dataset.orientation;
 
   const ship = players["playerOne"].gameBoard.ships[shipTypeData];
 
@@ -147,13 +147,13 @@ function validateMove(event, players) {
   const column = parseInt(event.target.dataset.column);
 
   // Call the helper module to check if the move is legal
-  const isLegalMove = checkMoveLegal(row, column, direction, ship.length);
+  const isLegalMove = checkMoveLegal(row, column, orientation, ship.length);
 
   let isClearOfCollisions = checkCollisions(
     players["playerOne"].gameBoard.boardArray,
     row,
     column,
-    direction,
+    orientation,
     ship
   );
 
@@ -201,8 +201,8 @@ function drop(event, players) {
     `[data-ship-type="${shipTypeFromShipBlockData}"]`
   );
 
-  // gets direction data of the placed shipBlock
-  const { directionColor, directionUncolor } =
+  // gets orientation data of the placed shipBlock
+  const { orientationColor, orientationUncolor } =
     shipBlockGetDirectionData(squareMainPrevious);
 
   // gets squareMain, the square being targeted
@@ -217,8 +217,8 @@ function drop(event, players) {
     squareMain,
     shipTypeFromShipBlockData,
     shipLength,
-    directionColor,
-    directionUncolor
+    orientationColor,
+    orientationUncolor
   );
 
   // Listener for shipBlock change axis
@@ -251,7 +251,7 @@ function drop(event, players) {
     players["playerOne"].gameBoard.placeShip(
       squareMainPreviou.data.row,
       squareMainPreviou.data.column,
-      directionColor,
+      orientationColor,
       shipTypeFromShipBlockData,
       players["playerOne"],
       "delete"
@@ -264,7 +264,7 @@ function drop(event, players) {
   players["playerOne"].gameBoard.placeShip(
     row,
     column,
-    directionColor,
+    orientationColor,
     shipTypeFromShipBlockData,
     players["playerOne"],
     "save"
@@ -284,9 +284,10 @@ function shipBlockChangeAxisListener(squareMain, shipType, shipLength) {
 function shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength) {
   console.log("axis click operating");
 
-  // determine new direction of shipBlock, based on existing
-  let currentDirection = squareMain.dataset.direction;
-  let newDirection = currentDirection === "right" ? "down" : "right";
+  // determine new orientation of shipBlock, based on existing
+  let currentDirection = squareMain.dataset.orientation;
+  let newDirection =
+    currentDirection === "horizontal" ? "vertical" : "horizontal";
 
   // Parse dataset once at the start of the function
   const row = parseInt(squareMain.dataset.row);
@@ -449,7 +450,7 @@ export {
 // players["playerOne"].gameBoard.placeShip(
 //   event.target.id[10],
 //   event.target.id[12],
-//   "right",
+//   "horizontal",
 //   shipBlockId[9],
 //   players["playerOne"]
 // );

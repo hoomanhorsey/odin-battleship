@@ -64,28 +64,33 @@ function shipBlockColorAndUnColor(
   squareMain,
   shipType,
   shipLength,
-  directionColor,
-  directionUncolor
+  orientationColor,
+  orientationUncolor
 ) {
   if (squareMainPrevious !== null) {
-    squaresUncolor(squareMainPrevious, shipType, shipLength, directionUncolor);
+    squaresUncolor(
+      squareMainPrevious,
+      shipType,
+      shipLength,
+      orientationUncolor
+    );
   }
-  squaresColor(squareMain, shipType, shipLength, directionColor);
+  squaresColor(squareMain, shipType, shipLength, orientationColor);
 }
 function squaresUncolor(
   squareMainPrevious,
   shipType,
   shipLength,
-  directionUncolor
+  orientationUncolor
 ) {
   console.log("called grisSquaresUncolor");
 
-  console.log(directionUncolor);
+  console.log(orientationUncolor);
 
   // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
 
-  if (directionUncolor === "right") {
-    console.log("uncolor right");
+  if (orientationUncolor === "horizontal") {
+    console.log("uncolor horizontal");
 
     let startColumn = parseInt(squareMainPrevious.dataset.column);
     for (let i = 0; i < 5; i++) {
@@ -98,7 +103,7 @@ function squaresUncolor(
       );
     }
   } else {
-    console.log("uncolor down");
+    console.log("uncolor vertical");
     let startRow = parseInt(squareMainPrevious.dataset.row);
     for (let i = 0; i < 5; i++) {
       let newRow = startRow + i;
@@ -109,22 +114,22 @@ function squaresUncolor(
     }
   }
 }
-function squaresColor(squareMain, shipType, shipLength, direction) {
-  // FILLING IN GRIDS - at direction specified in parameters
+function squaresColor(squareMain, shipType, shipLength, orientation) {
+  // FILLING IN GRIDS - at orientation specified in parameters
 
-  switch (direction) {
-    case "right":
+  switch (orientation) {
+    case "horizontal":
       let startColumn = parseInt(squareMain.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
         const squareExtended = document.querySelector(
           `[data-row="${squareMain.dataset.row}"][data-column="${newColumn}"]`
         );
-        squareExtendedUpdate(squareExtended, shipType, i, "right");
+        squareExtendedUpdate(squareExtended, shipType, i, "horizontal");
       }
       break;
 
-    case "down":
+    case "vertical":
       let startRow = parseInt(squareMain.dataset.row);
       for (let i = 0; i < shipLength; i++) {
         let newRow = startRow + i;
@@ -132,20 +137,20 @@ function squaresColor(squareMain, shipType, shipLength, direction) {
         const squareExtended = document.querySelector(
           `[data-row="${newRow}"][data-column="${squareMain.dataset.column}"]`
         );
-        squareExtendedUpdate(squareExtended, shipType, i, "down");
+        squareExtendedUpdate(squareExtended, shipType, i, "vertical");
       }
       break;
   }
 }
 
-function squareExtendedUpdate(squareExtended, shipType, i, direction) {
+function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
   if (i === 0) {
     squareExtended.setAttribute("draggable", true);
-    squareExtended.setAttribute("data-direction", direction);
+    squareExtended.setAttribute("data-orientation", orientation);
 
     squareExtended.setAttribute("data-ship-type", shipType);
     // Following hard codes, prob should be deleted.
-    // squareMain.setAttribute("data-direction", "right");
+    // squareMain.setAttribute("data-orientation", "horizontal");
     // Following adds shipBlock classes. as it's a grid square, not quite the same as a shipblock so that may not be needed.
     // squareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
   }
@@ -164,7 +169,7 @@ function squareExtendedRemove(squareExtended, i) {
     //remove axis listener
     squareExtended.removeAttribute("draggable");
     squareExtended.removeAttribute("data-ship-type");
-    squareExtended.removeAttribute("data-direction");
+    squareExtended.removeAttribute("data-orientation");
   }
   squareExtended.classList.add("square");
 
@@ -220,11 +225,11 @@ function shipBlockGetDirectionData(squareMainPrevious) {
   );
   if (squareMainPrevious !== null) {
     return {
-      directionColor: squareMainPrevious.dataset.direction,
-      directionUncolor: squareMainPrevious.dataset.direction,
+      orientationColor: squareMainPrevious.dataset.orientation,
+      orientationUncolor: squareMainPrevious.dataset.orientation,
     };
   } else {
-    return { directionColor: "right", directionUncolor: "right" };
+    return { orientationColor: "horizontal", orientationUncolor: "horizontal" };
   }
 }
 

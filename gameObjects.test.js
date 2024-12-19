@@ -40,87 +40,87 @@ test("Gameboard called, creates 2D array/grid of 10 x 10 ", () => {
 
 test("#47 Gameboard placeShip, Top Left, places ship on board. Places ship in array[1][1] up, position in [1][1]is '0' as move not legal ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "up";
-  andrewBoard.placeShip(1, 1, direction, "carrier");
+  let orientation = "up";
+  andrewBoard.placeShip(1, 1, orientation, "carrier");
   expect(andrewBoard.boardArray[1][1].ship).toBe(null);
 });
 
 test("#47 Gameboard placeShip, Top Left, places ship on board. Places ship in array[1][1] left, position in [1][1]is '0' as move not legal ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "left";
-  andrewBoard.placeShip(1, 1, direction, "carrier");
+  let orientation = "left";
+  andrewBoard.placeShip(1, 1, orientation, "carrier");
   expect(andrewBoard.boardArray[4][4].ship).toBe(null);
 });
 
-test("#54 Gameboard placeShip, places ship on board. Places ship in array[0][0] down, position in [0][0]is 'carrier' ", () => {
+test("#54 Gameboard placeShip, places ship on board. Places ship in array[0][0] vertical, position in [0][0]is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "down";
-  andrewBoard.placeShip(4, 4, direction, "carrier");
+  let orientation = "vertical";
+  andrewBoard.placeShip(4, 4, orientation, "carrier");
   expect(andrewBoard.boardArray[4][4].ship).toBe("carrier");
 });
 
 test("#54 Gameboard placeShip, places ship on board. Places ship in array[0][0] up, position in [0][0]is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "up";
-  andrewBoard.placeShip(5, 5, direction, "carrier");
+  let orientation = "up";
+  andrewBoard.placeShip(5, 5, orientation, "carrier");
   expect(andrewBoard.boardArray[5][5].ship).toBe("carrier");
 });
 
 test("#61 Gameboard placeShip, places ship on board. Places ship in array[2][0], position [2][0]is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "down";
-  andrewBoard.placeShip(2, 0, direction, "carrier");
+  let orientation = "vertical";
+  andrewBoard.placeShip(2, 0, orientation, "carrier");
   expect(andrewBoard.boardArray[0][2].ship).toBe("carrier");
 });
 
 test("Gameboard placeShip, places ship on board. Places ship in array[9][5], position [9][5] is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "up";
-  andrewBoard.placeShip(9, 5, direction, "carrier");
+  let orientation = "up";
+  andrewBoard.placeShip(9, 5, orientation, "carrier");
   expect(andrewBoard.boardArray[5][9].ship).toBe("carrier");
 });
 
 test("Gameboard placeShip, places ship on board. Places ship in array[0][1], position [0][1] is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "right";
-  andrewBoard.placeShip(2, 1, direction, "carrier");
+  let orientation = "horizontal";
+  andrewBoard.placeShip(2, 1, orientation, "carrier");
   expect(andrewBoard.boardArray[1][2].ship).toBe("carrier");
 });
 
 test("Gameboard placeShip, places ship on board. Places ship in array[5][5], position is [5][5] is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "left";
-  andrewBoard.placeShip(5, 5, direction, "carrier");
+  let orientation = "left";
+  andrewBoard.placeShip(5, 5, orientation, "carrier");
   expect(andrewBoard.boardArray[5][5].ship).toBe("carrier");
 });
 
 test("Gameboard placeShip, places ships on board. Places ship in array[5][5], position is [5][5] is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let directionA = "left";
-  let directionB = "down";
-  andrewBoard.placeShip(5, 5, directionA, "carrier");
-  andrewBoard.placeShip(3, 3, directionB, "destroyer");
+  let orientationA = "left";
+  let orientationB = "vertical";
+  andrewBoard.placeShip(5, 5, orientationA, "carrier");
+  andrewBoard.placeShip(3, 3, orientationB, "destroyer");
   expect(andrewBoard.boardArray[5][5].ship).toBe("carrier");
 });
 
 test("#89 Gameboard placeShip, places ship on board. Places ship in array[9][9], position is [9][9] is '0' as move is not legal ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "right";
-  andrewBoard.placeShip(9, 9, direction, "carrier");
+  let orientation = "horizontal";
+  andrewBoard.placeShip(9, 9, orientation, "carrier");
   expect(andrewBoard.boardArray[9][9].ship).toBe(null);
 });
 
 test("#96 Gameboard placeShip, places ship on board. Places ship in array[9][9] left, position is [9][9] is 'carrier' ", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "left";
-  andrewBoard.placeShip(9, 9, direction, "carrier");
+  let orientation = "left";
+  andrewBoard.placeShip(9, 9, orientation, "carrier");
   expect(andrewBoard.boardArray[9][9].ship).toBe("carrier");
 });
 
 test("Gameboard receiveAttack,", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "right";
-  andrewBoard.placeShip(1, 1, direction, "carrier");
+  let orientation = "horizontal";
+  andrewBoard.placeShip(1, 1, orientation, "carrier");
   andrewBoard.receiveAttack(0, 0);
   andrewBoard.receiveAttack(1, 1);
   andrewBoard.receiveAttack(1, 2);
@@ -134,8 +134,8 @@ test("Gameboard receiveAttack,", () => {
 
 test("test checkSunk", () => {
   const andrewBoard = new Gameboard("andrew");
-  let direction = "right";
-  andrewBoard.placeShip(1, 1, direction, "patrolBoat");
+  let orientation = "horizontal";
+  andrewBoard.placeShip(1, 1, orientation, "patrolBoat");
   andrewBoard.receiveAttack(1, 1);
   andrewBoard.receiveAttack(1, 2);
 
@@ -162,17 +162,17 @@ test("Objects in DOM validation", () => {
     playerTwo: new Player("playerTwo"),
   };
 
-  players["playerOne"].gameBoard.placeShip(0, 0, "down", "carrier");
+  players["playerOne"].gameBoard.placeShip(0, 0, "vertical", "carrier");
   players["playerOne"].gameBoard.placeShip(5, 5, "up", "destroyer");
   players["playerOne"].gameBoard.placeShip(9, 9, "up", "battleship");
-  players["playerOne"].gameBoard.placeShip(4, 7, "down", "patrolBoat");
-  players["playerOne"].gameBoard.placeShip(0, 6, "right", "submarine");
+  players["playerOne"].gameBoard.placeShip(4, 7, "vertical", "patrolBoat");
+  players["playerOne"].gameBoard.placeShip(0, 6, "horizontal", "submarine");
 
   players["playerTwo"].gameBoard.placeShip(5, 5, "left", "destroyer");
   players["playerTwo"].gameBoard.placeShip(9, 9, "left", "battleship");
   players["playerTwo"].gameBoard.placeShip(4, 7, "left", "patrolBoat");
-  players["playerTwo"].gameBoard.placeShip(0, 6, "right", "submarine");
-  players["playerTwo"].gameBoard.placeShip(0, 0, "down", "carrier");
+  players["playerTwo"].gameBoard.placeShip(0, 6, "horizontal", "submarine");
+  players["playerTwo"].gameBoard.placeShip(0, 0, "vertical", "carrier");
 
   expect(players["playerTwo"].gameBoard.boardArray[7][4]).toEqual({
     hit: false,

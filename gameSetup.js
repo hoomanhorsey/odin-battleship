@@ -41,27 +41,51 @@ function gameSetup_Noprefill() {
 }
 // TESTING ONLY prefill computer player positions
 function gameSetUp_positionFill_ComputerOnly(players) {
-  players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C", "playerTwo");
+  players["playerTwo"].gameBoard.placeShip(0, 9, "vertical", "C", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(5, 3, "up", "D", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(9, 9, "left", "B", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(4, 7, "left", "P", "playerTwo");
-  players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S", "playerTwo");
+  players["playerTwo"].gameBoard.placeShip(
+    2,
+    6,
+    "horizontal",
+    "S",
+    "playerTwo"
+  );
 }
 
 // For Testing//
 // prefill positions for testing_BothPlayers -
 function gameSetUp_positionPreFill_BothPlayers(players) {
-  players["playerOne"].gameBoard.placeShip(0, 6, "right", "C", "playerOne");
-  players["playerOne"].gameBoard.placeShip(5, 2, "right", "D", "playerOne");
+  players["playerOne"].gameBoard.placeShip(
+    0,
+    6,
+    "horizontal",
+    "C",
+    "playerOne"
+  );
+  players["playerOne"].gameBoard.placeShip(
+    5,
+    2,
+    "horizontal",
+    "D",
+    "playerOne"
+  );
   players["playerOne"].gameBoard.placeShip(9, 7, "left", "B", "playerOne");
-  players["playerOne"].gameBoard.placeShip(4, 7, "down", "P", "playerOne");
+  players["playerOne"].gameBoard.placeShip(4, 7, "vertical", "P", "playerOne");
   players["playerOne"].gameBoard.placeShip(9, 9, "up", "S", "playerOne");
 
-  players["playerTwo"].gameBoard.placeShip(0, 9, "down", "C", "playerTwo");
+  players["playerTwo"].gameBoard.placeShip(0, 9, "vertical", "C", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(5, 3, "up", "D", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(9, 9, "left", "B", "playerTwo");
   players["playerTwo"].gameBoard.placeShip(4, 7, "left", "P", "playerTwo");
-  players["playerTwo"].gameBoard.placeShip(2, 6, "right", "S", "playerTwo");
+  players["playerTwo"].gameBoard.placeShip(
+    2,
+    6,
+    "horizontal",
+    "S",
+    "playerTwo"
+  );
 }
 
 export { gameInit };
