@@ -57,6 +57,8 @@ function checkMoveLegal(row, column, orientation, shipLength) {
 // checks if there are any collisions,  called by placeShip()
 function checkCollisions(boardArray, row, column, orientation, ship) {
   const array = positionCheckArray(boardArray, row, column, orientation, ship);
+  console.log(array);
+
   return array.every((value) => value.ship === null);
 }
 

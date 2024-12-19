@@ -73,14 +73,22 @@ function gameBoardAttachEventHandlers(players) {
 
   // Define and store handlers for individual access
   handlers.dragenter = (event) => {
+    console.log(event.target);
+
     event.preventDefault(); // Allow the drag event
 
-    squareActiveAddHighlight(event.target);
-    validateMove(event, players);
+    if (isValidSquare(event.target)) {
+      squareActiveAddHighlight(event.target);
+      validateMove(event, players);
+    }
   };
   handlers.dragover = (event) => allowDrop(event, players);
   handlers.dragleave = (event) => squareNonActiveRemoveHighlight(event.target);
-  handlers.drop = (event) => drop(event, players);
+  handlers.drop = (event) => {
+    if (isValidSquare(event.target)) {
+      drop(event, players);
+    }
+  };
 
   // Not even sure if this event listener is necessary....or the function..
   handlers.dragend = (event) => dragEnd(event, players); // TODO, query whether you need dragend
@@ -93,6 +101,10 @@ function gameBoardAttachEventHandlers(players) {
   gameBoardplayerOne.addEventListener("dragend", handlers.dragend);
 }
 
+// checks that the dragenter and drop functions occur over squares, rather than rows.
+function isValidSquare(target) {
+  return target.classList.contains("square");
+}
 /*
  * Detach all handlers or a specific handler by event type
  */

@@ -1,9 +1,4 @@
-import {
-  makeGrid,
-  checkMoveLegal,
-  checkCollisions,
-  shipBlockUpdateBoardArray,
-} from "./helpers.js";
+import { makeGrid, shipBlockUpdateBoardArray } from "./helpers.js";
 
 class Ship {
   hits = 0;
@@ -93,55 +88,7 @@ class Gameboard {
       ship,
       mode
     );
-
-    // TODO - this prompt may be useful for when you want to confirm final position?
-    // if (player.name === "playerOne") {
-    //   if (prompt("Are you happy with position? Y or N") === "Y") {
-    //     shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
-    //   } else {
-    //     return;
-    //   }
-    // } else {
-    //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
-    // }
   }
-
-  // // check boundaries + collisons with other ships
-  // if (
-  //   checkMoveLegal(row, column, orientation, ship) &&
-  //   checkCollisions(proposedPosition)
-  // ) {
-  //   // place ship
-  //   console.log(this.boardArray);
-  //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
-  // } else {
-  //   console.log("position is not legal or collisions");
-  //   return;
-  // }
-
-  // // check boundaries + collisons with other ships
-  // if (
-  //   checkMoveLegal(row, column, orientation, ship)
-  // ) {'checkMoveLegal is true'}  else {
-  //   console.log("position is not legal ");
-  //   return;
-  // }
-  //   if (
-  //   checkCollisions(proposedPosition)) {
-  //     console.log('checkCollisions is true');
-
-  //   } else {
-  //     console.log("position is has collisions");
-  //   return;
-  //   }
-
-  //   // place ship
-  //   console.log(this.boardArray);
-  //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
-  // } else {
-  //   console.log("position is not legal or collisions");
-  //   return;
-  // }
 
   receiveAttack(row, column) {
     // updates gameBoard with a miss
@@ -198,3 +145,14 @@ class Player {
 }
 
 export { Ship, Gameboard, Player };
+
+// TODO - this prompt may be useful for when you want to confirm final position?
+// if (player.name === "playerOne") {
+//   if (prompt("Are you happy with position? Y or N") === "Y") {
+//     shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
+//   } else {
+//     return;
+//   }
+// } else {
+//   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
+// }

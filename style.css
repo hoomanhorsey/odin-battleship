@@ -13,12 +13,12 @@
 .gameSetup {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-
   /* grid-template-columns: 5fr 4fr 3fr 3fr 2fr; */
   column-gap: 20px;
 }
 
-.shipBlockSub {
+.shipBlockSub,
+.shipBlockUnplacedSub {
   display: grid;
   align-items: center;
   justify-content: center;
@@ -36,7 +36,7 @@
 
 .shipBlockUnplaced {
   display: grid;
-  background-color: pink;
+  /* background-color: pink; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 }
@@ -49,19 +49,19 @@
   display: grid;
   background-color: pink;
 }
-.shipBlockSubB {
+.shipColorB {
   display: grid;
   background-color: lavender;
 }
-.shipBlockSubD {
+.shipColorD {
   display: grid;
   background-color: palegreen;
 }
-.shipBlockSubS {
+.shipColorS {
   display: grid;
   background-color: palegoldenrod;
 }
-.shipBlockSubP {
+.shipColorP {
   display: grid;
   background-color: lavender;
 }

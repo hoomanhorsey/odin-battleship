@@ -155,7 +155,7 @@ function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
     // squareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
   }
 
-  squareExtended.classList.add("shipColorC");
+  squareExtended.classList.add(`shipColor${shipType}`);
   squareExtended.textContent = shipType;
 }
 
