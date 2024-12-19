@@ -156,3 +156,40 @@ export { Ship, Gameboard, Player };
 // } else {
 //   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
 // }
+
+// // check boundaries + collisons with other ships
+// if (
+//   checkMoveLegal(row, column, orientation, ship) &&
+//   checkCollisions(proposedPosition)
+// ) {
+//   // place ship
+//   console.log(this.boardArray);
+//   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
+// } else {
+//   console.log("position is not legal or collisions");
+//   return;
+// }
+
+// // check boundaries + collisons with other ships
+// if (
+//   checkMoveLegal(row, column, orientation, ship)
+// ) {'checkMoveLegal is true'}  else {
+//   console.log("position is not legal ");
+//   return;
+// }
+//   if (
+//   checkCollisions(proposedPosition)) {
+//     console.log('checkCollisions is true');
+
+//   } else {
+//     console.log("position is has collisions");
+//   return;
+//   }
+
+//   // place ship
+//   console.log(this.boardArray);
+//   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
+// } else {
+//   console.log("position is not legal or collisions");
+//   return;
+// }

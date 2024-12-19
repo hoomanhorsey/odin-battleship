@@ -25,9 +25,7 @@ function shipBlockAttachEventHandlers(players) {
   //   console.log("is null");
   // }
   const shipBlockC = document.getElementById("shipBlockC");
-
   // const shipBlockC = document.querySelector(`[data-ship-type="${shipType}"]`);
-
   const shipBlockB = document.getElementById("shipBlockB");
   const shipBlockD = document.getElementById("shipBlockD");
   const shipBlockS = document.getElementById("shipBlockS");
@@ -40,6 +38,12 @@ function shipBlockAttachEventHandlers(players) {
   shipBlockD.addEventListener("dragstart", drag);
   shipBlockS.addEventListener("dragstart", drag);
   shipBlockP.addEventListener("dragstart", drag);
+
+  shipBlockC.addEventListener("dragend", dragEnd);
+  shipBlockB.addEventListener("dragend", dragEnd);
+  shipBlockD.addEventListener("dragend", dragEnd);
+  shipBlockS.addEventListener("dragend", dragEnd);
+  shipBlockP.addEventListener("dragend", dragEnd);
 
   // add Eventlisteners to
   // shipBlockC.addEventListener("dragstart", (event) => {
@@ -59,6 +63,18 @@ function shipBlockAttachEventHandlers(players) {
   // });
 
   // return handlerDrag;
+}
+
+// Not even sure if this funtion is necessary....or the event listener....
+function dragEnd(event) {
+  console.log(event);
+
+  console.log("return to legal state");
+
+  gameBoardToggleLegalState(true);
+  // console.log("drag end");
+  // const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+  // console.log("add axis event listener now?");
 }
 
 /*
@@ -89,16 +105,14 @@ function gameBoardAttachEventHandlers(players) {
       drop(event, players);
     }
   };
-
   // Not even sure if this event listener is necessary....or the function..
-  handlers.dragend = (event) => dragEnd(event, players); // TODO, query whether you need dragend
+  handlers.dragend = (event) => dragEnd(event); // TODO, query whether you need dragend
 
   // Attach Each handler
   gameBoardplayerOne.addEventListener("dragenter", handlers.dragenter);
   gameBoardplayerOne.addEventListener("dragover", handlers.dragover);
   gameBoardplayerOne.addEventListener("dragleave", handlers.dragleave);
   gameBoardplayerOne.addEventListener("drop", handlers.drop);
-  gameBoardplayerOne.addEventListener("dragend", handlers.dragend);
 }
 
 // checks that the dragenter and drop functions occur over squares, rather than rows.
@@ -182,13 +196,6 @@ function validateMove(event, players) {
   gameBoardToggleLegalState(isMoveValid);
 }
 
-// Not even sure if this funtion is necessary....or the event listener....
-function dragEnd(event) {
-  // console.log("drag end");
-  // const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-  // console.log("add axis event listener now?");
-}
-
 function allowDrop(event) {
   // prevents default (which allows a drop) only if isMoveValid is true
   if (isMoveValid) {
@@ -248,6 +255,9 @@ function drop(event, players) {
   // );
   squareMain.addEventListener("dragstart", (event) => {
     drag(event);
+  });
+  squareMain.addEventListener("dragend", (event) => {
+    dragEnd();
   });
 
   // Parse dataset once at the start of the function

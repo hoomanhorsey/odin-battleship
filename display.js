@@ -84,33 +84,37 @@ function squaresUncolor(
   orientationUncolor
 ) {
   console.log("called grisSquaresUncolor");
+  console.log(shipType, shipLength);
 
   console.log(orientationUncolor);
 
   // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
 
+  console.log(
+    squareMainPrevious.dataset.row,
+    squareMainPrevious.dataset.column
+  );
+
   if (orientationUncolor === "horizontal") {
     console.log("uncolor horizontal");
 
     let startColumn = parseInt(squareMainPrevious.dataset.column);
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < shipLength; i++) {
       let newColumn = startColumn + i;
-      squareExtendedRemove(
-        document.querySelector(
-          `[data-row="${squareMainPrevious.dataset.row}"][data-column="${newColumn}"]`
-        ),
-        i
+      const squareExtended = document.querySelector(
+        `[data-row="${squareMainPrevious.dataset.row}"][data-column="${newColumn}"]`
       );
+      squareExtendedRemove(squareExtended, shipType, i);
     }
   } else {
     console.log("uncolor vertical");
     let startRow = parseInt(squareMainPrevious.dataset.row);
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < shipLength; i++) {
       let newRow = startRow + i;
       const squareExtended = document.querySelector(
         `[data-row="${newRow}"][data-column="${squareMainPrevious.dataset.column}"]`
       );
-      squareExtendedRemove(squareExtended, i);
+      squareExtendedRemove(squareExtended, shipType, i);
     }
   }
 }
@@ -147,19 +151,14 @@ function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
   if (i === 0) {
     squareExtended.setAttribute("draggable", true);
     squareExtended.setAttribute("data-orientation", orientation);
-
     squareExtended.setAttribute("data-ship-type", shipType);
-    // Following hard codes, prob should be deleted.
-    // squareMain.setAttribute("data-orientation", "horizontal");
-    // Following adds shipBlock classes. as it's a grid square, not quite the same as a shipblock so that may not be needed.
-    // squareMain.classList.add("shipBlock", `shipBlock${shipBlockIdFromData}`);
   }
 
   squareExtended.classList.add(`shipColor${shipType}`);
   squareExtended.textContent = shipType;
 }
 
-function squareExtendedRemove(squareExtended, i) {
+function squareExtendedRemove(squareExtended, shipType, i) {
   if (i === 0) {
     //remove axis listener
     squareExtended.removeAttribute("draggable");
@@ -167,7 +166,7 @@ function squareExtendedRemove(squareExtended, i) {
     squareExtended.removeAttribute("data-orientation");
   }
   squareExtended.classList.add("square");
-  squareExtended.classList.remove("shipBlockDragging", "shipColorC");
+  squareExtended.classList.remove("shipBlockDragging", `shipColor${shipType}`);
   squareExtended.textContent = "";
 }
 
