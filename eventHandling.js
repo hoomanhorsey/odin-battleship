@@ -340,9 +340,9 @@ function shipBlockHandleChangeAxisClick(
 
   console.log(isClearOfCollisions);
 
-  if (!isLegalMove) {
+  if (!isLegalMove || isClearOfCollisions === false) {
     // Indicate an illegal move temporarily
-    gameBoardToggleLegalState(isLegalMove);
+    gameBoardToggleLegalState(false);
     setTimeout(() => gameBoardToggleLegalState(true), 250);
   } else {
     // Mark the move as legal and update the board visually
@@ -356,6 +356,16 @@ function shipBlockHandleChangeAxisClick(
       currentOrientation
     );
     // delete teh shipBlock from boardArray
+
+    console.log(
+      row,
+      column,
+      currentOrientation,
+      shipType,
+      players["playerOne"],
+      "delete"
+    );
+
     players["playerOne"].gameBoard.placeShip(
       row,
       column,
