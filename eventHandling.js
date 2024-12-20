@@ -180,8 +180,11 @@ function validateMove(event, players) {
     row,
     column,
     orientation,
-    ship
+    ship,
+    "drag"
   );
+
+  console.log("isCLear of collisios", isClearOfCollisions);
 
   if (!isLegalMove || !isClearOfCollisions) {
     isMoveValid = false;
@@ -241,7 +244,8 @@ function drop(event, players) {
   shipBlockChangeAxisListener(
     squareMain,
     shipTypeFromShipBlockData,
-    shipLength
+    shipLength,
+    players
   );
 
   // assigns drag functionality onto new gridSquagit remain/shipBlock
@@ -294,9 +298,14 @@ function drop(event, players) {
   );
 }
 
-function shipBlockChangeAxisListener(squareMain, shipType, shipLength) {
+function shipBlockChangeAxisListener(
+  squareMain,
+  shipType,
+  shipLength,
+  players
+) {
   const shipBlockChangeAxis = function () {
-    shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength);
+    shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength, players);
   };
   squareMain.addEventListener("click", shipBlockChangeAxis);
 
@@ -304,19 +313,35 @@ function shipBlockChangeAxisListener(squareMain, shipType, shipLength) {
   return shipBlockChangeAxis;
 }
 
-function shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength) {
+function shipBlockHandleChangeAxisClick(
+  squareMain,
+  shipType,
+  shipLength,
+  players
+) {
   console.log("axis click operating");
 
   // determine new orientation of shipBlock, based on existing
-  let currentDirection = squareMain.dataset.orientation;
-  let newDirection =
-    currentDirection === "horizontal" ? "vertical" : "horizontal";
+  let currentOrientation = squareMain.dataset.orientation;
+  let newOrientation =
+    currentOrientation === "horizontal" ? "vertical" : "horizontal";
 
   // Parse dataset once at the start of the function
   const row = parseInt(squareMain.dataset.row);
   const column = parseInt(squareMain.dataset.column);
 
-  const isLegalMove = checkMoveLegal(row, column, newDirection, shipLength);
+  const isLegalMove = checkMoveLegal(row, column, newOrientation, shipLength);
+
+  const isClearOfCollisions = checkCollisions(
+    players["playerOne"].gameBoard.boardArray,
+    row,
+    column,
+    newOrientation,
+    players["playerOne"].gameBoard.ships[`${shipType}`],
+    "axisClick"
+  );
+
+  console.log(isClearOfCollisions);
 
   if (!isLegalMove) {
     // Indicate an illegal move temporarily
@@ -330,8 +355,8 @@ function shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength) {
       squareMain,
       shipType,
       shipLength,
-      newDirection,
-      currentDirection
+      newOrientation,
+      currentOrientation
     );
   }
 }

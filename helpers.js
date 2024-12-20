@@ -54,12 +54,19 @@ function checkMoveLegal(row, column, orientation, shipLength) {
   }
 }
 
-// checks if there are any collisions,  called by placeShip()
-function checkCollisions(boardArray, row, column, orientation, ship) {
+// checks if there are any collisions,  called by placeShip() and shipBLockHandleChangeAxisClick
+// 'false' means there are collisions
+function checkCollisions(boardArray, row, column, orientation, ship, mode) {
   const array = positionCheckArray(boardArray, row, column, orientation, ship);
-  console.log(array);
 
-  return array.every((value) => value.ship === null);
+  console.log(boardArray, row, column, orientation, ship);
+
+  if (mode === "drag") {
+    return array.every((value) => value.ship === null);
+  } else {
+    console.log("calling click logic");
+    return array.slice(1).every((value) => value.ship === null);
+  }
 }
 
 // checks if there are any collisions,  called by placeShip()
