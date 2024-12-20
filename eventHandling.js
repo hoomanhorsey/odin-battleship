@@ -274,9 +274,6 @@ function drop(event, players) {
     console.log("squareMainPrevious is null, so its the first shipBlock");
   } else {
     console.log("%%%%%trying to delete");
-
-    console.log(squareMainPrevious);
-    console.log(squareMainPrevious.dataset.row);
     players["playerOne"].gameBoard.placeShip(
       parseInt(squareMainPrevious.dataset.row),
       parseInt(squareMainPrevious.dataset.column),
@@ -357,6 +354,25 @@ function shipBlockHandleChangeAxisClick(
       shipLength,
       newOrientation,
       currentOrientation
+    );
+    // delete teh shipBlock from boardArray
+    players["playerOne"].gameBoard.placeShip(
+      row,
+      column,
+      currentOrientation,
+      shipType,
+      players["playerOne"],
+      "delete"
+    );
+
+    // save the shipBlock to the boardArray
+    players["playerOne"].gameBoard.placeShip(
+      row,
+      column,
+      newOrientation,
+      shipType,
+      players["playerOne"],
+      "save"
     );
   }
 }

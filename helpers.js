@@ -65,6 +65,8 @@ function checkCollisions(boardArray, row, column, orientation, ship, mode) {
     return array.every((value) => value.ship === null);
   } else {
     console.log("calling click logic");
+    console.log(array);
+    console.log(array.slice(1));
     return array.slice(1).every((value) => value.ship === null);
   }
 }
