@@ -156,6 +156,86 @@ function drag(event) {
 
   // Orients drag to left side of shipBlock
   event.dataTransfer.setDragImage(shipBlock, 0, 0);
+
+  // Ghost element from chatGPT
+
+  function getCircleCount(shipType) {
+    switch (shipType) {
+      case "C":
+        return 5;
+      case "B":
+        return 4;
+      case "D":
+        return 3;
+      case "S":
+        return 2;
+      case "P":
+        return 2;
+    }
+  }
+
+  console.log(shipBlock.dataset.orientation);
+  const shipType = event.target.dataset.shipType;
+
+  const circleCount = getCircleCount(shipType); // Dynamically determine the number of circles
+  const diameter = 70; // Diameter of each circle
+  const orientation = shipBlock.dataset.orientation; // 'right' for horizontal, 'down' for vertical
+  const ghost = createGhostWithCircles(
+    circleCount,
+    diameter,
+    orientation,
+    shipType
+  );
+
+  // Adjust ghost position relative to the cursor
+  const offsetX = diameter / 2;
+  const offsetY = diameter / 2;
+  event.dataTransfer.setDragImage(ghost, offsetX, offsetY);
+
+  // Clean up the ghost element after the drag ends
+  event.target.addEventListener("dragend", () => ghost.remove(), {
+    once: true,
+  });
+}
+
+function createGhostWithCircles(
+  circleCount,
+  diameter,
+  orientation = "horizontal",
+  shipType
+) {
+  const ghostContainer = document.createElement("div");
+
+  // Set up the container for the circles
+  ghostContainer.style.display = "flex";
+  ghostContainer.style.gap = "0px"; // Space between circles
+  ghostContainer.style.position = "absolute"; // Required for drag image
+
+  ghostContainer.style.pointerEvents = "none"; // Non-interactive
+
+  // Set flex orientation based on arrangement
+  ghostContainer.style.flexDirection =
+    orientation === "horizontal" ? "row" : "column";
+
+  // Create individual circles
+  for (let i = 0; i < circleCount; i++) {
+    const circle = document.createElement("div");
+    circle.classList.add("shipBlockSub", `shipColor${shipType}`);
+    // circle.classList.add("shipBlockSub");
+
+    circle.textContent = "C";
+    circle.style.width = `${diameter}px`;
+    circle.style.height = `${diameter}px`;
+    circle.style.border = "5px solid black"; // Black border
+    circle.style.borderRadius = "50%"; // Makes it a circle
+    circle.style.backgroundColor = ""; // Optional light fill color
+    ghostContainer.appendChild(circle); // Add circle to the container
+  }
+
+  const gameSetup = document.querySelector("gameSetup");
+  gameSetup.appendChild(ghostContainer); // Add the container to the document
+  // document.body.appendChild(ghostContainer); // Add the container to the document
+  return ghostContainer;
 }
 
 // isMoveValid value toggles droppability of shipBlock onto square

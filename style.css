@@ -27,7 +27,7 @@
   /* border-width: 3px;
   border-style: solid;
   border-color: black; */
-  font-size: 40px;
+  font-size: larger;
 }
 .shipBlockDragging {
   /* border-style: dotted;
@@ -63,7 +63,7 @@
 }
 .shipColorP {
   display: grid;
-  background-color: lavender;
+  background-color: orange;
 }
 
 .shipBlockC {
