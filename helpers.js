@@ -17,6 +17,8 @@ function positionCheckArray(boardArray, row, column, orientation, ship) {
     console.log("row is NaN");
     return null;
   } else {
+    console.log(orientation);
+
     switch (orientation) {
       case "vertical":
         return boardArray
@@ -35,16 +37,16 @@ function checkMoveLegal(row, column, orientation, shipLength) {
   switch (orientation) {
     case "vertical":
       if (row + shipLength > 10) {
+        console.log(row, shipLength);
+
         return false;
       } else {
         return true;
       }
     case "horizontal":
       if (column + shipLength > 10) {
-        console.log(column);
-        if (!column) {
-          console.log("no column");
-        }
+        console.log(column, shipLength);
+
         return false;
       } else {
         return true;
@@ -56,13 +58,19 @@ function checkMoveLegal(row, column, orientation, shipLength) {
 
 // checks if there are any collisions,  called by placeShip() and shipBLockHandleChangeAxisClick
 // 'false' means there are collisions
-function checkCollisions(boardArray, row, column, orientation, ship, mode) {
+function isClearOfCollisions(boardArray, row, column, orientation, ship, mode) {
+  console.log(ship.type);
+
   const array = positionCheckArray(boardArray, row, column, orientation, ship);
 
-  console.log(boardArray, row, column, orientation, ship);
-
   if (mode === "drag") {
-    return array.every((value) => value.ship === null);
+    // pseudocode
+    // if ship.type in array === null || shipType, return true
+    // else
+    console.log(array);
+    return array.every(
+      (value) => value.ship === null || value.ship === ship.type
+    );
   } else {
     console.log("calling click logic");
     console.log(array);
@@ -71,32 +79,36 @@ function checkCollisions(boardArray, row, column, orientation, ship, mode) {
   }
 }
 
-// checks if there are any collisions,  called by placeShip()
-function acheckCollisions(array) {
-  return array.every((value) => value.ship === null);
-}
-
 function shipBlockUpdateBoardArray(
   boardArray,
   row,
   column,
   orientation,
-  ship,
+  shipObject,
   mode
 ) {
-  console.log(row, column, orientation, ship, mode);
+  console.log(row, column, orientation, shipObject, mode);
+  console.log(mode);
 
-  const value = mode === "save" ? ship.type : null;
+  console.log(typeof row);
+  console.log(typeof column);
+  console.log(shipObject.type);
+
+  const value = mode === "save" ? shipObject.type : null;
   switch (orientation) {
     case "vertical":
-      for (let i = row; i < row + ship.length; i++) {
+      for (let i = row; i < row + shipObject.length; i++) {
         boardArray[i][column].ship = value;
       }
+      console.log("******SAVED ONTO BOARD ARRAY - vert");
+
       break;
     case "horizontal":
-      for (let i = column; i < column + ship.length; i++) {
+      for (let i = column; i < column + shipObject.length; i++) {
         boardArray[row][i].ship = value;
       }
+      console.log("******SAVED ONTO BOARD ARRAY - hor");
+
       break;
     default:
       throw new Error("Invalid orientation provided");
@@ -120,7 +132,7 @@ function checkDupeGridSquare(player, row, column) {
 
 export {
   makeGrid,
-  checkCollisions,
+  isClearOfCollisions,
   positionCheckArray,
   checkMoveLegal,
   shipBlockUpdateBoardArray,

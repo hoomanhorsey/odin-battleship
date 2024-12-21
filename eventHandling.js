@@ -9,7 +9,7 @@ import {
 } from "./display.js";
 
 import {
-  checkCollisions,
+  isClearOfCollisions,
   checkMoveLegal,
   checkDupeGridSquare,
 } from "./helpers.js";
@@ -175,7 +175,7 @@ function validateMove(event, players) {
   // Call the helper module to check if the move is legal
   const isLegalMove = checkMoveLegal(row, column, orientation, ship.length);
 
-  let isClearOfCollisions = checkCollisions(
+  let isClear = isClearOfCollisions(
     players["playerOne"].gameBoard.boardArray,
     row,
     column,
@@ -184,9 +184,9 @@ function validateMove(event, players) {
     "drag"
   );
 
-  console.log("isCLear of collisios", isClearOfCollisions);
+  console.log("isCLear of collisios", isClear);
 
-  if (!isLegalMove || !isClearOfCollisions) {
+  if (!isLegalMove || !isClear) {
     isMoveValid = false;
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
     console.log("isMoveValid " + isMoveValid);
@@ -279,7 +279,6 @@ function drop(event, players) {
       parseInt(squareMainPrevious.dataset.column),
       orientationColor,
       shipTypeFromShipBlockData,
-      players["playerOne"],
       "delete"
     );
   }
@@ -290,7 +289,6 @@ function drop(event, players) {
     column,
     orientationColor,
     shipTypeFromShipBlockData,
-    players["playerOne"],
     "save"
   );
 }
@@ -329,7 +327,7 @@ function shipBlockHandleChangeAxisClick(
 
   const isLegalMove = checkMoveLegal(row, column, newOrientation, shipLength);
 
-  const isClearOfCollisions = checkCollisions(
+  const isClear = isClearOfCollisions(
     players["playerOne"].gameBoard.boardArray,
     row,
     column,
@@ -340,7 +338,7 @@ function shipBlockHandleChangeAxisClick(
 
   console.log(isClearOfCollisions);
 
-  if (!isLegalMove || isClearOfCollisions === false) {
+  if (!isLegalMove || isClear === false) {
     // Indicate an illegal move temporarily
     gameBoardToggleLegalState(false);
     setTimeout(() => gameBoardToggleLegalState(true), 250);
@@ -371,7 +369,6 @@ function shipBlockHandleChangeAxisClick(
       column,
       currentOrientation,
       shipType,
-      players["playerOne"],
       "delete"
     );
 
@@ -381,7 +378,6 @@ function shipBlockHandleChangeAxisClick(
       column,
       newOrientation,
       shipType,
-      players["playerOne"],
       "save"
     );
   }

@@ -43,7 +43,7 @@ playerObject
 
 - checkMoveLegal(row, column, orientation, shipLength)
 
-- checkCollisions(array)
+- isClearOfCollisions(array)
 
 - shipBlockUpdateBoardArray(boardArray, row, column, orientation, ship)
 

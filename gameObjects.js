@@ -45,12 +45,12 @@ class Gameboard {
     { P: false },
   ];
 
-  placeShip(row, column, orientation, shipType, player, mode) {
+  placeShip(row, column, orientation, shipType, mode) {
     row = parseInt(row);
     column = parseInt(column);
     let ship = this.ships[shipType];
 
-    // this is now contained within the checkCollisions function
+    // this is now contained within the isClearOfCollisions function
     // // create array of proposed position for testing
     // const proposedPosition = positionCheckArray(
     //   this.boardArray,
@@ -69,16 +69,17 @@ class Gameboard {
     //   return;
     // }
 
-    // if (checkCollisions(this.boardArray, row, column, orientation, ship)) {
+    // if (isClearOfCollisions(this.boardArray, row, column, orientation, ship)) {
     // } else {
     //   console.log("position has collisions");
     //   return;
     // }
-    // if (checkCollisions(proposedPosition)) {
+    // if (isClearOfCollisions(proposedPosition)) {
     // } else {
     //   console.log("position is has collisions");
     //   return;
     // }
+    console.log(mode);
 
     shipBlockUpdateBoardArray(
       this.boardArray,
@@ -160,7 +161,7 @@ export { Ship, Gameboard, Player };
 // // check boundaries + collisons with other ships
 // if (
 //   checkMoveLegal(row, column, orientation, ship) &&
-//   checkCollisions(proposedPosition)
+//   isClearOfCollisions(proposedPosition)
 // ) {
 //   // place ship
 //   console.log(this.boardArray);
@@ -178,8 +179,8 @@ export { Ship, Gameboard, Player };
 //   return;
 // }
 //   if (
-//   checkCollisions(proposedPosition)) {
-//     console.log('checkCollisions is true');
+//   isClearOfCollisions(proposedPosition)) {
+//     console.log('isClearOfCollisions is true');
 
 //   } else {
 //     console.log("position is has collisions");

@@ -18,7 +18,7 @@ async function computerTargetAsync(
 
   while (count < numComputerTargets) {
     // choose random co-ords for computer
-    const [row, column] = chooseRandomGridCoords(players);
+    const [row, column] = chooseRandomGridCoords();
 
     // check co-ords for dupe
     if (checkDupeGridSquare(players["playerOne"], row, column)) {
@@ -39,7 +39,7 @@ async function computerTargetAsync(
   if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
 }
 
-function chooseRandomGridCoords(players) {
+function chooseRandomGridCoords() {
   return [Math.floor(Math.random() * 10), Math.floor(Math.random() * 10)];
 }
 
