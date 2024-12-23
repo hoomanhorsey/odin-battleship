@@ -70,8 +70,9 @@ function dragEnd(event) {
   console.log(event);
 
   console.log("return to legal state");
+  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
-  gameBoardToggleLegalState(true);
+  gameBoardToggleLegalState(true, gameBoardplayerOne);
   // console.log("drag end");
   // const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
   // console.log("add axis event listener now?");
@@ -276,7 +277,7 @@ function validateMove(event, players) {
   }
   // Call the Display Module to update the visual state
   // gameBoardToggleLegalState(isLegalMove);
-  gameBoardToggleLegalState(isMoveValid);
+  gameBoardToggleLegalState(isMoveValid, gameBoardplayerOne);
 }
 
 function allowDrop(event) {
@@ -418,11 +419,19 @@ function shipBlockHandleChangeAxisClick(
 
   console.log(isClearOfCollisions);
 
+  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+
+  console.log(gameBoardplayerOne);
+
   if (!isLegalMove || isClear === false) {
+    console.log(gameBoardplayerOne);
+
     // Indicate an illegal move temporarily
-    gameBoardToggleLegalState(false);
-    setTimeout(() => gameBoardToggleLegalState(true), 250);
+    gameBoardToggleLegalState(false, gameBoardplayerOne);
+    setTimeout(() => gameBoardToggleLegalState(true, gameBoardplayerOne), 250);
   } else {
+    console.log(gameBoardplayerOne);
+
     // Mark the move as legal and update the board visually
     gameBoardToggleLegalState(true);
     shipBlockColorAndUnColor(
@@ -519,8 +528,18 @@ function attackListener(players, removeTargetListener, computerMove) {
           event.target.dataset.column
         ) === true
       ) {
-        alert("already been clicked");
-        console.log("alreadybeenclicked");
+        // gameBoardToggleLegalState(false, gameBoardplayerTwo);
+
+        gameBoardToggleLegalState(false, gameBoardplayerTwo);
+
+        setTimeout(
+          () => gameBoardToggleLegalState(true, gameBoardplayerTwo),
+          150
+        );
+
+        // alert("already been clicked");
+
+        // console.log("alreadybeenclicked");
 
         return;
       } else {

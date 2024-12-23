@@ -220,17 +220,32 @@ function shipBlockGetOrientationData(squareMainPrevious) {
   }
 }
 
-function gameBoardToggleLegalState(isLegal) {
+function gameBoardToggleLegalState(isLegal, gameBoard) {
   if (isLegal) {
     console.log("legal");
-    gameBoardplayerOne.classList.remove("gameBoardNotLegal");
-    gameBoardplayerOne.classList.add("gameBoardLegal");
+
+    // console.log(player.gameBoard);
+    gameBoard.classList.remove("gameBoardNotLegal");
+    gameBoard.classList.add("gameBoardLegal");
+
+    // gameBoardplayerOne.classList.remove("gameBoardNotLegal");
+    // gameBoardplayerOne.classList.add("gameBoardLegal");
   } else {
     console.log("not legal");
-    gameBoardplayerOne.classList.remove("gameBoardLegal");
-    gameBoardplayerOne.classList.add("gameBoardNotLegal");
+    // console.log(player.gameBoard);
+    gameBoard.classList.remove("gameBoardLegal");
+    gameBoard.classList.add("gameBoardNotLegal");
+
+    // gameBoardplayerOne.classList.remove("gameBoardLegal");
+    // gameBoardplayerOne.classList.add("gameBoardNotLegal");
   }
 }
+
+// player.gameBoard.classList.remove("gameBoardNotLegal");
+// player.gameBoard.classList.add("gameBoardLegal");
+
+// player.gameBoard.classList.remove("gameBoardLegal");
+// player.gameBoard.classList.add("gameBoardNotLegal");
 
 function squareMainPreviousRemove(shipTypeFromShipBlockData) {
   let squareMainPrevious = document.querySelector(
