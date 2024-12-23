@@ -387,19 +387,13 @@ function shipBlockChangeAxisListener(
   gameBoardplayerOne
 ) {
   const shipBlockChangeAxis = function () {
-    shipBlockHandleChangeAxisClick(
-      squareMain,
-      shipType,
-      shipLength,
-      players
-      // gameBoardplayerOne
-    );
+    shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength, players);
   };
 
   // squareMain.addEventListener("click", shipBlockChangeAxis);
 
   gameBoardplayerOne.addEventListener("click", (event) => {
-    if (event.target.classList.contains("shipColorC")) {
+    if (event.target.classList.contains(`shipColor${shipType}`)) {
       shipBlockChangeAxis(event.target);
     }
   });
