@@ -321,12 +321,17 @@ function drop(event, players) {
     orientationUncolor
   );
 
+  const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
+
+  console.log(gameBoardplayerOne);
+
   // Listener for shipBlock change axis
   shipBlockChangeAxisListener(
     squareMain,
     shipTypeFromShipBlockData,
     shipLength,
-    players
+    players,
+    gameBoardplayerOne
   );
 
   // assigns drag functionality onto new gridSquagit remain/shipBlock
@@ -378,12 +383,26 @@ function shipBlockChangeAxisListener(
   squareMain,
   shipType,
   shipLength,
-  players
+  players,
+  gameBoardplayerOne
 ) {
   const shipBlockChangeAxis = function () {
-    shipBlockHandleChangeAxisClick(squareMain, shipType, shipLength, players);
+    shipBlockHandleChangeAxisClick(
+      squareMain,
+      shipType,
+      shipLength,
+      players
+      // gameBoardplayerOne
+    );
   };
-  squareMain.addEventListener("click", shipBlockChangeAxis);
+
+  // squareMain.addEventListener("click", shipBlockChangeAxis);
+
+  gameBoardplayerOne.addEventListener("click", (event) => {
+    if (event.target.classList.contains("shipColorC")) {
+      shipBlockChangeAxis(event.target);
+    }
+  });
 
   // ***TODOreturn callback function in case you need remove the event listener
   return shipBlockChangeAxis;
@@ -433,7 +452,7 @@ function shipBlockHandleChangeAxisClick(
     console.log(gameBoardplayerOne);
 
     // Mark the move as legal and update the board visually
-    gameBoardToggleLegalState(true);
+    gameBoardToggleLegalState(true, gameBoardplayerOne);
     shipBlockColorAndUnColor(
       squareMain,
       squareMain,

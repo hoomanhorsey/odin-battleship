@@ -18,7 +18,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)
   const players = gameInit();
 
-  updateGameMoveStatus("userMove");
+  updateGameMoveStatus("placeShips");
+  // updateGameMoveStatus("userMove");
 
   // ?????assign player status - TODO, possibly redundant
   // let attackingPlayer = players["playerOne"];

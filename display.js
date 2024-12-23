@@ -174,6 +174,11 @@ function updateGameMoveStatus(status) {
   console.log("updateGameMovestatus called");
   const gameMoveStatus = document.querySelector(".gameMoveStatus");
   switch (status) {
+    case "placeShips":
+      gameMoveStatus.textContent =
+        "Welcome to Battleship. Please place your ships on the PlayerOne gameBoard. Click on each ship to change orientation ";
+      break;
+
     case "userMove":
       gameMoveStatus.textContent =
         "Your move. Move cursor to target, click to attack!";
