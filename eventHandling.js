@@ -221,6 +221,8 @@ function drop(event, players) {
     shipTypeFromShipBlockData
   );
 
+  //TODO remove the click acist event listener from 'squareMainPrevious'
+
   // gets orientation data of the placed shipBlock
   const { orientationColor, orientationUncolor } =
     shipBlockGetOrientationData(squareMainPrevious);
@@ -245,14 +247,30 @@ function drop(event, players) {
 
   console.log(gameBoardplayerOne);
 
+  console.log(squareMainPrevious);
+  if (squareMainPrevious !== null) {
+    console.log("remove shipBlockChangeAxist");
+    // console.log(shipBlockChangeAxis);
+
+    if (squareMainPrevious?.handlerReference) {
+      squareMainPrevious.removeEventListener(
+        "click",
+        squareMainPrevious.handlerReference
+      );
+      squareMainPrevious.handlerReference = null; // Clear the reference
+    }
+  }
+
   // Listener for shipBlock change axis
-  shipBlockChangeAxisListener(
+  const handler = shipBlockChangeAxisListener(
     squareMain,
     shipTypeFromShipBlockData,
     shipLength,
     players,
     gameBoardplayerOne
   );
+  // Store the handler with the element for later removal
+  squareMain.handlerReference = handler;
 
   // assigns drag functionality onto new gridSquagit remain/shipBlock
 
