@@ -44,6 +44,12 @@
   display: grid;
 }
 
+/* main square */
+
+[data-ship-type] {
+  /* Styles for all elements with the data-ship-type attribute */
+  text-decoration: underline;
+}
 /* .shipBlockSubC, */
 .shipColorC {
   display: grid;
@@ -170,7 +176,7 @@
 
 .squareActive {
   border-style: solid;
-  border-color: darkblue;
+  border-color: red;
   border-width: 5px;
 }
 

@@ -83,21 +83,9 @@ function squaresUncolor(
   shipLength,
   orientationUncolor
 ) {
-  console.log("called grisSquaresUncolor");
-  console.log(shipType, shipLength);
-
-  console.log(orientationUncolor);
-
   // noted, the args for shipType and shipLength Direction need to be customised for each type of ship
 
-  console.log(
-    squareMainPrevious.dataset.row,
-    squareMainPrevious.dataset.column
-  );
-
   if (orientationUncolor === "horizontal") {
-    console.log("uncolor horizontal");
-
     let startColumn = parseInt(squareMainPrevious.dataset.column);
     for (let i = 0; i < shipLength; i++) {
       let newColumn = startColumn + i;
@@ -107,7 +95,6 @@ function squaresUncolor(
       squareExtendedRemove(squareExtended, shipType, i);
     }
   } else {
-    console.log("uncolor vertical");
     let startRow = parseInt(squareMainPrevious.dataset.row);
     for (let i = 0; i < shipLength; i++) {
       let newRow = startRow + i;
@@ -171,14 +158,12 @@ function squareExtendedRemove(squareExtended, shipType, i) {
 }
 
 function updateGameMoveStatus(status) {
-  console.log("updateGameMovestatus called");
   const gameMoveStatus = document.querySelector(".gameMoveStatus");
   switch (status) {
     case "placeShips":
       gameMoveStatus.textContent =
         "Welcome to Battleship. Please place your ships on the PlayerOne gameBoard. Click on each ship to change orientation ";
       break;
-
     case "userMove":
       gameMoveStatus.textContent =
         "Your move. Move cursor to target, click to attack!";
@@ -227,30 +212,13 @@ function shipBlockGetOrientationData(squareMainPrevious) {
 
 function gameBoardToggleLegalState(isLegal, gameBoard) {
   if (isLegal) {
-    console.log("legal");
-
-    // console.log(player.gameBoard);
     gameBoard.classList.remove("gameBoardNotLegal");
     gameBoard.classList.add("gameBoardLegal");
-
-    // gameBoardplayerOne.classList.remove("gameBoardNotLegal");
-    // gameBoardplayerOne.classList.add("gameBoardLegal");
   } else {
-    console.log("not legal");
-    // console.log(player.gameBoard);
     gameBoard.classList.remove("gameBoardLegal");
     gameBoard.classList.add("gameBoardNotLegal");
-
-    // gameBoardplayerOne.classList.remove("gameBoardLegal");
-    // gameBoardplayerOne.classList.add("gameBoardNotLegal");
   }
 }
-
-// player.gameBoard.classList.remove("gameBoardNotLegal");
-// player.gameBoard.classList.add("gameBoardLegal");
-
-// player.gameBoard.classList.remove("gameBoardLegal");
-// player.gameBoard.classList.add("gameBoardNotLegal");
 
 function squareMainPreviousRemove(shipTypeFromShipBlockData) {
   let squareMainPrevious = document.querySelector(

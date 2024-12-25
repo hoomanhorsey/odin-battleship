@@ -32,8 +32,6 @@ function gameInit() {
   // function to set up computer game board at random positions
   gameSetupComputerRandom(players);
 
-  console.log(players["playerTwo"].gameBoard.boardArray);
-
   shipBlockAttachEventHandlers(players);
   gameBoardAttachEventHandlers(players);
   return players;
@@ -50,15 +48,9 @@ function createPlayers(
 }
 
 function gameSetupComputerRandom(players) {
-  console.log(players["playerTwo"].gameBoard.boardArray);
-  console.log(players["playerTwo"].gameBoard.ships);
-
   const boardArray = players["playerTwo"].gameBoard.boardArray;
-
   const shipsArray = Object.values(players["playerTwo"].gameBoard.ships);
   shipsArray.sort((a, b) => a.length - b.length);
-  console.log(shipsArray);
-
   shipsArray.forEach((ship) => placeComputerShip(ship, boardArray, players));
 }
 
@@ -66,22 +58,11 @@ function placeComputerShip(ship, boardArray, players) {
   let placed = false;
 
   while (!placed) {
-    console.log(ship.type, ship.length);
-    console.log("!!!!!!!!!!!!!!!!!!!!!!STARTING PLACING AGAIN");
-
     // generate random square co-ords
     const [row, column] = chooseRandomGridCoords();
-    console.log("random called again " + row, column);
-
-    // checks if unoccupied
-    // ********************BACK TO LOOP
-    //if !== null,  then it needs to go back to random coord generation
 
     if (isSquareUnoccupied(boardArray, row, column)) {
-      console.log(isSquareUnoccupied(boardArray, row, column));
-
       let orientation = genRandomOrientation();
-      console.log(orientation);
 
       let orientationExhausted = 0;
       while (orientationExhausted < 2) {
@@ -97,7 +78,6 @@ function placeComputerShip(ship, boardArray, players) {
           )
         ) {
           // passes all checks, place ship
-          console.log("***Looks like itlegal");
           orientationExhausted = 2;
 
           players["playerTwo"].gameBoard.placeShip(
@@ -114,18 +94,12 @@ function placeComputerShip(ship, boardArray, players) {
           if (orientation === "vertical") {
             orientation = "horizontal";
             orientationExhausted++;
-            console.log(orientationExhausted);
           } else {
             orientation = "vertical";
-
             orientationExhausted++;
-            console.log(orientationExhausted);
           }
-
           // loop ends, but is sent back with orientation with a different value.
-          console.log("***NOT LEGAL");
         }
-        // placed = false;
       }
     } else {
       // square is occupied, so placed is false and loop reruns

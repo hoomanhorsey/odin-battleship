@@ -19,11 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const players = gameInit();
 
   updateGameMoveStatus("placeShips");
-  // updateGameMoveStatus("userMove");
-
-  // ?????assign player status - TODO, possibly redundant
-  // let attackingPlayer = players["playerOne"];
-  // let defendingPlayer = players["playerTwo"];
 
   // start game turn ev ent loop
   const { removeTargetListener, removeAttackListener } = playerMove();
@@ -44,8 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function computerMove(removeTargetListener, removeAttackListener) {
     removeTargetListener();
     removeAttackListener();
-    // console.log(removeTargetListener);
-    // console.log(removeAttackListener);
     updateGameMoveStatus("computerMove");
 
     // TODOIs this a mix of concerns?
@@ -67,13 +60,8 @@ document.addEventListener("DOMContentLoaded", () => {
         players,
         // The function passed in below is effective what starts the next move.  I don't like how it is expressed cos it's super unclear
         checkAllSunk(players, playerMove),
-        // checkAllSunk(players, emptyTest),
         updateComputerTargetUI
       );
     }
   }
 });
-// TODO - get rid of eventually
-function emptyTest() {
-  console.log("empty test");
-}

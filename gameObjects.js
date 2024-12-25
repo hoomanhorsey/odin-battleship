@@ -50,37 +50,6 @@ class Gameboard {
     column = parseInt(column);
     let ship = this.ships[shipType];
 
-    // this is now contained within the isClearOfCollisions function
-    // // create array of proposed position for testing
-    // const proposedPosition = positionCheckArray(
-    //   this.boardArray,
-    //   row,
-    //   column,
-    //   orientation,
-    //   ship
-    // );
-    // check boundaries + collisons with other ships
-
-    ///TODO - do I need check move legal at this point? Isn't it checked before placeship?
-    // if (checkMoveLegal(row, column, orientation, ship)) {
-    //   ("checkMoveLegal is true");
-    // } else {
-    //   console.log("position is not legal ");
-    //   return;
-    // }
-
-    // if (isClearOfCollisions(this.boardArray, row, column, orientation, ship)) {
-    // } else {
-    //   console.log("position has collisions");
-    //   return;
-    // }
-    // if (isClearOfCollisions(proposedPosition)) {
-    // } else {
-    //   console.log("position is has collisions");
-    //   return;
-    // }
-    console.log(mode);
-
     shipBlockUpdateBoardArray(
       this.boardArray,
       row,

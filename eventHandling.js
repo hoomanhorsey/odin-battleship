@@ -67,9 +67,6 @@ function shipBlockAttachEventHandlers(players) {
 
 // Not even sure if this funtion is necessary....or the event listener....
 function dragEnd(event) {
-  console.log(event);
-
-  console.log("return to legal state");
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
   gameBoardToggleLegalState(true, gameBoardplayerOne);
@@ -90,8 +87,6 @@ function gameBoardAttachEventHandlers(players) {
 
   // Define and store handlers for individual access
   handlers.dragenter = (event) => {
-    console.log(event.target);
-
     event.preventDefault(); // Allow the drag event
 
     if (isValidSquare(event.target)) {
@@ -185,15 +180,11 @@ function validateMove(event, players) {
     "drag"
   );
 
-  console.log("isCLear of collisios", isClear);
-
   if (!isLegalMove || !isClear) {
     isMoveValid = false;
     const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-    console.log("isMoveValid " + isMoveValid);
   } else {
     isMoveValid = true;
-    console.log("isMoveValid " + isMoveValid);
   }
   // Call the Display Module to update the visual state
   // gameBoardToggleLegalState(isLegalMove);
@@ -245,13 +236,7 @@ function drop(event, players) {
 
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
-  console.log(gameBoardplayerOne);
-
-  console.log(squareMainPrevious);
   if (squareMainPrevious !== null) {
-    console.log("remove shipBlockChangeAxist");
-    // console.log(shipBlockChangeAxis);
-
     if (squareMainPrevious?.handlerReference) {
       squareMainPrevious.removeEventListener(
         "click",
@@ -346,8 +331,6 @@ function shipBlockHandleChangeAxisClick(
   shipLength,
   players
 ) {
-  console.log("axis click operating");
-
   // determine new orientation of shipBlock, based on existing
   let currentOrientation = squareMain.dataset.orientation;
   let newOrientation =
@@ -368,21 +351,13 @@ function shipBlockHandleChangeAxisClick(
     "axisClick"
   );
 
-  console.log(isClearOfCollisions);
-
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
-  console.log(gameBoardplayerOne);
-
   if (!isLegalMove || isClear === false) {
-    console.log(gameBoardplayerOne);
-
     // Indicate an illegal move temporarily
     gameBoardToggleLegalState(false, gameBoardplayerOne);
     setTimeout(() => gameBoardToggleLegalState(true, gameBoardplayerOne), 250);
   } else {
-    console.log(gameBoardplayerOne);
-
     // Mark the move as legal and update the board visually
     gameBoardToggleLegalState(true, gameBoardplayerOne);
     shipBlockColorAndUnColor(
@@ -393,17 +368,8 @@ function shipBlockHandleChangeAxisClick(
       newOrientation,
       currentOrientation
     );
-    // delete teh shipBlock from boardArray
 
-    console.log(
-      row,
-      column,
-      currentOrientation,
-      shipType,
-      players["playerOne"],
-      "delete"
-    );
-
+    // delete the shipBlock from boardArray
     players["playerOne"].gameBoard.placeShip(
       row,
       column,
@@ -479,19 +445,12 @@ function attackListener(players, removeTargetListener, computerMove) {
           event.target.dataset.column
         ) === true
       ) {
-        // gameBoardToggleLegalState(false, gameBoardplayerTwo);
-
         gameBoardToggleLegalState(false, gameBoardplayerTwo);
 
         setTimeout(
           () => gameBoardToggleLegalState(true, gameBoardplayerTwo),
           150
         );
-
-        // alert("already been clicked");
-
-        // console.log("alreadybeenclicked");
-
         return;
       } else {
         removeTargetListener();
@@ -556,75 +515,3 @@ export {
   checkDupeGridSquare,
   checkAllSunk,
 };
-
-// following actually appends the item to the block
-// event.target.appendChild(document.getElementById(shipBlockId));
-
-// THIS NEEDS TO HAPPEN AT THE END OF THE FUNCTION.
-//    CALLING PLACESHIP FUNCTION
-// ALTHOUGH DO I NEED TO PUT SHIPS INTO ARRAY TO DETECT COLLISIONS? I THINK I DO
-// placeShip function sends ships to array
-// TODO
-// but don't placeShip yet okay, wait til all ships have been dragged on:
-// also create a button that triggers final placement
-// players["playerOne"].gameBoard.placeShip(
-//   event.target.id[10],
-//   event.target.id[12],
-//   "horizontal",
-//   shipBlockId[9],
-//   players["playerOne"]
-// );
-
-// OBSEOLETE HANDLERS
-
-// // Define the handlers at the top level or within a scope where they'll persist
-// const handleDragEnter = (event, players) => {
-//   validateMove(event, players);
-//   squareActiveAddHighlight(event.target);
-// };
-// const handleDragOver = (event, players) => allowDrop(event, players);
-// const handleDragLeave = (event) =>
-//   squareNonActiveRemoveHighlight(event.target);
-// const handleDrop = (event, players) => drop(event, players);
-// const handleDragEnd = (event, players) => dragEnd(event, players);
-
-// // Wrapper functions that allow passing `players` and remove listeners
-// function createHandleDragEnter(players) {
-//   return (event) => handleDragEnter(event, players);
-// }
-// function createHandleDragOver(players) {
-//   return (event) => handleDragOver(event, players);
-// }
-// function createHandleDragLeave() {
-//   return () => handleDragLeave();
-// }
-// function createHandleDrop(players) {
-//   return (event) => handleDrop(event, players);
-// }
-// function createHandleDragEnd(players) {
-//   return (event) => handleDragEnd(event, players);
-// }
-// function gameBoardAttachEventHandlers(players) {
-//   // Event listeners - gameBoard
-//   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
-
-//   gameBoardplayerOne.addEventListener(
-//     "dragenter",
-//     createHandleDragEnter(players)
-//   );
-//   gameBoardplayerOne.addEventListener(
-//     "dragover",
-//     createHandleDragOver(players)
-//   );
-//   gameBoardplayerOne.addEventListener("dragleave", createHandleDragLeave);
-//   gameBoardplayerOne.addEventListener("drop", createHandleDrop(players));
-//   gameBoardplayerOne.addEventListener("dragend", createHandleDragEnd(players));
-// }
-
-// function gameBoardDetachEventHandlers(players) {
-//   gameBoard.removeEventListener("dragenter", handleDragEnter);
-//   gameBoard.removeEventListener("dragover", handleDragOver);
-//   gameBoard.removeEventListener("dragleave", handleDragLeave);
-//   gameBoard.removeEventListener("drop", handleDrop);
-//   gameBoard.removeEventListener("dragend", handleDragEnd);
-// }
