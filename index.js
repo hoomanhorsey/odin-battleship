@@ -1,27 +1,35 @@
 import { gameInit } from "./gameSetup.js";
+
 import {
   targetListener,
   attackListener,
   checkAllSunk,
 } from "./eventHandling.js";
+
 import {
   chooseRandomGridCoords,
   computerTargetAsync,
   updateComputerTargetUI,
 } from "./computerLogic.js";
+
 import { updateGameMoveStatus } from "./display.js";
 
-let numComputerTargets = 10;
-let computerTargetingTime = 250;
-
 document.addEventListener("DOMContentLoaded", () => {
+  // set computer targeting values
+  let numComputerTargets = 10;
+  let computerTargetingTime = 250;
+
   // Initialize Game (player setup, position prefill, draw board)
   const players = gameInit();
 
   updateGameMoveStatus("placeShips");
 
+  // Launch game once ships are placed
+
+  console.log(players["playerOne"].gameBoard);
+
   // start game turn ev ent loop
-  const { removeTargetListener, removeAttackListener } = playerMove();
+  // const { removeTargetListener, removeAttackListener } = playerMove();
 
   //  playerMoves function
   function playerMove() {

@@ -279,6 +279,22 @@ function drop(event, players) {
     shipTypeFromShipBlockData,
     "save"
   );
+
+  if (shipBlockCheckAllPlaced(players)) {
+    alert("all ships placed. now trigger game start");
+  }
+
+  console.log(shipBlockCheckAllPlaced(players));
+}
+
+function shipBlockCheckAllPlaced(players) {
+  let counter = 0;
+  for (const key in players["playerOne"].gameBoard.ships) {
+    if (players["playerOne"].gameBoard.ships[key]["placed"]) {
+      counter++;
+    }
+  }
+  return counter === 5;
 }
 
 function shipBlockChangeAxisListener(

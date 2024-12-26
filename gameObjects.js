@@ -3,6 +3,7 @@ import { makeGrid, shipBlockUpdateBoardArray } from "./helpers.js";
 class Ship {
   hits = 0;
   sunk = false;
+  placed = false;
   constructor(type, n) {
     this.type = type;
     this.length = n;
@@ -58,6 +59,8 @@ class Gameboard {
       ship,
       mode
     );
+    // updates ship object if it has been placed
+    ship.placed = true;
   }
 
   receiveAttack(row, column) {

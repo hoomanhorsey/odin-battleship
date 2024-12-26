@@ -132,9 +132,9 @@ function isSquareUnoccupied(boardArray, row, column) {
   return boardArray[row][column].ship === null;
 }
 export {
+  chooseRandomGridCoords,
   computerTargetAsync,
   computerAttack,
-  chooseRandomGridCoords,
-  updateComputerTargetUI,
   placeComputerShip,
+  updateComputerTargetUI,
 };
