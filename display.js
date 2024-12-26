@@ -113,9 +113,11 @@ function squaresColor(squareMain, shipType, shipLength, orientation) {
       let startColumn = parseInt(squareMain.dataset.column);
       for (let i = 0; i < shipLength; i++) {
         let newColumn = startColumn + i;
+
         const squareExtended = document.querySelector(
           `[data-row="${squareMain.dataset.row}"][data-column="${newColumn}"]`
         );
+
         squareExtendedUpdate(squareExtended, shipType, i, "horizontal");
       }
       break;
@@ -140,7 +142,6 @@ function squareExtendedUpdate(squareExtended, shipType, i, orientation) {
     squareExtended.setAttribute("data-orientation", orientation);
     squareExtended.setAttribute("data-ship-type", shipType);
   }
-
   squareExtended.classList.add(`shipColor${shipType}`);
   squareExtended.textContent = shipType;
 }
@@ -225,11 +226,17 @@ function squareMainPreviousRemove(shipTypeFromShipBlockData) {
     `[data-ship-type="${shipTypeFromShipBlockData}"]`
   );
 
+  console.log(squareMainPrevious);
+
   if (squareMainPrevious.classList.contains("originalShipBlock")) {
+    console.log("contains originalShipBlock");
+
     // removes shipBlock if it's the original
     squareMainPrevious.remove();
     return null;
   } else {
+    console.log("returning something");
+
     return squareMainPrevious;
   }
 }

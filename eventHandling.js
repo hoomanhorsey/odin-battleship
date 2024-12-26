@@ -259,7 +259,6 @@ function drop(event, players) {
   const column = parseInt(event.target.dataset.column);
 
   // Where the shipBlock is not the original, delete the previous one saved onto boardArray
-
   if (squareMainPrevious === null) {
     console.log("squareMainPrevious is null, so its the first shipBlock");
   } else {

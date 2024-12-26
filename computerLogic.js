@@ -6,6 +6,8 @@ import {
   updateGameMoveStatus,
 } from "./display.js";
 
+import { checkMoveLegal, isClearOfCollisions } from "./helpers.js";
+
 async function computerTargetAsync(
   chooseRandomGridCoords,
   numComputerTargets,
@@ -51,16 +53,6 @@ function updateComputerTargetUI(row, column) {
   squareActiveLocate(row, column);
 }
 
-// function chooseRandomGridCoords(players) {
-//   const row = Math.floor(Math.random() * 10);
-//   const column = Math.floor(Math.random() * 10);
-
-//   if (checkDupeGridSquare(players["playerOne"], row, column)) {
-//     return { row, column, valid: true };
-//   }
-//   return { row, column, valid: false };
-// }
-
 function computerAttack(players) {
   updateGameMoveStatus("computerAttack");
 
@@ -77,9 +69,75 @@ function computerAttack(players) {
   updateGameMoveStatus("userMove");
 }
 
+function placeComputerShip(ship, boardArray, players) {
+  let placed = false;
+
+  while (!placed) {
+    // generate random square co-ords
+    const [row, column] = chooseRandomGridCoords();
+
+    if (isSquareUnoccupied(boardArray, row, column)) {
+      let orientation = genRandomOrientation();
+
+      let orientationExhausted = 0;
+      while (orientationExhausted < 2) {
+        if (
+          checkMoveLegal(row, column, orientation, ship.length) &&
+          isClearOfCollisions(
+            boardArray,
+            row,
+            column,
+            orientation,
+            ship,
+            "drag"
+          )
+        ) {
+          // passes all checks, place ship
+          orientationExhausted = 2;
+
+          players["playerTwo"].gameBoard.placeShip(
+            row,
+            column,
+            orientation,
+            ship.type,
+            "save"
+          );
+          placed = true;
+          break;
+        } else {
+          // ship place failed, try again.
+          if (orientation === "vertical") {
+            orientation = "horizontal";
+            orientationExhausted++;
+          } else {
+            orientation = "vertical";
+            orientationExhausted++;
+          }
+          // loop ends, but is sent back with orientation with a different value.
+        }
+      }
+    } else {
+      // square is occupied, so placed is false and loop reruns
+      placed = false;
+      console.log("*****LOOP RERUNS");
+    }
+  }
+}
+
+function genRandomOrientation() {
+  if (Math.random() > 0.5) {
+    return "horizontal";
+  } else {
+    return "vertical";
+  }
+}
+function isSquareUnoccupied(boardArray, row, column) {
+  return boardArray[row][column].ship === null;
+}
 export {
   computerTargetAsync,
   computerAttack,
   chooseRandomGridCoords,
   updateComputerTargetUI,
+  placeComputerShip,
 };

@@ -5,13 +5,7 @@ import {
   gameBoardAttachEventHandlers,
 } from "./eventHandling.js";
 
-import { chooseRandomGridCoords } from "./computerLogic.js";
-
-import {
-  positionCheckArray,
-  checkMoveLegal,
-  isClearOfCollisions,
-} from "./helpers.js";
+import { placeComputerShip } from "./computerLogic.js";
 
 function gameInit() {
   const players = createPlayers();
@@ -21,15 +15,6 @@ function gameInit() {
   drawGrid(players["playerOne"], squarePopulateWithShip);
   drawGrid(players["playerTwo"], squarePopulateWithShip);
 
-  // *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
-  // gameSetUp_positionPreFill_BothPlayers(players);
-
-  // function to allow user to selection positions
-  // gameSetUp_positionFill_ComputerOnly(players);
-
-  // // function to set up on postions for computer, simply for testing.
-  // gameSetup_Noprefill();
-  // function to set up computer game board at random positions
   gameSetupComputerRandom(players);
 
   shipBlockAttachEventHandlers(players);
@@ -54,77 +39,17 @@ function gameSetupComputerRandom(players) {
   shipsArray.forEach((ship) => placeComputerShip(ship, boardArray, players));
 }
 
-function placeComputerShip(ship, boardArray, players) {
-  let placed = false;
+export { gameInit };
 
-  while (!placed) {
-    // generate random square co-ords
-    const [row, column] = chooseRandomGridCoords();
+// *** <<<< FOR TESTING- function for computer to prefill postions>>>>>
+// gameSetUp_positionPreFill_BothPlayers(players);
 
-    if (isSquareUnoccupied(boardArray, row, column)) {
-      let orientation = genRandomOrientation();
+// function to allow user to selection positions
+// gameSetUp_positionFill_ComputerOnly(players);
 
-      let orientationExhausted = 0;
-      while (orientationExhausted < 2) {
-        if (
-          checkMoveLegal(row, column, orientation, ship.length) &&
-          isClearOfCollisions(
-            boardArray,
-            row,
-            column,
-            orientation,
-            ship,
-            "drag"
-          )
-        ) {
-          // passes all checks, place ship
-          orientationExhausted = 2;
-
-          players["playerTwo"].gameBoard.placeShip(
-            row,
-            column,
-            orientation,
-            ship.type,
-            "save"
-          );
-          placed = true;
-          break;
-        } else {
-          // ship place failed, try again.
-          if (orientation === "vertical") {
-            orientation = "horizontal";
-            orientationExhausted++;
-          } else {
-            orientation = "vertical";
-            orientationExhausted++;
-          }
-          // loop ends, but is sent back with orientation with a different value.
-        }
-      }
-    } else {
-      // square is occupied, so placed is false and loop reruns
-      placed = false;
-      console.log("*****LOOP RERUNS");
-    }
-  }
-}
-
-function genRandomOrientation() {
-  // generate random orientation
-  // let orientation = "";
-  if (Math.random() > 0.5) {
-    // console.log(orientation);
-
-    return "horizontal";
-  } else {
-    // console.log(orientation);
-
-    return "vertical";
-  }
-}
-function isSquareUnoccupied(boardArray, row, column) {
-  return boardArray[row][column].ship === null;
-}
+// // function to set up on postions for computer, simply for testing.
+// gameSetup_Noprefill();
+// function to set up computer game board at random positions
 
 function gameSetup_Noprefill() {
   // No positions prefilled on computer gameboard. This function is simply here as a reminder to reset prefills or delete entirely once into production
@@ -177,8 +102,6 @@ function gameSetUp_positionPreFill_BothPlayers(players) {
     "playerTwo"
   );
 }
-
-export { gameInit };
 
 // checks Legal
 // ********************toggle orientation if false???, then check again????
