@@ -76,25 +76,14 @@ function placeComputerShip(ship, boardArray, players) {
     // generate random square co-ords
     const [row, column] = chooseRandomGridCoords();
 
+    // validating placement
     if (isSquareUnoccupied(boardArray, row, column)) {
       let orientation = genRandomOrientation();
-
       let orientationExhausted = 0;
-      while (orientationExhausted < 2) {
-        if (
-          checkMoveLegal(row, column, orientation, ship.length) &&
-          isClearOfCollisions(
-            boardArray,
-            row,
-            column,
-            orientation,
-            ship,
-            "drag"
-          )
-        ) {
-          // passes all checks, place ship
-          orientationExhausted = 2;
 
+      while (orientationExhausted < 2) {
+        // passes all checks, place ship
+        if (isValidPlacement(boardArray, row, column, orientation, ship)) {
           players["playerTwo"].gameBoard.placeShip(
             row,
             column,
@@ -105,14 +94,9 @@ function placeComputerShip(ship, boardArray, players) {
           placed = true;
           break;
         } else {
-          // ship place failed, try again.
-          if (orientation === "vertical") {
-            orientation = "horizontal";
-            orientationExhausted++;
-          } else {
-            orientation = "vertical";
-            orientationExhausted++;
-          }
+          // ship place failed, try again with different orientation
+          orientation = toggleOrientation(orientation);
+          orientationExhausted++;
           // loop ends, but is sent back with orientation with a different value.
         }
       }
@@ -124,6 +108,15 @@ function placeComputerShip(ship, boardArray, players) {
   }
 }
 
+function isValidPlacement(boardArray, row, column, orientation, ship) {
+  return (
+    checkMoveLegal(row, column, orientation, ship.length) &&
+    isClearOfCollisions(boardArray, row, column, orientation, ship, "drag")
+  );
+}
+function toggleOrientation(currentOrientation) {
+  return currentOrientation === "vertical" ? "horizontal" : "vertical";
+}
 function genRandomOrientation() {
   if (Math.random() > 0.5) {
     return "horizontal";
