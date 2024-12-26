@@ -1,5 +1,5 @@
 import { Player } from "./gameObjects.js";
-import { drawGrid, squarePopulateWithShip } from "./display.js";
+import { drawGrid } from "./display.js";
 import {
   shipBlockAttachEventHandlers,
   gameBoardAttachEventHandlers,
@@ -9,11 +9,10 @@ import { placeComputerShip } from "./computerLogic.js";
 
 function gameInit() {
   const players = createPlayers();
-  // prefill positions
 
   // draw gameBoard grid
-  drawGrid(players["playerOne"], squarePopulateWithShip);
-  drawGrid(players["playerTwo"], squarePopulateWithShip);
+  drawGrid(players["playerOne"]);
+  drawGrid(players["playerTwo"]);
 
   gameSetupComputerRandom(players);
 

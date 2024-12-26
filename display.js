@@ -1,6 +1,6 @@
 import { interpretAttackResult } from "./gameLogic.js";
 
-function drawGrid(player, populateGridSquare) {
+function drawGrid(player) {
   const gridDiv = document.querySelector(".gameBoard" + player.name);
   for (let row = 0; row < 10; row++) {
     let gridRow = document.createElement("div");
@@ -14,17 +14,9 @@ function drawGrid(player, populateGridSquare) {
       square.dataset.row = row;
       square.dataset.column = column;
 
-      // ***TO DO, FOR PREFILL TESTING ONLY - I think this function is only used when playerONe is prechosen. As it reveals the position of ships.  The computer's ships will never be revealed at the outset.  So it and the populateShipOnGridSquare() as well as the arguments in drawGrid can probably be deleted.
-      if (populateGridSquare) {
-        squarePopulateWithShip(square, row, column, player);
-      }
       gridRow.append(square);
     }
   }
-}
-
-function squarePopulateWithShip(square, row, column, player) {
-  square.textContent = player.gameBoard.boardArray[row][column].ship;
 }
 
 // square highlighting and unhighlighting
@@ -117,7 +109,6 @@ function squaresColor(squareMain, shipType, shipLength, orientation) {
         const squareExtended = document.querySelector(
           `[data-row="${squareMain.dataset.row}"][data-column="${newColumn}"]`
         );
-
         squareExtendedUpdate(squareExtended, shipType, i, "horizontal");
       }
       break;
@@ -252,7 +243,6 @@ export {
   squareExtendedRemove,
   squareMainPreviousRemove,
   squareNonActiveRemoveHighlight,
-  squarePopulateWithShip,
   squareUpdateAfterAttack,
   squaresColor,
   squaresUncolor,

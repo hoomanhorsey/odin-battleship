@@ -92,6 +92,10 @@ function placeComputerShip(ship, boardArray, players) {
             "save"
           );
           placed = true;
+          console.log(
+            "just a check that a ship " + ship.type + " has been placed"
+          );
+
           break;
         } else {
           // ship place failed, try again with different orientation
