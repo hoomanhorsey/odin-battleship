@@ -38,6 +38,8 @@ async function computerTargetAsync(
   // After completing the required times
   // playMoveAfterCheckSunk is the name given to a function passeded into computerTargetAsync, which is checkAllSunk(players, playMove)
   computerAttack(players);
+
+  // TODO, consider removing this to stop the player from being able to attack while computer is going, but this although it's probably a wayward event listener that hasn't been removed
   if (playMoveAfterCheckSunk) playMoveAfterCheckSunk();
 }
 

@@ -21,6 +21,7 @@ function gameInit() {
   // launch ship block and gameboard handlers
   shipBlockAttachEventHandlers(players);
   gameBoardAttachEventHandlers(players);
+
   return players;
 }
 

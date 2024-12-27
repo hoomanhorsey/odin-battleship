@@ -85,7 +85,7 @@ class Gameboard {
     }
   }
 
-  checkSunk() {
+  checkSunk(player) {
     let sunkCounter = 0;
     const sunkShips = [];
 
@@ -103,7 +103,7 @@ class Gameboard {
     }
     // advise if all ships are sunk
     else {
-      console.log(sunkCounter + " of 5 ships sunk");
+      console.log(player + ": " + sunkCounter + " of 5 ships sunk");
       return false;
     }
   }

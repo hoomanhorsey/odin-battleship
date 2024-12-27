@@ -6,6 +6,7 @@ import {
   squareNonActiveRemoveHighlight,
   squareMainPreviousRemove,
   squareUpdateAfterAttack,
+  updateGameMoveStatus,
 } from "./display.js";
 
 import {
@@ -14,6 +15,7 @@ import {
   isClearOfCollisions,
 } from "./helpers.js";
 
+import { playerMove } from "./index.js";
 /*
  *shipBlock event handlers
  */
@@ -260,7 +262,9 @@ function drop(event, players) {
 
   // Where the shipBlock is not the original, delete the previous one saved onto boardArray
   if (squareMainPrevious === null) {
-    console.log("squareMainPrevious is null, so its the first shipBlock");
+    console.log(
+      "squareMainPrevious is null, so its the first shipBlock of it's kind"
+    );
   } else {
     players["playerOne"].gameBoard.placeShip(
       parseInt(squareMainPrevious.dataset.row),
@@ -281,10 +285,10 @@ function drop(event, players) {
   );
 
   if (shipBlockCheckAllPlaced(players)) {
-    alert("all ships placed. now trigger game start");
+    updateGameMoveStatus("shipsPlaced");
+    const gameMoveStatus = document.querySelector(".gameMoveStatus");
+    gameMoveStatus.addEventListener("click", () => playerMove(players));
   }
-
-  console.log(shipBlockCheckAllPlaced(players));
 }
 
 function shipBlockCheckAllPlaced(players) {
@@ -388,23 +392,27 @@ function targetListener() {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
   // attach Listener
-  addGridSquareTargetListener(gameBoardplayerTwo, squareTarget);
+  addSquareTargetListener(gameBoardplayerTwo, squareTarget);
 
   // return function to remove listeners
   function removeTargetListener() {
     console.log("remove target listener called");
-    removeGridSquareTargetListener(gameBoardplayerTwo, squareTarget);
+    removeSquareTargetListener(gameBoardplayerTwo, squareTarget);
   }
   return removeTargetListener;
 }
 
 // functions to support targetListener
-function addGridSquareTargetListener(element, handler) {
+function addSquareTargetListener(element, handler) {
+  console.log("addedSquareTargetListener");
+
   element.addEventListener("mouseover", handler);
   element.addEventListener("mouseout", handler);
 }
 
-function removeGridSquareTargetListener(element, handler) {
+function removeSquareTargetListener(element, handler) {
+  console.log("removeSquareTargetListener");
+
   element.removeEventListener("mouseover", handler);
   element.removeEventListener("mouseout", handler);
 }
@@ -426,12 +434,12 @@ function attackListener(players, removeTargetListener, computerMove) {
   // gets the playerBoard
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
-  // gridAttackHandler that actually handles the attack.
-  function gridAttackHandler(event, players) {
+  // squareAttackHandler that actually handles the attack.
+  function squareAttackHandler(event, players) {
     if (event.target.classList.contains("square")) {
-      console.log(players);
-
       // checks if the square has already been hit (dupe)
+      console.log("square attack handler is called");
+
       if (
         checkDupeGridSquare(
           players["playerTwo"],
@@ -449,8 +457,8 @@ function attackListener(players, removeTargetListener, computerMove) {
       } else {
         removeTargetListener();
         removeAttackListener();
-        // calls receive Attack to update boardArray if there is a succeful attack
 
+        // calls receive Attack to update boardArray if there is a succeful attack
         let attackResult = players["playerTwo"].gameBoard.receiveAttack(
           event.target.dataset.row,
           event.target.dataset.column
@@ -458,37 +466,57 @@ function attackListener(players, removeTargetListener, computerMove) {
         squareUpdateAfterAttack(attackResult, event.target);
 
         checkAllSunk(players, () =>
-          computerMove(removeTargetListener, removeAttackListener)
+          computerMove(players, removeTargetListener, removeAttackListener)
         );
       }
     }
   }
+  const attackHandler = createAttackHandler(players);
 
-  // VERYIMPORTANT - currently removed addGridSquareAttackListener. Need to re add
-  addGridSquareAttackListener(gameBoardplayerTwo, (event) =>
-    gridAttackHandler(event, players)
-  );
+  // VERYIMPORTANT - currently removed addSquareAttackListener. Need to re add
+  addSquareAttackListener(gameBoardplayerTwo, attackHandler);
+
+  // addSquareAttackListener(gameBoardplayerTwo, (event) =>
+  //   squareAttackHandler(event, players)
+  // );
+
+  function createAttackHandler(players) {
+    return (event) => squareAttackHandler(event, players);
+  }
+
+  //new variable to store handler reference.
 
   // function to remove attack listener
   function removeAttackListener() {
     console.log("remove attack listener called");
-    removeGridSquareAttackListener(gameBoardplayerTwo, gridAttackHandler);
+    removeSquareAttackListener(gameBoardplayerTwo, attackHandler);
+  }
+  return { removeAttackListener };
+
+  // function to remove attack listener
+  function AAAremoveAttackListener() {
+    console.log("remove attack listener called");
+    removeSquareAttackListener(gameBoardplayerTwo, squareAttackHandler);
   }
   return { removeAttackListener };
 }
 
-function addGridSquareAttackListener(element, handler) {
+function addSquareAttackListener(element, handler) {
   element.addEventListener("click", handler);
 }
 
-function removeGridSquareAttackListener(element, handler) {
+function removeSquareAttackListener(element, handler) {
   element.removeEventListener("click", handler);
 }
 
 function checkAllSunk(players, nextMoveCallback) {
+  console.log(
+    "checkallsunk has been called which means play move has been called too. And I'm logging this because if play move has been called then the target and attack event listeners have been called as well"
+  );
+
   if (
-    !players["playerOne"].gameBoard.checkSunk() &&
-    !players["playerTwo"].gameBoard.checkSunk()
+    !players["playerOne"].gameBoard.checkSunk(players["playerOne"].name) &&
+    !players["playerTwo"].gameBoard.checkSunk(players["playerTwo"].name)
   ) {
     console.log("ships afloat");
     nextMoveCallback();

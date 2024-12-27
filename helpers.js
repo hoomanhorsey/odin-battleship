@@ -93,18 +93,9 @@ function shipBlockUpdateBoardArray(
 }
 
 function checkDupeGridSquare(player, row, column) {
-  console.log(player);
-  console.log("dupe checked" + row + column);
-
   let shipObject = player.gameBoard.boardArray[row][column];
-
-  if (shipObject.hit === true || shipObject.missed === true) {
-    console.log("already hit, dont count this one");
-    return true;
-  } else {
-    console.log("returning false");
-    return false;
-  }
+  // if either condition is true, returns true - else returns false
+  return shipObject.hit === true || shipObject.missed === true;
 }
 
 export {

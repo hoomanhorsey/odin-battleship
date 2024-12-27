@@ -44,8 +44,6 @@ function squareNonActiveRemoveHighlight(eventTarget) {
 function squareUpdateAfterAttack(attackResult, eventTarget) {
   const interpretation = interpretAttackResult(attackResult);
 
-  console.log(interpretation.text);
-
   if (interpretation) {
     eventTarget.textContent = interpretation.text;
     eventTarget.classList.add(interpretation.class);
@@ -156,6 +154,10 @@ function updateGameMoveStatus(status) {
       gameMoveStatus.textContent =
         "Welcome to Battleship. Please place your ships on the PlayerOne gameBoard. Click on each ship to change orientation ";
       break;
+    case "shipsPlaced":
+      gameMoveStatus.textContent =
+        "All ships have been placed. Press 'start' to start the game";
+      break;
     case "userMove":
       gameMoveStatus.textContent =
         "Your move. Move cursor to target, click to attack!";
@@ -189,9 +191,7 @@ function shipBlockOriginalRemove(shipTypeFromShipBlockData) {
 }
 
 function shipBlockGetOrientationData(squareMainPrevious) {
-  console.log(
-    "squareMainPrevious -if null, means no shipBlock has been placed yet"
-  );
+  // squareMainPrevious -if null, means no shipBlock has been placed yet
   if (squareMainPrevious === null) {
     return { orientationColor: "horizontal", orientationUncolor: "horizontal" };
   } else {
@@ -217,17 +217,11 @@ function squareMainPreviousRemove(shipTypeFromShipBlockData) {
     `[data-ship-type="${shipTypeFromShipBlockData}"]`
   );
 
-  console.log(squareMainPrevious);
-
   if (squareMainPrevious.classList.contains("originalShipBlock")) {
-    console.log("contains originalShipBlock");
-
     // removes shipBlock if it's the original
     squareMainPrevious.remove();
     return null;
   } else {
-    console.log("returning something");
-
     return squareMainPrevious;
   }
 }
