@@ -156,7 +156,7 @@ function updateGameMoveStatus(status) {
       break;
     case "shipsPlaced":
       gameMoveStatus.textContent =
-        "All ships have been placed. Press 'start' to start the game";
+        "All ships have been placed. Continue to place your fleet or press 'start' to start the game";
       break;
     case "userMove":
       gameMoveStatus.textContent =

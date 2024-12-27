@@ -1,9 +1,10 @@
 import { gameInit } from "./gameSetup.js";
 
 import {
-  targetListener,
   attackListener,
   checkAllSunk,
+  shipBlocksInPlace,
+  targetListener,
 } from "./eventHandling.js";
 
 import {
@@ -13,6 +14,7 @@ import {
 } from "./computerLogic.js";
 
 import { updateGameMoveStatus } from "./display.js";
+// import resolve from "resolve";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)
@@ -24,9 +26,57 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log(players["playerOne"].gameBoard);
 
+  // Listens for ship drops on gameBoard.
+  // Once all ships are dropped, game currently runs game loop
+  // gameloop calls playerMove to start game.
+  // But it should actually trigger the game start
+  const gameBoardplayerOne = document.getElementById("gameBoardplayerOne");
+  gameBoardplayerOne.addEventListener("drop", (event) =>
+    shipBlocksInPlaceHandler(event, players)
+  );
+
+  function shipBlocksInPlaceHandler(event, players) {
+    console.log(event, players);
+
+    if (shipBlocksInPlace(players)) {
+      console.log("all ships placed");
+      updateGameMoveStatus("shipsPlaced");
+
+      const gameMoveStatus = document.querySelector(".gameMoveStatus");
+      gameMoveStatus.addEventListener("click", () => gameLoop(players));
+    }
+  }
+
+  // console.log("something dropped on me");
+  // });
+
   // start game turn ev ent loop
   // const { removeTargetListener, removeAttackListener } = playerMove();
 });
+
+// gameLoop(players);
+
+async function gameLoop(players) {
+  let gameOver = false;
+
+  console.log("gameloop is called");
+
+  while (!gameOver) {
+    console.log("players Move");
+
+    // Wait for player's move to complete
+    await playerMove(players);
+
+    // check if game is over
+
+    console.log("computer move start");
+    // Wait for computer's move to complete
+    await computerMove(players);
+
+    // check if game is over
+  }
+  console.log("Game over!");
+}
 
 //  playerMoves function
 function playerMove(players) {
@@ -34,16 +84,29 @@ function playerMove(players) {
 
   updateGameMoveStatus("userMove");
 
-  // targetListener
-  const removeTargetListener = targetListener();
-  //  attackingListener
-  console.log(players);
-  const removeAttackListener = attackListener(
-    players,
-    removeTargetListener,
-    computerMove
-  );
-  return { removeTargetListener, removeAttackListener };
+  return new Promise((resolve) => {
+    //     // Setup target listener
+
+    const removeTargetListener = targetListener();
+    // Setup attack listener and resolve the Promise when the attack is completed
+    console.log(players);
+    const removeAttackListener = attackListener(
+      players,
+      removeTargetListener,
+      // computerMove
+      () => {
+        console.log("playermovecomplete");
+
+        // Clean up listeners after the move is completed
+        removeTargetListener();
+        removeAttackListener();
+
+        // Resolve the Promise to indicate the move is done
+        resolve();
+      }
+    );
+  });
+  // return { removeTargetListener, removeAttackListener };
 }
 
 // set computer targeting values
