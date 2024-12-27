@@ -518,7 +518,6 @@ function checkAllSunk(players, nextMoveCallback) {
     !players["playerOne"].gameBoard.checkSunk(players["playerOne"].name) &&
     !players["playerTwo"].gameBoard.checkSunk(players["playerTwo"].name)
   ) {
-    console.log("ships afloat");
     nextMoveCallback();
   } else {
     if (players["playerOne"].gameBoard.checkSunk()) {

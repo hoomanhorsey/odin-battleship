@@ -97,15 +97,12 @@ class Gameboard {
       }
     }
     // tally the number of ships sunk
-    if (sunkCounter === 5) {
-      console.log("all ships sunk");
-      return true;
-    }
-    // advise if all ships are sunk
-    else {
-      console.log(player + ": " + sunkCounter + " of 5 ships sunk");
-      return false;
-    }
+    console.log(
+      sunkCounter === 5
+        ? "all ships sunk!"
+        : `${player}: ${sunkCounter} of 5 ships sunk`
+    );
+    return sunkCounter === 5;
   }
 }
 
