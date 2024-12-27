@@ -283,24 +283,6 @@ function drop(event, players) {
     shipTypeFromShipBlockData,
     "save"
   );
-
-  if (shipBlocksInPlace(players)) {
-    updateGameMoveStatus("shipsPlaced");
-    const gameMoveStatus = document.querySelector(".gameMoveStatus");
-    gameMoveStatus.addEventListener("click", () => playerMove(players));
-  }
-}
-
-function shipBlocksInPlace(players) {
-  console.log(players);
-
-  let counter = 0;
-  for (const key in players["playerOne"].gameBoard.ships) {
-    if (players["playerOne"].gameBoard.ships[key]["placed"]) {
-      counter++;
-    }
-  }
-  return counter === 5;
 }
 
 function shipBlockChangeAxisListener(

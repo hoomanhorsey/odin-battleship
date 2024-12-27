@@ -7,4 +7,16 @@ function interpretAttackResult(result) {
   return null;
 }
 
-export { interpretAttackResult };
+function shipBlocksInPlace(players) {
+  console.log(players);
+
+  let counter = 0;
+  for (const key in players["playerOne"].gameBoard.ships) {
+    if (players["playerOne"].gameBoard.ships[key]["placed"]) {
+      counter++;
+    }
+  }
+  return counter === 5;
+}
+
+export { interpretAttackResult, shipBlocksInPlace };

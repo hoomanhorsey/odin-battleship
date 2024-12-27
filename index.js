@@ -3,7 +3,6 @@ import { gameInit } from "./gameSetup.js";
 import {
   attackListener,
   checkAllSunk,
-  shipBlocksInPlace,
   targetListener,
 } from "./eventHandling.js";
 
@@ -14,6 +13,9 @@ import {
 } from "./computerLogic.js";
 
 import { updateGameMoveStatus } from "./display.js";
+
+import { shipBlocksInPlace } from "./gameLogic.js";
+
 // import resolve from "resolve";
 
 document.addEventListener("DOMContentLoaded", () => {
