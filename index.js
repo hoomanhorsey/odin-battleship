@@ -3,7 +3,8 @@ import { gameInit } from "./gameSetup.js";
 import {
   attackListener,
   checkAllSunk,
-  targetListener,
+  shipBlockDropListener,
+  // targetListener,
 } from "./eventHandling.js";
 
 import {
@@ -14,9 +15,7 @@ import {
 
 import { updateGameMoveStatus } from "./display.js";
 
-import { shipBlocksInPlace } from "./gameLogic.js";
-
-// import resolve from "resolve";
+import { shipBlocksInPlace } from "./helpers.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize Game (player setup, position prefill, draw board)
@@ -32,27 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Once all ships are dropped, game currently runs game loop
   // gameloop calls playerMove to start game.
   // But it should actually trigger the game start
-  const gameBoardplayerOne = document.getElementById("gameBoardplayerOne");
-  gameBoardplayerOne.addEventListener("drop", (event) =>
-    shipBlocksInPlaceHandler(event, players)
-  );
+  //
 
-  function shipBlocksInPlaceHandler(event, players) {
-    console.log(event, players);
+  // Listens for ships being dropped, starts game loop on click of gameMoveStatus
+  shipBlockDropListener(players);
 
-    if (shipBlocksInPlace(players)) {
-      console.log("all ships placed");
-      updateGameMoveStatus("shipsPlaced");
-
-      const gameMoveStatus = document.querySelector(".gameMoveStatus");
-      gameMoveStatus.addEventListener("click", () => gameLoop(players));
-    }
-  }
-
-  // console.log("something dropped on me");
-  // });
-
-  // start game turn ev ent loop
   // const { removeTargetListener, removeAttackListener } = playerMove();
 });
 
@@ -145,4 +128,4 @@ function computerMove(players, removeTargetListener, removeAttackListener) {
   }
 }
 
-export { playerMove };
+export { gameLoop, playerMove };

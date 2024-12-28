@@ -1,3 +1,6 @@
+import { updateGameMoveStatus } from "./display.js";
+import { gameLoop } from "./index.js";
+
 function interpretAttackResult(result) {
   if (result === "miss") {
     return { text: "miss", class: "squareMiss" };
@@ -7,16 +10,33 @@ function interpretAttackResult(result) {
   return null;
 }
 
-function shipBlocksInPlace(players) {
-  console.log(players);
+// let clickToStartGameHandler;
+// let gameMoveStatus;
 
-  let counter = 0;
-  for (const key in players["playerOne"].gameBoard.ships) {
-    if (players["playerOne"].gameBoard.ships[key]["placed"]) {
-      counter++;
-    }
-  }
-  return counter === 5;
+// Create a handler factory
+function createstartGameClickHandler(players, gameMoveStatus) {
+  return function handleStartGameClick(event) {
+    gameLoop(players); // Use the specific `players` object
+    gameMoveStatus.removeEventListener("click", handleStartGameClick);
+    console.log("gameMoveStatus removed ");
+  };
 }
 
-export { interpretAttackResult, shipBlocksInPlace };
+function setUpGameStartListener(players) {
+  const gameMoveStatus = document.querySelector(".gameMoveStatus");
+
+  // Create a handler with the specific `players`
+  const startGameClickHandler = createstartGameClickHandler(
+    players,
+    gameMoveStatus
+  );
+  console.log("all ships placed");
+  updateGameMoveStatus("shipsPlaced");
+  gameMoveStatus.addEventListener("click", startGameClickHandler);
+}
+
+export {
+  interpretAttackResult,
+  setUpGameStartListener,
+  // startGameClickHandler,
+};

@@ -10,10 +10,13 @@ import {
 } from "./display.js";
 
 import {
-  checkDupeGridSquare,
+  checkDupeSquare,
   checkMoveLegal,
   isClearOfCollisions,
+  shipBlocksInPlace,
 } from "./helpers.js";
+
+import { setUpGameStartListener } from "./gameLogic.js";
 
 import { playerMove } from "./index.js";
 /*
@@ -425,7 +428,7 @@ function attackListener(players, removeTargetListener, computerMove) {
       console.log("square attack handler is called");
 
       if (
-        checkDupeGridSquare(
+        checkDupeSquare(
           players["playerTwo"],
           event.target.dataset.row,
           event.target.dataset.column
@@ -514,12 +517,26 @@ function checkAllSunk(players, nextMoveCallback) {
   }
 }
 
+function shipBlockDropListener(players) {
+  const gameBoardplayerOne = document.getElementById("gameBoardplayerOne");
+  gameBoardplayerOne.addEventListener("drop", (event) =>
+    shipBlockDropHandler(event, players)
+  );
+}
+
+function shipBlockDropHandler(event, players) {
+  console.log(event, players);
+  if (shipBlocksInPlace(players)) {
+    setUpGameStartListener(players);
+  }
+}
+
 export {
   attackListener,
   checkAllSunk,
-  checkDupeGridSquare,
+  checkDupeSquare,
   gameBoardAttachEventHandlers,
   shipBlockAttachEventHandlers,
-  shipBlocksInPlace,
+  shipBlockDropListener,
   targetListener,
 };

@@ -92,17 +92,29 @@ function shipBlockUpdateBoardArray(
   }
 }
 
-function checkDupeGridSquare(player, row, column) {
+function checkDupeSquare(player, row, column) {
   let shipObject = player.gameBoard.boardArray[row][column];
   // if either condition is true, returns true - else returns false
   return shipObject.hit === true || shipObject.missed === true;
 }
 
+function shipBlocksInPlace(players) {
+  console.log(players);
+
+  let counter = 0;
+  for (const key in players["playerOne"].gameBoard.ships) {
+    if (players["playerOne"].gameBoard.ships[key]["placed"]) {
+      counter++;
+    }
+  }
+  return counter === 5;
+}
 export {
-  makeGrid,
-  isClearOfCollisions,
-  positionCheckArray,
+  checkDupeSquare,
   checkMoveLegal,
+  isClearOfCollisions,
+  makeGrid,
+  positionCheckArray,
   shipBlockUpdateBoardArray,
-  checkDupeGridSquare,
+  shipBlocksInPlace,
 };

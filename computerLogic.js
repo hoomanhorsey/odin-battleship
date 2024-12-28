@@ -1,4 +1,3 @@
-import { checkDupeGridSquare } from "./eventHandling.js";
 import {
   squareActiveLocate,
   squareNonActiveRemoveHighlight,
@@ -23,7 +22,7 @@ async function computerTargetAsync(
     const [row, column] = chooseRandomGridCoords();
 
     // check co-ords for dupe
-    if (checkDupeGridSquare(players["playerOne"], row, column)) {
+    if (checkGridSquare(players["playerOne"], row, column)) {
       continue; // skip iteration as a dupe
     } else {
       count++;
