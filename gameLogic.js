@@ -1,6 +1,11 @@
 import { updateGameMoveStatus } from "./display.js";
 import { gameLoop } from "./index.js";
 
+import {
+  gameBoardEventHandlersDetach,
+  removeShipClickListener,
+} from "./eventHandling.js";
+
 function interpretAttackResult(result) {
   if (result === "miss") {
     return { text: "miss", class: "squareMiss" };
@@ -14,11 +19,15 @@ function interpretAttackResult(result) {
 // let gameMoveStatus;
 
 // Create a handler factory
-function createstartGameClickHandler(players, gameMoveStatus) {
+function createStartGameClickHandler(players, gameMoveStatus) {
   return function handleStartGameClick(event) {
     gameLoop(players); // Use the specific `players` object
     gameMoveStatus.removeEventListener("click", handleStartGameClick);
     console.log("gameMoveStatus removed ");
+    // remove gameBoard event handlers
+    gameBoardEventHandlersDetach();
+    // remove ship click on pivot listeners
+    removeShipClickListener();
   };
 }
 
@@ -26,7 +35,7 @@ function setUpGameStartListener(players) {
   const gameMoveStatus = document.querySelector(".gameMoveStatus");
 
   // Create a handler with the specific `players`
-  const startGameClickHandler = createstartGameClickHandler(
+  const startGameClickHandler = createStartGameClickHandler(
     players,
     gameMoveStatus
   );

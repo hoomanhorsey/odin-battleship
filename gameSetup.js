@@ -1,8 +1,8 @@
 import { Player } from "./gameObjects.js";
 import { drawGrid } from "./display.js";
 import {
-  shipBlockAttachEventHandlers,
-  gameBoardAttachEventHandlers,
+  shipBlockEventHandlersAttach,
+  gameBoardEventHandlersAttach,
 } from "./eventHandling.js";
 
 import { placeComputerShip } from "./computerLogic.js";
@@ -19,8 +19,8 @@ function gameInit() {
   gameSetupComputerRandom(players);
 
   // launch ship block and gameboard handlers
-  shipBlockAttachEventHandlers(players);
-  gameBoardAttachEventHandlers(players);
+  shipBlockEventHandlersAttach(players);
+  gameBoardEventHandlersAttach(players);
 
   return players;
 }

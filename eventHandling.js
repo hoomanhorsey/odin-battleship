@@ -6,7 +6,6 @@ import {
   squareNonActiveRemoveHighlight,
   squareMainPreviousRemove,
   squareUpdateAfterAttack,
-  updateGameMoveStatus,
 } from "./display.js";
 
 import {
@@ -18,12 +17,11 @@ import {
 
 import { setUpGameStartListener } from "./gameLogic.js";
 
-import { playerMove } from "./index.js";
 /*
  *shipBlock event handlers
  */
 
-function shipBlockAttachEventHandlers(players) {
+function shipBlockEventHandlersAttach(players) {
   //  *****Todo, conider finding by class, and then attaching via forEaCH
   // const shipBlockC = document.getElementById("shipBlockC");
 
@@ -113,18 +111,20 @@ function dragEnd() {
   gameBoardToggleLegalState(true, gameBoardplayerOne);
 }
 
+//
+//
 /*
  *gameBoard event handlers
  */
 
 // Store event handlers in an object for flexibility
-const handlers = {};
+const gameBoardHandlers = {};
 
-function gameBoardAttachEventHandlers(players) {
+function gameBoardEventHandlersAttach(players) {
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
   // Define and store handlers for individual access
-  handlers.dragenter = (event) => {
+  gameBoardHandlers.dragenter = (event) => {
     event.preventDefault(); // Allow the drag event
 
     if (isValidSquare(event.target)) {
@@ -132,19 +132,20 @@ function gameBoardAttachEventHandlers(players) {
       validateMove(event, players);
     }
   };
-  handlers.dragover = (event) => allowDrop(event, players);
-  handlers.dragleave = (event) => squareNonActiveRemoveHighlight(event.target);
-  handlers.drop = (event) => {
+  gameBoardHandlers.dragover = (event) => allowDrop(event, players);
+  gameBoardHandlers.dragleave = (event) =>
+    squareNonActiveRemoveHighlight(event.target);
+  gameBoardHandlers.drop = (event) => {
     if (isValidSquare(event.target)) {
       drop(event, players);
     }
   };
 
   // Attach Each handler
-  gameBoardplayerOne.addEventListener("dragenter", handlers.dragenter);
-  gameBoardplayerOne.addEventListener("dragover", handlers.dragover);
-  gameBoardplayerOne.addEventListener("dragleave", handlers.dragleave);
-  gameBoardplayerOne.addEventListener("drop", handlers.drop);
+  gameBoardplayerOne.addEventListener("dragenter", gameBoardHandlers.dragenter);
+  gameBoardplayerOne.addEventListener("dragover", gameBoardHandlers.dragover);
+  gameBoardplayerOne.addEventListener("dragleave", gameBoardHandlers.dragleave);
+  gameBoardplayerOne.addEventListener("drop", gameBoardHandlers.drop);
 }
 
 // checks that the dragenter and drop functions occur over squares, rather than rows.
@@ -154,22 +155,27 @@ function isValidSquare(target) {
 /*
  * Detach all handlers or a specific handler by event type
  */
-function gameBoardDetachEventHandlers(eventType) {
+function gameBoardEventHandlersDetach(eventType) {
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
   if (eventType) {
     // Remove a specific event handler
-    if (handlers[eventType]) {
-      gameBoardplayerOne.removeEventListener(eventType, handlers[eventType]);
-      delete handlers[eventType]; // Optional: remove reference
+    if (gameBoardHandlers[eventType]) {
+      gameBoardplayerOne.removeEventListener(
+        eventType,
+        gameBoardHandlers[eventType]
+      );
+      delete gameBoardHandlers[eventType]; // Optional: remove reference
     }
   } else {
     // Remove all event handlers
-    for (const [event, handler] of Object.entries(handlers)) {
+    for (const [event, handler] of Object.entries(gameBoardHandlers)) {
       gameBoardplayerOne.removeEventListener(event, handler);
     }
     // Clear all references
-    Object.keys(handlers).forEach((key) => delete handlers[key]);
+    Object.keys(gameBoardHandlers).forEach(
+      (key) => delete gameBoardHandlers[key]
+    );
   }
 }
 
@@ -184,6 +190,8 @@ function allowDrop(event) {
   }
 }
 
+const shipClickListeners = [];
+
 function drop(event, players) {
   event.preventDefault();
 
@@ -192,6 +200,8 @@ function drop(event, players) {
 
   // get shipType from event.target data
   const shipTypeFromShipBlockData = event.dataTransfer.getData("text");
+
+  // removeShipClickListener(shipTypeFromShipBlockData);
 
   // removes previous squareMain, removes if it was original shipBlock, or returns element for processing if it is a previously placed shipBlock
   const squareMainPrevious = squareMainPreviousRemove(
@@ -222,15 +232,22 @@ function drop(event, players) {
 
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
+  // Removes listener attached to previous shipBlock
+  // if (squareMainPrevious !== null) {
+  //   if (squareMainPrevious?.handlerReference) {
+  //     squareMainPrevious.removeEventListener(
+  //       "click",
+  //       squareMainPrevious.handlerReference
+  //     );
+  //     squareMainPrevious.handlerReference = null; // Clear the reference
+  //   }
+  // }
+
   if (squareMainPrevious !== null) {
-    if (squareMainPrevious?.handlerReference) {
-      squareMainPrevious.removeEventListener(
-        "click",
-        squareMainPrevious.handlerReference
-      );
-      squareMainPrevious.handlerReference = null; // Clear the reference
-    }
+    removeShipClickListener(shipTypeFromShipBlockData);
   }
+
+  // removeShipClickListener(shipTypeFromShipBlockData);
 
   // Listener for shipBlock change axis
   const handler = shipBlockChangeAxisListener(
@@ -243,15 +260,9 @@ function drop(event, players) {
   // Store the handler with the element for later removal
   squareMain.handlerReference = handler;
 
-  // assigns drag functionality onto new gridSquagit remain/shipBlock
+  console.log(squareMain.handlerReference);
 
-  // const handlerDrag = shipBlockAttachEventHandlers(
-  //   players,
-  //   shipTypeFromShipBlockData
-  // );
-  // squareMain.addEventListener("dragstart", () =>
-  //   handlerDrag(event, shipTypeFromShipBlockData)
-  // );
+  // assigns drag functionality onto new square remain/shipBlock
   squareMain.addEventListener("dragstart", (event) => {
     drag(event);
   });
@@ -300,6 +311,13 @@ function shipBlockChangeAxisListener(
   };
 
   squareMain.addEventListener("click", shipBlockChangeAxis);
+  shipClickListeners.push({
+    element: squareMain,
+    handler: shipBlockChangeAxis,
+    shipType: shipType,
+  });
+
+  console.table(shipClickListeners);
 
   // gameBoardplayerOne.addEventListener("click", (event) => {
   //   if (event.target.classList.contains(`shipColor${shipType}`)) {
@@ -375,6 +393,33 @@ function shipBlockHandleChangeAxisClick(
   }
 }
 
+// Function to remove a listener for a specific ship (based on shipId)
+function removeShipClickListener(shipType) {
+  console.log(shipType);
+  console.log(shipClickListeners);
+
+  const shipEntry = shipClickListeners.find(
+    (entry) => entry.shipType === shipType
+  );
+
+  console.log(shipEntry);
+
+  if (shipEntry) {
+    shipEntry.element.removeEventListener("click", shipEntry.handler);
+    // Optionally, remove the entry from the registry if no longer needed
+    const index = shipClickListeners.indexOf(shipEntry);
+    if (index !== -1) {
+      shipClickListeners.splice(index, 1); // Remove the specific entry from the registry
+    }
+  } else {
+    shipClickListeners.forEach(({ element, handler }) => {
+      element.removeEventListener("click", handler);
+    });
+    shipClickListeners.length = 0; // Clear the registry
+    // console.log(`No listener found for ship ${shipType}`);
+  }
+}
+
 function targetListener() {
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
@@ -399,7 +444,6 @@ function addSquareTargetListener(element, handler) {
 
 function removeSquareTargetListener(element, handler) {
   console.log("removeSquareTargetListener");
-
   element.removeEventListener("mouseover", handler);
   element.removeEventListener("mouseout", handler);
 }
@@ -417,7 +461,12 @@ function squareTarget(event) {
   }
 }
 
-function attackListener(players, removeTargetListener, computerMove) {
+function attackListener(
+  players,
+  removeTargetListener,
+  removeTargetAndAttackListeners,
+  computerMove
+) {
   // gets the playerBoard
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
 
@@ -442,6 +491,7 @@ function attackListener(players, removeTargetListener, computerMove) {
         );
         return;
       } else {
+        removeTargetAndAttackListeners();
         removeTargetListener();
         removeAttackListener();
 
@@ -477,15 +527,6 @@ function attackListener(players, removeTargetListener, computerMove) {
   function removeAttackListener() {
     console.log("remove attack listener called");
     removeSquareAttackListener(gameBoardplayerTwo, attackHandler);
-  }
-  return { removeAttackListener };
-  ///
-  /// everything below redundant
-  //
-  // function to remove attack listener
-  function AAAremoveAttackListener() {
-    console.log("remove attack listener called");
-    removeSquareAttackListener(gameBoardplayerTwo, squareAttackHandler);
   }
   return { removeAttackListener };
 }
@@ -535,8 +576,10 @@ export {
   attackListener,
   checkAllSunk,
   checkDupeSquare,
-  gameBoardAttachEventHandlers,
-  shipBlockAttachEventHandlers,
+  gameBoardEventHandlersAttach,
+  gameBoardEventHandlersDetach,
+  removeShipClickListener,
+  shipBlockEventHandlersAttach,
   shipBlockDropListener,
   targetListener,
 };

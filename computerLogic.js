@@ -5,7 +5,11 @@ import {
   updateGameMoveStatus,
 } from "./display.js";
 
-import { checkMoveLegal, isClearOfCollisions } from "./helpers.js";
+import {
+  checkMoveLegal,
+  isClearOfCollisions,
+  checkDupeSquare,
+} from "./helpers.js";
 
 async function computerTargetAsync(
   chooseRandomGridCoords,
@@ -22,7 +26,7 @@ async function computerTargetAsync(
     const [row, column] = chooseRandomGridCoords();
 
     // check co-ords for dupe
-    if (checkGridSquare(players["playerOne"], row, column)) {
+    if (checkDupeSquare(players["playerOne"], row, column)) {
       continue; // skip iteration as a dupe
     } else {
       count++;

@@ -4,7 +4,7 @@ import {
   attackListener,
   checkAllSunk,
   shipBlockDropListener,
-  // targetListener,
+  targetListener,
 } from "./eventHandling.js";
 
 import {
@@ -83,10 +83,12 @@ function playerMove(players) {
         console.log("playermovecomplete");
 
         // Clean up listeners after the move is completed
-        removeTargetListener();
-        removeAttackListener();
+        // removeTargetListener();
+        // removeAttackListener();
 
         // Resolve the Promise to indicate the move is done
+        console.log("************************PLAYVER MOVE HAS BEEN DONE");
+
         resolve();
       }
     );
@@ -99,8 +101,43 @@ let numComputerTargets = 10;
 let computerTargetingTime = 250;
 
 function computerMove(players, removeTargetListener, removeAttackListener) {
-  removeTargetListener();
-  removeAttackListener();
+  console.log("*****************COMPUTER MOVE CALLED");
+
+  // removeAttackListener();
+  updateGameMoveStatus("computerMove");
+
+  return new Promise((resolve) => {
+    // TODOIs this a mix of concerns?
+    const gameMoveStatus = document.querySelector(".gameMoveStatus");
+    gameMoveStatus.addEventListener("click", triggerComputertMove);
+
+    // callback function for listener
+    function triggerComputertMove() {
+      // insert logic to swap players - TODO, this may be redundant
+      gameMoveStatus.removeEventListener("click", triggerComputertMove);
+      console.log("trigger next move removed");
+
+      updateGameMoveStatus("computerTarget");
+
+      computerTargetAsync(
+        chooseRandomGridCoords,
+        numComputerTargets,
+        computerTargetingTime,
+        players,
+        // The function passed in below is effective what starts the next move.  I don't like how it is expressed cos it's super unclear
+        checkAllSunk(players, playerMove),
+        // null,
+        updateComputerTargetUI
+      );
+      resolve();
+    }
+  });
+}
+
+function TESTcomputerMove(players, removeTargetListener, removeAttackListener) {
+  console.log("*****************COMPUTER MOVE CALLED");
+
+  // removeAttackListener();
   updateGameMoveStatus("computerMove");
 
   // TODOIs this a mix of concerns?
