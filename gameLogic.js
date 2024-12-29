@@ -15,9 +15,6 @@ function interpretAttackResult(result) {
   return null;
 }
 
-// let clickToStartGameHandler;
-// let gameMoveStatus;
-
 // Create a handler factory
 function createStartGameClickHandler(players, gameMoveStatus) {
   return function handleStartGameClick(event) {
@@ -44,8 +41,4 @@ function setUpGameStartListener(players) {
   gameMoveStatus.addEventListener("click", startGameClickHandler);
 }
 
-export {
-  interpretAttackResult,
-  setUpGameStartListener,
-  // startGameClickHandler,
-};
+export { interpretAttackResult, setUpGameStartListener };

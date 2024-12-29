@@ -99,8 +99,6 @@ function checkDupeSquare(player, row, column) {
 }
 
 function shipBlocksInPlace(players) {
-  console.log(players);
-
   let counter = 0;
   for (const key in players["playerOne"].gameBoard.ships) {
     if (players["playerOne"].gameBoard.ships[key]["placed"]) {
@@ -109,6 +107,7 @@ function shipBlocksInPlace(players) {
   }
   return counter === 5;
 }
+
 export {
   checkDupeSquare,
   checkMoveLegal,

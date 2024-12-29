@@ -22,21 +22,11 @@ import { setUpGameStartListener } from "./gameLogic.js";
  */
 
 function shipBlockEventHandlersAttach(players) {
-  //  *****Todo, conider finding by class, and then attaching via forEaCH
-  // const shipBlockC = document.getElementById("shipBlockC");
-
-  // if (!document.querySelector(`[data-ship-type="${shipType}"]`)) {
-  //   console.log("is null");
-  // }
-  // const shipBlockC = document.querySelector(`[data-ship-type="${shipType}"]`);
-
   const shipBlockC = document.getElementById("shipBlockC");
   const shipBlockB = document.getElementById("shipBlockB");
   const shipBlockD = document.getElementById("shipBlockD");
   const shipBlockS = document.getElementById("shipBlockS");
   const shipBlockP = document.getElementById("shipBlockP");
-
-  // const handlerDrag = (event) => drag(event);
 
   shipBlockC.addEventListener("dragstart", drag);
   shipBlockB.addEventListener("dragstart", drag);
@@ -62,7 +52,7 @@ function drag(event) {
   );
   shipBlock.classList.add("shipBlockDragging");
 
-  // passes shipType info onto drag event to be passed to the drop event when dropped.
+  // passes shipType info to drag event to be passed to  drop event when dropped.
   event.dataTransfer.setData("text", event.target.dataset.shipType);
 
   // Orients drag to left side of shipBlock
@@ -111,8 +101,6 @@ function dragEnd() {
   gameBoardToggleLegalState(true, gameBoardplayerOne);
 }
 
-//
-//
 /*
  *gameBoard event handlers
  */
@@ -201,14 +189,10 @@ function drop(event, players) {
   // get shipType from event.target data
   const shipTypeFromShipBlockData = event.dataTransfer.getData("text");
 
-  // removeShipClickListener(shipTypeFromShipBlockData);
-
   // removes previous squareMain, removes if it was original shipBlock, or returns element for processing if it is a previously placed shipBlock
   const squareMainPrevious = squareMainPreviousRemove(
     shipTypeFromShipBlockData
   );
-
-  //TODO remove the click acist event listener from 'squareMainPrevious'
 
   // gets orientation data of the placed shipBlock
   const { orientationColor, orientationUncolor } =
@@ -232,22 +216,9 @@ function drop(event, players) {
 
   const gameBoardplayerOne = document.querySelector(".gameBoardplayerOne");
 
-  // Removes listener attached to previous shipBlock
-  // if (squareMainPrevious !== null) {
-  //   if (squareMainPrevious?.handlerReference) {
-  //     squareMainPrevious.removeEventListener(
-  //       "click",
-  //       squareMainPrevious.handlerReference
-  //     );
-  //     squareMainPrevious.handlerReference = null; // Clear the reference
-  //   }
-  // }
-
   if (squareMainPrevious !== null) {
     removeShipClickListener(shipTypeFromShipBlockData);
   }
-
-  // removeShipClickListener(shipTypeFromShipBlockData);
 
   // Listener for shipBlock change axis
   const handler = shipBlockChangeAxisListener(
@@ -259,8 +230,6 @@ function drop(event, players) {
   );
   // Store the handler with the element for later removal
   squareMain.handlerReference = handler;
-
-  console.log(squareMain.handlerReference);
 
   // assigns drag functionality onto new square remain/shipBlock
   squareMain.addEventListener("dragstart", (event) => {
@@ -319,14 +288,8 @@ function shipBlockChangeAxisListener(
 
   console.table(shipClickListeners);
 
-  // gameBoardplayerOne.addEventListener("click", (event) => {
-  //   if (event.target.classList.contains(`shipColor${shipType}`)) {
-  //     shipBlockChangeAxis(event.target);
-  //   }
-  // });
-
   // ***TODOreturn callback function in case you need remove the event listener
-  return shipBlockChangeAxis;
+  // return shipBlockChangeAxis;
 }
 
 function shipBlockHandleChangeAxisClick(
@@ -395,14 +358,9 @@ function shipBlockHandleChangeAxisClick(
 
 // Function to remove a listener for a specific ship (based on shipId)
 function removeShipClickListener(shipType) {
-  console.log(shipType);
-  console.log(shipClickListeners);
-
   const shipEntry = shipClickListeners.find(
     (entry) => entry.shipType === shipType
   );
-
-  console.log(shipEntry);
 
   if (shipEntry) {
     shipEntry.element.removeEventListener("click", shipEntry.handler);
@@ -464,8 +422,7 @@ function squareTarget(event) {
 function attackListener(
   players,
   removeTargetListener,
-  removeTargetAndAttackListeners,
-  computerMove
+  callResolveToCompleteMove
 ) {
   // gets the playerBoard
   const gameBoardplayerTwo = document.querySelector(".gameBoardplayerTwo");
@@ -491,20 +448,16 @@ function attackListener(
         );
         return;
       } else {
-        removeTargetAndAttackListeners();
+        callResolveToCompleteMove();
         removeTargetListener();
         removeAttackListener();
 
-        // calls receive Attack to update boardArray if there is a succeful attack
+        // receiveAttack updates boardArray on successful attack
         let attackResult = players["playerTwo"].gameBoard.receiveAttack(
           event.target.dataset.row,
           event.target.dataset.column
         );
         squareUpdateAfterAttack(attackResult, event.target);
-
-        // checkAllSunk(players, () =>
-        //   computerMove(players, removeTargetListener, removeAttackListener)
-        // );
       }
     }
   }
@@ -513,15 +466,9 @@ function attackListener(
   // VERYIMPORTANT - currently removed addSquareAttackListener. Need to re add
   addSquareAttackListener(gameBoardplayerTwo, attackHandler);
 
-  // addSquareAttackListener(gameBoardplayerTwo, (event) =>
-  //   squareAttackHandler(event, players)
-  // );
-
   function createAttackHandler(players) {
     return (event) => squareAttackHandler(event, players);
   }
-
-  //new variable to store handler reference.
 
   // function to remove attack listener
   function removeAttackListener() {
@@ -539,22 +486,22 @@ function removeSquareAttackListener(element, handler) {
   element.removeEventListener("click", handler);
 }
 
-function checkAllSunk(players, nextMoveCallback) {
+function areAllShipsSunk(players) {
   console.log(
     "checkallsunk has been called which means play move has been called too. And I'm logging this because if play move has been called then the target and attack event listeners have been called as well"
   );
 
-  if (
-    !players["playerOne"].gameBoard.checkSunk(players["playerOne"].name) &&
-    !players["playerTwo"].gameBoard.checkSunk(players["playerTwo"].name)
+  if (players["playerOne"].gameBoard.checkSunk(players["playerOne"].name)) {
+    console.log("p1 true");
+    return [true, players["playerOne"].name];
+  } else if (
+    players["playerTwo"].gameBoard.checkSunk(players["playerTwo"].name)
   ) {
-    nextMoveCallback();
+    console.log("p2 true");
+    return [true, players["playerOne"].name];
   } else {
-    if (players["playerOne"].gameBoard.checkSunk()) {
-      console.log(players["playerTwo"].name + "is the winner");
-    } else {
-      console.log(players["playerOne"].name + "is the winner");
-    }
+    console.log("false", null);
+    return [false, null];
   }
 }
 
@@ -566,15 +513,14 @@ function shipBlockDropListener(players) {
 }
 
 function shipBlockDropHandler(event, players) {
-  console.log(event, players);
   if (shipBlocksInPlace(players)) {
     setUpGameStartListener(players);
   }
 }
 
 export {
+  areAllShipsSunk,
   attackListener,
-  checkAllSunk,
   checkDupeSquare,
   gameBoardEventHandlersAttach,
   gameBoardEventHandlersDetach,

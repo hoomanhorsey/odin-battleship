@@ -113,17 +113,4 @@ class Player {
   }
 }
 
-
-
 export { Ship, Gameboard, Player };
-
-// TODO - this prompt may be useful for when you want to confirm final position?
-// if (player.name === "playerOne") {
-//   if (prompt("Are you happy with position? Y or N") === "Y") {
-//     shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
-//   } else {
-//     return;
-//   }
-// } else {
-//   shipBlockUpdateBoardArray(this.boardArray, row, column, orientation, ship);
-// }
