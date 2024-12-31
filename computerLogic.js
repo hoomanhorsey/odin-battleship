@@ -63,7 +63,7 @@ function computerAttack(players) {
   console.log(attackResult);
   squareUpdateAfterAttack(attackResult, squareActive);
 
-  updateGameMoveStatus("userMove");
+  updateGameMoveStatus("userMove", attackResult);
 }
 
 function placeComputerShip(ship, boardArray, players) {

@@ -147,28 +147,34 @@ function squareExtendedRemove(squareExtended, shipType, i) {
   squareExtended.textContent = "";
 }
 
-function updateGameMoveStatus(status) {
+function updateGameMoveStatus(status, message) {
   const gameMoveStatus = document.querySelector(".gameMoveStatus");
+
   switch (status) {
     case "placeShips":
       gameMoveStatus.textContent =
-        "Welcome to Battleship. Please place your ships on the PlayerOne gameBoard. Click on each ship to change orientation ";
+        "Welcome to Battleship. Position your ships onto the Player One grid. Click on each ship to change orientation ";
       break;
     case "shipsPlaced":
       gameMoveStatus.textContent =
-        "All ships have been placed. Continue to place your fleet or press 'start' to start the game";
+        "All ships have been placed. Continue to position your fleet or click on 'START'";
       break;
     case "userMove":
-      gameMoveStatus.textContent =
-        "Your move. Move cursor to target, click to attack!";
+      console.log(message);
+
+      if (message) {
+        gameMoveStatus.textContent = `Computer attack resulted in ${message}. Your move. Target a square with the mouse, click to launch an attack!`;
+      } else {
+        gameMoveStatus.textContent =
+          "Your move. Target a square with the mouse, click to launch an attack!";
+      }
       break;
     case "computerMove":
       gameMoveStatus.textContent =
-        "Computer's move. Click HERE for to launch computer attack";
+        "Computer's move. Click 'HERE' to launch computer attack";
       break;
     case "computerTarget":
-      gameMoveStatus.textContent =
-        "Computer's targeting...NOTE 'computer attacks follows this but is missing as user message is too fast. Need to update.";
+      gameMoveStatus.textContent = "Computer targeting...";
       break;
     case "computerAttack":
       gameMoveStatus.textContent = "Computer attacks!!!";

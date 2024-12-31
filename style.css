@@ -8,6 +8,7 @@
   align-items: center;
   justify-content: center;
   font-size: larger;
+  padding: 100px;
 }
 
 .gameSetup {
@@ -108,7 +109,7 @@
   display: grid;
   width: 100%;
   grid-template-columns: repeat(2, 1fr);
-  column-gap: 50px;
+  column-gap: 150px;
 }
 
 .gameBoardTitle {
@@ -122,11 +123,15 @@
 
 .gameBoardPlayerOne {
   display: grid;
+  grid-template-rows: repeat(10, 1fr);
+
   margin: 20px;
   padding: 20px;
 }
 .gameBoardPlayerTwo {
   display: grid;
+  grid-template-rows: repeat(10, 1fr);
+
   margin: 20px;
   padding: 20px;
 }
@@ -154,7 +159,7 @@
 
 .gridRow {
   display: grid;
-  width: 100%;
+  /* width: 100%; */
   grid-template-columns: repeat(10, 1fr);
 }
 
@@ -170,13 +175,14 @@
   border-radius: 50%;
   font-size: 25px;
 
-  height: 70px;
-  width: 70px;
+  height: 120px;
+  width: 120px;
 }
 
 .squareActive {
   border-style: solid;
   border-color: red;
+  background-color: red;
   border-width: 5px;
 }
 

@@ -15,7 +15,7 @@ import {
 import { updateGameMoveStatus } from "./display.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Game (player setup, position prefill, draw board)
+  // Initialize game (player setup, draw board)
   const players = gameInit();
 
   updateGameMoveStatus("placeShips");
